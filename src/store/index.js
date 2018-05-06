@@ -10,9 +10,15 @@ const store = new Vuex.Store({
   },
 
   mutations: {
+
     increment(state) {
       state.count += 1;
     },
+
+    gotRoutePoints(state, data) {
+      state.routePoints = data;
+    },
+
   },
 
 });
