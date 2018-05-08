@@ -7,6 +7,7 @@ const store = new Vuex.Store({
 
   state: {
     count: 0,
+    routePoints: [],
   },
 
   mutations: {
@@ -16,7 +17,7 @@ const store = new Vuex.Store({
     },
 
     gotRoutePoints(state, data) {
-      state.routePoints = data;
+      state.routePoints.push(...data);
     },
 
   },

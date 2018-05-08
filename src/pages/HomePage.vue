@@ -1,15 +1,18 @@
 <template lang="pug">
   .home
     HelloWorld
+    //router-view
+    //AppTabBar
+    <!--p-->
+      <!--mt-button(type="primary") Тестовая кнопка-->
     p
-      mt-button(type="primary") default
-    p
-      router-link(to="route") Маршрут
+      router-link(to="tabs" tag="mt-button") Начать работу
 </template>
 
 <script>
 
 import HelloWorld from '@/components/HelloWorld';
+// import AppTabBar from '@/components/AppTabBar';
 
 export default {
   name: 'HomePage',
@@ -19,5 +22,9 @@ export default {
 </script>
 
 <style scoped>
+
+.home > p {
+  text-align: center;
+}
 
 </style>

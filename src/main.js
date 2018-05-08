@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import 'es6-promise/auto';
 
-// import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
-// import locale from 'element-ui/lib/locale/lang/ru-RU';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/ru-RU';
 
 import { sync } from 'vuex-router-sync';
 
@@ -14,7 +14,7 @@ import store from './store';
 import router from './router';
 import App from './App';
 
-// Vue.use(ElementUI, locale);
+Vue.use(ElementUI, locale);
 Vue.use(Mint);
 
 Vue.config.productionTip = false;
@@ -23,6 +23,7 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
 });
