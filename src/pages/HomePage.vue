@@ -1,18 +1,18 @@
 <template lang="pug">
+
   .home
+
     HelloWorld
-    //router-view
-    //AppTabBar
-    <!--p-->
-      <!--mt-button(type="primary") Тестовая кнопка-->
+
     p
-      router-link(to="tabs" tag="mt-button") Начать работу
+      router-link(to="tabs")
+        mt-button(type="primary") Начать работу
+
 </template>
 
 <script>
 
 import HelloWorld from '@/components/HelloWorld';
-// import AppTabBar from '@/components/AppTabBar';
 
 export default {
   name: 'HomePage',
