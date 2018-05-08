@@ -12,13 +12,13 @@ const tabs = [
     path: 'route',
     name: 'route',
     component: RoutePage,
-    meta: { title: 'Маршрут', img: '/static/icons8-to_do.png' },
+    meta: { title: 'Маршрут', img: '/static/images/icons8-to_do.png' },
   },
   {
     path: 'outlets',
     name: 'outlets',
     component: OutletsPage,
-    meta: { title: 'Точки', img: '/static/icons8-shop.png' },
+    meta: { title: 'Точки', img: '/static/images/icons8-shop.png' },
   },
 ];
 
