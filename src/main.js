@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import 'es6-promise/auto';
 
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import locale from 'element-ui/lib/locale/lang/ru-RU';
+import { Breadcrumb, BreadcrumbItem } from 'element-ui';
+
+import ru from 'element-ui/lib/locale/lang/ru-RU';
+import locale from 'element-ui/lib/locale';
 
 import { sync } from 'vuex-router-sync';
 
@@ -14,8 +15,12 @@ import store from './store';
 import router from './router';
 import App from './App';
 
-Vue.use(ElementUI, locale);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
+
 Vue.use(Mint);
+
+locale.use(ru);
 
 Vue.config.productionTip = false;
 
