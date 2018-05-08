@@ -2,13 +2,13 @@
 
 .tabs-page
 
-  h4
+  .header
     el-breadcrumb(separator-class="el-icon-arrow-right")
       el-breadcrumb-item
         router-link(to="/") Начало
       el-breadcrumb-item {{ currentTabTitle }}
 
-  router-view
+  router-view.tab-content
 
   app-tab-bar(:tabs="tabs")
 
@@ -42,6 +42,21 @@ export default {
 
 </script>
 <style scoped>
+
+.header {
+  position: fixed;
+  z-index: 1;
+  background: white;
+  padding: 16px 0;
+  width: 100%;
+  top: 0;
+  /*left: 0;*/
+}
+
+.tab-content {
+  overflow-y: scroll;
+  margin: 35px 0 55px;
+}
 
 .el-breadcrumb {
   font-size: 110%;

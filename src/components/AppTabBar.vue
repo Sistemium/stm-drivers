@@ -2,7 +2,7 @@
 
 .app-tab-bar
 
-  mt-tabbar(v-model="selected")
+  mt-tabbar(fixed v-model="selected")
 
     mt-tab-item(v-for="tab in tabs" v-bind:id="tab.name" :key="tab.name")
       img(slot="icon" v-bind:src="tab.meta.img")
