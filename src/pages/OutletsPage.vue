@@ -4,14 +4,15 @@
 
   h1 Магазины
 
-  .outlet-list
-    mt-cell.outlet(title="Магазин 1")
-    mt-cell.outlet(title="Магазин 2")
+  outlet-list
 
 </template>
 <script>
 
+import OutletList from '@/components/OutletList';
+
 export default {
+  components: { OutletList },
   name: 'outlets-page',
 };
 

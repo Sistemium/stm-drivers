@@ -35,7 +35,9 @@ new Vue({
 
 sync(store, router);
 
-store.commit('increment');
+// store.commit('increment');
 
 // eslint-disable-next-line
-console.log(store.state.count);
+// console.log(store.state.count);
+
+require('./models');
