@@ -1,11 +1,11 @@
-import store from '.';
+import { STModel } from '@/jsdata';
 
-require('./Partner');
+import './Partner';
 
-export default store.defineMapper('outlet', {
+export default new STModel('Outlet', {
   relations: {
     belongsTo: {
-      partner: {
+      Partner: {
         localKey: 'partnerId',
         localField: 'partner',
       },

@@ -1,18 +1,18 @@
-import store from '.';
+import { STModel } from '@/jsdata';
 
-require('./Outlet');
+import './Outlet';
 
-export default store.defineMapper('partner', {
+export default new STModel('Partner', {
 
   notify: false,
-  keepChangeHistory: false,
+  // keepChangeHistory: false,
   applySchema: false,
-  validateOnSet: false,
-  noValidate: true,
+  // validateOnSet: false,
+  // noValidate: true,
 
   relations: {
     hasMany: {
-      outlet: {
+      Outlet: {
         foreignKey: 'partnerId',
         localField: 'outlets',
       },
