@@ -1,6 +1,6 @@
 <template lang="pug">
 
-#app
+.app
   router-view
 
 </template>
@@ -13,7 +13,7 @@ export default {
 </script>
 <style>
 
-#app {
+.app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
