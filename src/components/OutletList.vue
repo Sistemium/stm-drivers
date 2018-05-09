@@ -59,7 +59,7 @@ export default {
 };
 
 function loadData() {
-  return store.findAll('partner', { limit: 5, offset: 5 }, { force: true })
+  return store.findAll('partner', { limit: 5, offset: 5 }, { force: true, with: ['outlets'] })
     .then((items) => {
       // eslint-disable-next-line
       console.info('findAll found:', items);
