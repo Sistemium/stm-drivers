@@ -4,29 +4,15 @@
 
   h1 Точки маршрута
 
-  .route-points
-    .poite-point(v-for='(point, index) in routePoints' :key="point.id")
-      mt-cell(
-      v-bind:title="point.name"
-      v-bind:value="index + 1"
-      )
+  route-point-list
 
 </template>
 <script>
 
-import { v4 } from 'uuid';
+import v4 from 'uuid/v4';
+import RoutePointList from '@/components/RoutePointList';
 
 export default {
-
-  data() {
-    return {};
-  },
-
-  computed: {
-    routePoints() {
-      return this.$store.state.routePoints;
-    },
-  },
 
   created() {
     setTimeout(() => sampleData(this.$store.commit), 1000);
@@ -36,6 +22,8 @@ export default {
     ]);
   },
 
+  components: { RoutePointList },
+
 };
 
 
@@ -43,12 +31,7 @@ function sampleData(commit) {
   commit('gotRoutePoints', [{ id: v4(), name: 'Четвертая точка' }]);
 }
 
-
 </script>
 <style scoped>
-
-h1 {
-  /*background: aqua;*/
-}
 
 </style>
