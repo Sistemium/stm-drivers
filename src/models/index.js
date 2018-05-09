@@ -36,6 +36,13 @@ function jsDataToSTAPI(params, options = {}) {
 
   const parsed = { ...params };
 
+  // eslint-disable-next-line
+  if (options._activeWith) {
+    delete parsed['x-page-size:'];
+    delete parsed['x-start-page:'];
+    delete parsed['x-order-by:'];
+  }
+
   let { orderBy } = params;
 
   if (orderBy && orderBy.length) {
