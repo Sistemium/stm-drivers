@@ -4,65 +4,49 @@
   mt-cell.outlet(
   v-for="partner in partners" :key="partner.id"
   v-bind:title="partner.shortName"
+  v-bind:label="`(${partner.outlets.length})`"
   )
-    mt-button(v-on:click="deleteClick(partner)")
+    mt-button(v-on:click="deleteClick(partner)" size="small")
       i.el-icon-delete
 
 </template>
 <script>
 
-import '@/models/Partner';
-
-import store from '@/models';
+import Partner from '@/models/Partner';
 
 export default {
 
   name: 'outlet-list',
 
   data() {
-    return { partners: [] };
+    return { partners: Partner.bindAll(this, { orderBy: 'shortName' }, 'partners') };
   },
 
   methods: {
     deleteClick(item) {
       // eslint-disable-next-line
       // item.shortName = item.shortName + '-';
-      store.remove('partner', item);
-    },
-    setPartners() {
-      this.partners = Object.seal(store.filter('partner', { orderBy: 'shortName' }));
-    },
-    onPartnerDataChange(name) {
-      if (name === 'partner') {
-        this.setPartners();
-        // eslint-disable-next-line
-        console.info('onPartnerDataChange');
-      }
+      Partner.remove(item);
     },
   },
 
   created() {
-
-    this.setPartners();
-    loadData();
-
-    store.on('add', this.onPartnerDataChange);
-    store.on('remove', this.onPartnerDataChange);
-
+    loadData(this);
   },
 
   beforeDestroy() {
-    store.off('remove', this.onPartnerDataChange);
-    store.off('add', this.onPartnerDataChange);
+    Partner.unbind(this);
   },
 
 };
 
-function loadData() {
-  return store.findAll('partner', { limit: 5, offset: 5 }, { force: true, with: ['outlets'] })
+function loadData(vue) {
+  return Partner.findAll({ limit: 5, offset: 5 })
     .then((items) => {
       // eslint-disable-next-line
       console.info('findAll found:', items);
+      return Promise.all(items.map(partner => partner.loadRelations(['outlets'])))
+        .then(() => vue.$forceUpdate());
     });
 }
 
