@@ -4,6 +4,7 @@ import HomePage from '@/pages/HomePage';
 import RoutePage from '@/pages/RoutePage';
 import OutletsPage from '@/pages/OutletsPage';
 import TabsPage from '@/pages/TabsPage';
+import OutletPage from '@/pages/OutletPage';
 
 Vue.use(Router);
 
@@ -19,6 +20,9 @@ const tabs = [
     name: 'outlets',
     component: OutletsPage,
     meta: { title: 'Точки', img: '/static/images/icons8-shop.png' },
+    children: [
+      { path: ':id', name: 'outlet', component: OutletPage, meta: { title: 'Подробности' } },
+    ],
   },
 ];
 
