@@ -2,7 +2,17 @@
 
 .partner-info
 
-  p ID: {{ partnerId }}
+  .fields
+    mt-field(label="Название" v-model="partner.name")
+    mt-field(label="ИНН" v-model="partner.inn")
+
+  .section-title Адреса
+
+  .outlets
+    mt-cell(
+    v-for="outlet in partner.outlets" :key="outlet.id"
+    :title="outlet.address"
+    )
 
 </template>
 <script>
@@ -22,7 +32,7 @@ export default {
   },
 
   created() {
-    Partner.find(this.partnerId);
+    Partner.find(this.partnerId, { with: ['outlets'] });
   },
 
   beforeDestroy() {
@@ -33,5 +43,9 @@ export default {
 
 </script>
 <style scoped lang="scss">
+
+h2 {
+  text-align: center;
+}
 
 </style>

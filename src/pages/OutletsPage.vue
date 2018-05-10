@@ -10,7 +10,7 @@
     h1
       router-link.page-back(:to="{name: 'outlets'}")
         i.mintui.mintui-back
-      span Торговая точка
+      span Контрагент
     router-view
 
 </template>
@@ -33,14 +33,18 @@ export default {
 
 </script>
 <style scoped lang="scss">
+@import "../styles/variables";
 
 h1 {
 
+  display: flex;
 
   > span {
-    margin-left: 15px;
+    flex: 1;
+    margin-right: $icon-button-width;
+    text-align: center;
+    margin-left: auto;
   }
-
 
   button.back {
     display: block;
@@ -48,6 +52,5 @@ h1 {
   }
 
 }
-
 
 </style>
