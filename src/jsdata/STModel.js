@@ -7,6 +7,7 @@ class STModel {
     this.name = name;
     this.store = store;
     this.mapper = store.defineMapper(name, config);
+    this.offs = {};
 
   }
 
@@ -37,27 +38,34 @@ class STModel {
       // console.warn('!');
     };
 
-    const offs = [
+    this.offs[component] = this.offs[component] || {};
+    const offs = this.offs[component];
+
+    if (offs[property]) {
+      this.unbind(component, property);
+    }
+
+    offs[property] = [
       this.mon('add', onDataChange),
       this.mon('remove', onDataChange),
     ];
-
-    component.$on(`STUnbind${this.name}`, (params = {}) => {
-      if (params.component === component) {
-        offs.forEach(off => off());
-      }
-    });
 
     return this.filter(query);
 
   }
 
-  unbind(component) {
-    // TODO: refactor without event emitting
-    component.$emit(`STUnbind${this.name}`, { component });
+  unbind(component, property) {
+    const offs = this.offs[component];
+    offs[property].forEach(off => off());
+    delete offs[property];
+  }
+
+  unbindAll(component) {
+    const props = Object.keys(this.offs[component]);
+    props.forEach(property => this.unbind(component, property));
+    delete this.offs[component];
   }
 
 }
 
-// eslint-disable-next-line
-export { STModel };
+export default STModel;

@@ -1,4 +1,4 @@
-import { STModel } from '@/jsdata';
+import STModel from '@/jsdata/STModel';
 
 import './Partner';
 

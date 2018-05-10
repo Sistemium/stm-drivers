@@ -25,8 +25,6 @@ export default {
 
   methods: {
     deleteClick(item) {
-      // eslint-disable-next-line
-      // item.shortName = item.shortName + '-';
       Partner.remove(item);
     },
   },
@@ -37,7 +35,7 @@ export default {
   },
 
   beforeDestroy() {
-    Partner.unbind(this);
+    Partner.unbindAll(this);
   },
 
 };
