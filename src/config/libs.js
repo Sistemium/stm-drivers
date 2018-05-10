@@ -2,6 +2,10 @@
 
 import Vue from 'vue';
 
+// VUIKit
+// import VKHeightViewport from 'vuikit/lib/height-viewport';
+// Vue.directive('HeightViewport', VKHeightViewport);
+
 // ElementUI
 import { Breadcrumb, BreadcrumbItem } from 'element-ui';
 import ru from 'element-ui/lib/locale/lang/ru-RU';
