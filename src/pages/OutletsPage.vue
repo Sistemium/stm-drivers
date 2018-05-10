@@ -8,8 +8,8 @@
 
   .details-state(v-if="routeState === 'details'")
     h1
-      router-link(:to="{name: 'outlets'}" tag="div")
-        mt-button.back(icon="back" size="small")
+      router-link.page-back(:to="{name: 'outlets'}")
+        i.mintui.mintui-back
       span Торговая точка
     router-view
 
@@ -36,16 +36,11 @@ export default {
 
 h1 {
 
-  display: flex;
-  align-items: center;
 
   > span {
     margin-left: 15px;
   }
 
-  > a {
-    display: block;
-  }
 
   button.back {
     display: block;
@@ -53,5 +48,6 @@ h1 {
   }
 
 }
+
 
 </style>
