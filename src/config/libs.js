@@ -21,3 +21,9 @@ import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
 
 Vue.use(Mint);
+
+// Loading overlay
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.min.css';
+
+Vue.use(Loading);

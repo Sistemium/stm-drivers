@@ -1,6 +1,7 @@
 <template lang="pug">
 
 .outlet-list
+
   mt-cell.outlet(
   v-for="partner in partners"
   :key="partner.id"
@@ -33,7 +34,9 @@ export default {
   },
 
   created() {
-    loadData();
+    const loader = this.$loading.show();
+    loadData()
+      .then(() => loader.hide());
     Outlet.bind(this);
   },
 
@@ -45,7 +48,9 @@ export default {
 };
 
 function loadData() {
-  return Partner.findAll({ limit: 5, offset: 5 })
+  return Partner.findAll({ limit: 50, offset: 0 }, {
+    // with: ['outlets']
+  })
     .then((items) => {
       // eslint-disable-next-line
       console.info('findAll found:', items);
