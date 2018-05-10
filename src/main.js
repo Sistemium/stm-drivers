@@ -5,6 +5,8 @@ import 'es6-promise/auto';
 
 import '@/config/libs';
 
+import '@/styles/buttons.scss';
+
 import store from './store';
 import router from './router';
 import App from './App';
