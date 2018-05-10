@@ -11,6 +11,10 @@ class STModel {
 
   }
 
+  find(id, options) {
+    return this.store.find(this.name, id, options);
+  }
+
   findAll(query, options) {
     return this.store.findAll(this.name, query, options);
   }
@@ -71,6 +75,31 @@ class STModel {
     ];
 
     return this.filter(query);
+
+  }
+
+  bindOne(component, id, property) {
+
+    const onDataChange = () => {
+      // eslint-disable-next-line
+      component[property] = this.store.get(this.name, id);
+      // eslint-disable-next-line
+      // console.warn('!');
+    };
+
+    this.offs[component] = this.offs[component] || {};
+    const offs = this.offs[component];
+
+    if (offs[property]) {
+      this.unbind(component, property);
+    }
+
+    offs[property] = [
+      this.mon('add', onDataChange),
+      this.mon('remove', onDataChange),
+    ];
+
+    return this.store.get(this.name, id);
 
   }
 

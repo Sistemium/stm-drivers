@@ -1,18 +1,18 @@
 <template lang="pug">
 
 .outlet-page
-  outlet-info(:outlet-id="$route.params.id")
+  partner-info(:partner-id="$route.params.id")
 
 </template>
 
 <script>
 
-import OutletInfo from '@/components/OutletInfo';
+import PartnerInfo from '@/components/PartnerInfo';
 
 export default {
 
   name: 'OutletPage',
-  components: { OutletInfo },
+  components: { PartnerInfo },
 
 };
 
