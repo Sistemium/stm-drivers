@@ -33,8 +33,7 @@ export default {
 
   computed: {
     currentTabTitle() {
-      const { route } = this.$store.state;
-      return route && route.meta.title;
+      return this.$route && this.$route.meta.title;
     },
   },
 
