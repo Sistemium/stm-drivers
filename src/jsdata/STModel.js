@@ -81,6 +81,11 @@ class STModel {
   }
 
   unbindAll(component) {
+    if (!this.offs[component]) {
+      // eslint-disable-next-line
+      console.warn('unbindAll no offs', this);
+      return;
+    }
     const props = Object.keys(this.offs[component]);
     props.forEach(property => this.unbind(component, property));
     delete this.offs[component];
