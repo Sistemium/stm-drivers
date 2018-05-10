@@ -2,9 +2,10 @@
 
 .outlet-list
   mt-cell.outlet(
-  v-for="partner in partners" :key="partner.id"
-  v-bind:title="partner.shortName"
-  v-bind:label="`(${partner.outlets.length})`"
+  v-for="partner in partners"
+  :key="partner.id"
+  :title="partner.shortName"
+  :label="`Адресов: ${partner.outlets.length}`"
   )
     mt-button(v-on:click="deleteClick(partner)" size="small")
       i.el-icon-delete
@@ -31,7 +32,8 @@ export default {
   },
 
   created() {
-    loadData(this);
+    loadData()
+      .then(() => this.$forceUpdate());
   },
 
   beforeDestroy() {
@@ -40,13 +42,12 @@ export default {
 
 };
 
-function loadData(vue) {
+function loadData() {
   return Partner.findAll({ limit: 5, offset: 5 })
     .then((items) => {
       // eslint-disable-next-line
       console.info('findAll found:', items);
-      return Promise.all(items.map(partner => partner.loadRelations(['outlets'])))
-        .then(() => vue.$forceUpdate());
+      return Promise.all(items.map(partner => partner.loadRelations(['outlets'])));
     });
 }
 

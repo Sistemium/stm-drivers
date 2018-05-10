@@ -2,7 +2,7 @@
 
 .outlets-page
 
-  h1 Магазины
+  h1 Торговые точки
 
   outlet-list
 
