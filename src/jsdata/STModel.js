@@ -82,7 +82,7 @@ class STModel {
 
     const onDataChange = () => {
       // eslint-disable-next-line
-      component[property] = this.store.get(this.name, id);
+      component[property] = this.store.get(this.name, id) || {};
       // eslint-disable-next-line
       // console.warn('!');
     };
@@ -99,7 +99,7 @@ class STModel {
       this.mon('remove', onDataChange),
     ];
 
-    return this.store.get(this.name, id);
+    return this.store.get(this.name, id) || {};
 
   }
 
