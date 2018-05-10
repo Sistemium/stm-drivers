@@ -16,7 +16,7 @@ class STModel {
   }
 
   filter(query) {
-    return this.store.filter(this.name, query);
+    return Object.seal(this.store.filter(this.name, query));
   }
 
   remove(item) {
@@ -27,6 +27,26 @@ class STModel {
     const listener = (name, data) => name === this.name && callback(name, data);
     this.store.on(event, listener);
     return () => this.store.off(event, listener);
+  }
+
+  bind(component) {
+
+    const onDataChange = () => {
+      setTimeout(() => component.$forceUpdate());
+    };
+
+    this.offs[component] = this.offs[component] || {};
+    const offs = this.offs[component];
+
+    if (offs[undefined]) {
+      this.unbind(component, undefined);
+    }
+
+    offs[undefined] = [
+      this.mon('add', onDataChange),
+      this.mon('remove', onDataChange),
+    ];
+
   }
 
   bindAll(component, query, property) {

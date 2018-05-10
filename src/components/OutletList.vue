@@ -14,13 +14,16 @@
 <script>
 
 import Partner from '@/models/Partner';
+import Outlet from '@/models/Outlet';
 
 export default {
 
   name: 'outlet-list',
 
   data() {
-    return { partners: Partner.bindAll(this, { orderBy: 'shortName' }, 'partners') };
+    return {
+      partners: Partner.bindAll(this, { orderBy: 'shortName' }, 'partners'),
+    };
   },
 
   methods: {
@@ -30,12 +33,13 @@ export default {
   },
 
   created() {
-    loadData()
-      .then(() => this.$forceUpdate());
+    loadData();
+    Outlet.bind(this);
   },
 
   beforeDestroy() {
     Partner.unbindAll(this);
+    Outlet.unbindAll(this);
   },
 
 };

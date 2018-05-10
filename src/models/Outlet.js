@@ -4,7 +4,7 @@ import './Partner';
 
 export default new STModel('Outlet', {
   relations: {
-    belongsTo: {
+    hasOne: {
       Partner: {
         localKey: 'partnerId',
         localField: 'partner',
