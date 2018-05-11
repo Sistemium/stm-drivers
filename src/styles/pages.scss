@@ -6,7 +6,7 @@
   padding: 16px;
   display: block;
   line-height: 1;
-  color: #777;
+  color: $dark-gray;
 
   text-align: center;
   font-weight: 700;
@@ -15,4 +15,5 @@
 
 h1 {
   font-size: 160%;
+  color: $dark-gray;
 }
