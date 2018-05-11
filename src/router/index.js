@@ -1,50 +1,26 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from '@/pages/HomePage';
-import RoutePage from '@/pages/RoutePage';
-import OutletsPage from '@/pages/OutletsPage';
-import TabsPage from '@/pages/TabsPage';
-import OutletPage from '@/pages/OutletPage';
+
+import tabs from './tabs';
+import home from './home';
 
 Vue.use(Router);
 
-const tabs = [
-  {
-    path: 'route',
-    name: 'route',
-    component: RoutePage,
-    meta: { title: 'Маршрут', img: '/static/images/icons8-to_do.png' },
-  },
-  {
-    path: 'outlets',
-    name: 'outlets',
-    component: OutletsPage,
-    meta: { title: 'Точки', img: '/static/images/icons8-shop.png' },
-    children: [
-      { path: ':id', name: 'outlet', component: OutletPage, meta: { title: 'Подробности' } },
-    ],
-  },
-];
-
-const router = new Router({
+export default new Router({
 
   routes: [
     { path: '*', redirect: '/' },
-    {
-      path: '/',
-      component: HomePage,
-    },
-    {
-      path: '/tabs',
-      name: 'tabs',
-      component: TabsPage,
-      redirect: '/tabs/route',
-      children: tabs,
-      props: { tabs },
-    },
+    home,
+    tabs,
   ],
 
   scrollBehavior(to, from, savedPosition) {
+    if (to.meta.scrollBehavior) {
+      const toBehavior = to.meta.scrollBehavior(to, from);
+      if (toBehavior) {
+        return toBehavior;
+      }
+    }
     if (savedPosition) {
       return savedPosition;
     }
@@ -52,5 +28,3 @@ const router = new Router({
   },
 
 });
-
-export default router;

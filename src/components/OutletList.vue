@@ -4,6 +4,7 @@
 
   mt-cell(
   v-for="partner in partners"
+  :id="`id-${partner.id}`"
   :key="partner.id"
   :label="`Адресов: ${partner.outlets.length}`"
   :title="partner.shortName"
