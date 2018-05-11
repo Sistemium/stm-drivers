@@ -3,8 +3,8 @@
 .partner-info
 
   .fields
-    mt-field(label="Название" v-model="partner.name")
-    mt-field(label="ИНН" v-model="partner.inn")
+    mt-cell(title="Название" :value="partner.name")
+    mt-cell(title="ИНН" :value="partner.inn")
 
   .section-title Адреса
 

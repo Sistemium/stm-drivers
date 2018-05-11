@@ -1,0 +1,36 @@
+@import "variables";
+
+%field-label {
+  color: $dark-gray;
+  font-weight: 700;
+}
+
+.mint-field .mint-cell-title {
+  @extend %field-label;
+}
+
+.fields {
+
+  .mint-cell-wrapper {
+
+  }
+
+  .mint-cell-value {
+    color: $black;
+    flex: 1;
+    text-align: right;
+    justify-content: flex-end;
+    margin-left: $margin-right;
+  }
+
+  .mint-cell-title {
+
+    flex: none;
+
+    .mint-cell-text {
+      @extend %field-label;
+    }
+
+  }
+
+}
