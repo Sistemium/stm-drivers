@@ -2,23 +2,15 @@
 
 .outlet-list
 
-  mt-tab-container(v-model="state" :swipeable="true")
-
-    mt-tab-container-item#list
-      mt-cell.outlet(
-      v-for="partner in partners"
-      :key="partner.id"
-      :label="`Адресов: ${partner.outlets.length}`"
-      :title="partner.shortName"
-      :to="{name: 'outlet', params: {id: partner.id}}"
-      )
-        mt-button(v-on:click="deleteClick(partner)" size="small")
-          i.el-icon-delete
-
-    mt-tab-container-item#details
-      h2 details
-      p
-        mt-button(v-on:click="state='list'") Назад
+  mt-cell(
+  v-for="partner in partners"
+  :key="partner.id"
+  :label="`Адресов: ${partner.outlets.length}`"
+  :title="partner.shortName"
+  :to="{name: 'outlet', params: {id: partner.id}}"
+  )
+    mt-button(v-on:click="deleteClick(partner)" size="small")
+      i.el-icon-delete
 
 </template>
 <script>
