@@ -16,7 +16,7 @@
 <script>
 
 import Partner from '@/models/Partner';
-import Outlet from '@/models/Outlet';
+// import Outlet from '@/models/Outlet';
 
 export default {
 
@@ -35,13 +35,13 @@ export default {
     const loader = this.$loading.show();
     loadData().then(() => loader.hide());
 
-    Outlet.bind(this);
+    // Outlet.bind(this);
 
   },
 
   beforeDestroy() {
     Partner.unbindAll(this);
-    Outlet.unbindAll(this);
+    // Outlet.unbindAll(this);
   },
 
 };
