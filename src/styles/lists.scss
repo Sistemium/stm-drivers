@@ -1,0 +1,9 @@
+@import "variables";
+
+.mint-cell-wrapper {
+  padding: 0;
+}
+
+.mint-cell-allow-right::after {
+  right: 10px;
+}
