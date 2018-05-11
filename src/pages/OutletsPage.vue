@@ -38,6 +38,7 @@ export default {
 h1 {
 
   display: flex;
+  align-items: center;
 
   > span {
     flex: 1;
