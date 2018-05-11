@@ -1,12 +1,12 @@
 <template lang="pug">
 
-  .home
+.home
 
-    HelloWorld
+  HelloWorld
 
-    p
-      router-link(to="tabs")
-        mt-button(type="primary") Начать работу
+  p
+    router-link(to="tabs")
+      mt-button(type="primary") Начать работу
 
 </template>
 
