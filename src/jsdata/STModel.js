@@ -35,12 +35,14 @@ class STModel {
 
   bind(component) {
 
+    const cid = componentId(component);
+
     const onDataChange = () => {
       setTimeout(() => component.$forceUpdate());
     };
 
-    this.offs[component] = this.offs[component] || {};
-    const offs = this.offs[component];
+    this.offs[cid] = this.offs[cid] || {};
+    const offs = this.offs[cid];
 
     if (offs[undefined]) {
       this.unbind(component, undefined);
@@ -55,15 +57,18 @@ class STModel {
 
   bindAll(component, query, property) {
 
+    const cid = componentId(component);
+
     const onDataChange = () => {
       // eslint-disable-next-line
       component[property] = this.filter(query);
+      setTimeout(() => component.$forceUpdate());
       // eslint-disable-next-line
       // console.warn('!');
     };
 
-    this.offs[component] = this.offs[component] || {};
-    const offs = this.offs[component];
+    this.offs[cid] = this.offs[cid] || {};
+    const offs = this.offs[cid];
 
     if (offs[property]) {
       this.unbind(component, property);
@@ -80,6 +85,8 @@ class STModel {
 
   bindOne(component, id, property) {
 
+    const cid = componentId(component);
+
     const onDataChange = () => {
       // eslint-disable-next-line
       component[property] = this.store.get(this.name, id) || {};
@@ -87,8 +94,8 @@ class STModel {
       // console.warn('!');
     };
 
-    this.offs[component] = this.offs[component] || {};
-    const offs = this.offs[component];
+    this.offs[cid] = this.offs[cid] || {};
+    const offs = this.offs[cid];
 
     if (offs[property]) {
       this.unbind(component, property);
@@ -104,22 +111,32 @@ class STModel {
   }
 
   unbind(component, property) {
-    const offs = this.offs[component];
+    const cid = componentId(component);
+    const offs = this.offs[cid];
     offs[property].forEach(off => off());
     delete offs[property];
   }
 
   unbindAll(component) {
-    if (!this.offs[component]) {
+
+    const cid = componentId(component);
+
+    if (!this.offs[cid]) {
       // eslint-disable-next-line
       console.warn('unbindAll no offs', this);
       return;
     }
-    const props = Object.keys(this.offs[component]);
+    const props = Object.keys(this.offs[cid]);
     props.forEach(property => this.unbind(component, property));
-    delete this.offs[component];
+    delete this.offs[cid];
   }
 
+}
+
+function componentId(component) {
+  // TODO: refactor without private property usage
+  // eslint-disable-next-line
+  return component._uid;
 }
 
 export default STModel;
