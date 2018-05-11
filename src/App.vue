@@ -11,17 +11,9 @@ export default {
 };
 
 </script>
-<style lang="scss">
-
-@import "styles/variables.scss";
+<style scoped lang="scss">
 
 .app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /*text-align: center;*/
-  color: $black;
-  /*margin-top: 60px;*/
   max-width: 420px;
   margin: auto;
 }
