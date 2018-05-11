@@ -1,6 +1,11 @@
 /* eslint-disable */
 
+import 'es6-promise/auto';
+
+// VUE
 import Vue from 'vue';
+
+Vue.config.productionTip = false;
 
 // VUIKit
 // import VKHeightViewport from 'vuikit/lib/height-viewport';
