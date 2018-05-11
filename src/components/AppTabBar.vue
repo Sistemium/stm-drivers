@@ -38,7 +38,7 @@ export default {
 
   components: {},
 
-  props: { tabs: Array },
+  props: { tabs: Array, default: String },
 
   watch: {
     selected(item) {
