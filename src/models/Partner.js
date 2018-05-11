@@ -1,4 +1,4 @@
-import STModel from '@/jsdata/STModel';
+import STModel from '@/jsdata/Model';
 
 import './Outlet';
 

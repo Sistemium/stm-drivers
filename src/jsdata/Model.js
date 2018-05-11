@@ -1,6 +1,6 @@
 import store from './store';
 
-class STModel {
+class Model {
 
   constructor(name, config) {
 
@@ -139,4 +139,4 @@ function componentId(component) {
   return component._uid;
 }
 
-export default STModel;
+export default Model;
