@@ -4,7 +4,7 @@ import '@/config/libs';
 import '@/styles/index.scss';
 
 import store from './store';
-import { AUTH_INIT } from './store/auth';
+import { AUTH_INIT } from './store/auth/actions';
 import router from './router';
 import App from './App';
 
