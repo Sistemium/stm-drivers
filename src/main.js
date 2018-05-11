@@ -3,10 +3,11 @@ import Vue from 'vue';
 import '@/config/libs';
 import '@/styles/index.scss';
 
-import store from './store';
-import { AUTH_INIT } from './store/auth/actions';
-import router from './router';
 import App from './App';
+import router from './router';
+import store from './store';
+
+import { AUTH_INIT } from './store/auth/actions';
 
 /* eslint-disable no-new */
 new Vue({
