@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import * as m from './mutations';
+import * as auth from './auth';
 
 Vue.use(Vuex);
 
@@ -18,18 +18,12 @@ const store = new Vuex.Store({
       state.routePoints.push(...data);
     },
 
-    [m.AUTHORIZATION](state, data) {
-      state.auth = data;
-    },
+    ...auth.mutations,
 
-    [m.AUTHORIZING](state) {
-      state.auth.busy = true;
-    },
+  },
 
-    [m.NOT_AUTHORIZED](state, error) {
-      state.auth = { error };
-    },
-
+  actions: {
+    ...auth.actions,
   },
 
 });

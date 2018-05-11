@@ -4,10 +4,9 @@ import '@/config/libs';
 import '@/styles/index.scss';
 
 import store from './store';
+import { AUTH_INIT } from './store/auth';
 import router from './router';
 import App from './App';
-
-import authInit from './services/auth';
 
 /* eslint-disable no-new */
 new Vue({
@@ -16,8 +15,9 @@ new Vue({
   store,
   components: { App },
   template: '<App/>',
+  created() {
+    return store.dispatch(AUTH_INIT);
+  },
 });
-
-authInit(store);
 
 // require('./models');
