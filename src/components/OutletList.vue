@@ -8,9 +8,8 @@
   :label="`Адресов: ${partner.outlets.length}`"
   :title="partner.shortName"
   :to="{name: 'outlet', params: {id: partner.id}}"
+  is-link
   )
-    mt-button(v-on:click="deleteClick(partner)" size="small")
-      i.el-icon-delete
 
 </template>
 <script>
@@ -29,22 +28,15 @@ export default {
     };
   },
 
-  methods: {
-    deleteClick(item) {
-      Partner.remove(item);
-    },
-    nameClick(partner) {
-      // eslint-disable-next-line
-      console.info(partner);
-      this.state = 'details';
-    },
-  },
+  methods: {},
 
   created() {
+
     const loader = this.$loading.show();
-    loadData()
-      .then(() => loader.hide());
+    loadData().then(() => loader.hide());
+
     Outlet.bind(this);
+
   },
 
   beforeDestroy() {
