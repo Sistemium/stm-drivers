@@ -1,13 +1,13 @@
 import Vue from 'vue';
 
 import '@/config/libs';
-
 import '@/styles/index.scss';
 
 import store from './store';
 import router from './router';
 import App from './App';
 
+import authInit from './services/auth';
 
 /* eslint-disable no-new */
 new Vue({
@@ -18,6 +18,6 @@ new Vue({
   template: '<App/>',
 });
 
-// sync(store, router);
+authInit(store);
 
-require('./models');
+// require('./models');
