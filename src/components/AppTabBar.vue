@@ -16,12 +16,21 @@ import find from 'lodash/find';
 export default {
 
   data() {
-    let selected = this.$route.name;
-    const { tabs } = this;
 
-    if (!find(tabs, { name: selected })) {
+    let selected;
+    const { tabs } = this;
+    const { matched } = this.$route;
+
+    matched.find((route) => {
+      selected = find(tabs, { name: route.name });
+      return !!selected;
+    });
+
+    if (!selected) {
       selected = this.default || tabs[0].name;
       this.$router.replace({ name: selected });
+    } else {
+      selected = selected.name;
     }
 
     return { selected };
