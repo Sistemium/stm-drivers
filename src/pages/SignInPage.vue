@@ -48,14 +48,14 @@ export default {
   },
 
   computed: {
+    phaState() {
+      return this.$store.state.auth[PHA_AUTH_ID] && this.phone ? 'sms' : 'phone';
+    },
     phone() {
       return this.$store.state.auth[PHA_AUTH_ID] && this.$store.state.auth[PHA_AUTH_ID].phone;
     },
     isComplete() {
       return this.masked.isComplete && this.masked.isComplete();
-    },
-    phaState() {
-      return this.$store.state.auth[PHA_AUTH_ID] && this.phone ? 'sms' : 'phone';
     },
     placeholder() {
       return this.phaState === 'phone' ? mask.replace(/9/g, '_') : '4-6 цифр в СМС';
