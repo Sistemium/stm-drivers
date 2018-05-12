@@ -15,7 +15,7 @@
     )
 
     mt-field(
-    v-if="state==='sms'"
+    v-if="phaState==='sms'"
     label="СМС-код"
     v-model="sms"
     type="number"
@@ -29,6 +29,7 @@
 <script>
 
 import InputMask from 'inputmask';
+import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
 
 const mask = '+7 (999) 999-99-99';
 const im = new InputMask(mask);
@@ -39,7 +40,6 @@ export default {
 
   data() {
     return {
-      state: 'phone',
       phone: '',
       sms: '',
       placeholder: mask.replace(/9/g, '_'),
@@ -51,11 +51,18 @@ export default {
     isComplete() {
       return this.masked.isComplete && this.masked.isComplete();
     },
+    phaState() {
+      return this.$store.state.auth.PHA_AUTH_ID ? 'sms' : 'phone';
+    },
   },
 
   methods: {
     sendClick() {
-      this.state = 'sms';
+      if (this.phaState === 'phone') {
+        const phone = `8${this.masked.unmaskedvalue()}`;
+        return this.$store.dispatch(AUTH_REQUEST, phone);
+      }
+      return this.$store.dispatch(AUTH_REQUEST_CONFIRM, this.sms);
     },
   },
 

@@ -1,3 +1,5 @@
 export const AUTHORIZING = 'AUTHORIZING';
 export const AUTHORIZATION = 'AUTHORIZATION';
 export const NOT_AUTHORIZED = 'NOT_AUTHORIZED';
+
+export const PHA_AUTH_ID = 'PHA_AUTH_ID';
