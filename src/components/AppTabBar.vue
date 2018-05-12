@@ -23,7 +23,7 @@ export default {
     const { tabs } = this;
     const { matched } = this.$route;
 
-    matched.find((route) => {
+    matched.find(route => {
       selected = find(tabs, { name: route.name });
       return !!selected;
     });

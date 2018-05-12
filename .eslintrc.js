@@ -47,6 +47,7 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-use-before-define': ["error", { "functions": false, "classes": true }],
-    'padded-blocks': 'off'
+    'padded-blocks': 'off',
+    'arrow-parens': ["error", "as-needed"],
   }
 };

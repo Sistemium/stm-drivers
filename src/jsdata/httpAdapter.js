@@ -19,7 +19,7 @@ export default function queryTransform(params, options = {}) {
       orderBy = [orderBy];
     }
 
-    parsed['x-order-by:'] = orderBy.map((order) => {
+    parsed['x-order-by:'] = orderBy.map(order => {
       const [col, dir] = order;
       return `${dir.match(/desc/i) ? '-' : ''}${col}`;
     }).join(',');

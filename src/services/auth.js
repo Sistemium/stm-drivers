@@ -28,7 +28,7 @@ function confirm(code, id) {
   const params = { ID: id, smsCode: code };
   const config = {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    transformRequest: [(data) => {
+    transformRequest: [data => {
       const str = Object.keys(data)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`);
       return str.join('&');
