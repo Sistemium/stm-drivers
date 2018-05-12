@@ -14,7 +14,7 @@ export const mutations = {
   },
 
   [m.AUTHORIZING](state) {
-    state.auth.busy = true;
+    Vue.set(state.auth, 'busy', true);
   },
 
   [m.NOT_AUTHORIZED](state, error) {

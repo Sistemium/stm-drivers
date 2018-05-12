@@ -21,18 +21,21 @@ export default {
     authorized() {
       return !!this.$store.state.auth.roles;
     },
+    authorizing() {
+      return !!this.$store.state.auth.busy;
+    },
   },
 
   watch: {
-    authorized(value) {
-      this.setIndicator(!value);
+    authorizing(value) {
+      this.setIndicator(value);
     },
   },
 
   methods: {
     setIndicator(value) {
       if (value) {
-        Indicator.open('Авторизация');
+        Indicator.open('Идет авторизация');
       } else {
         Indicator.close();
       }
@@ -40,7 +43,7 @@ export default {
   },
 
   created() {
-    this.setIndicator(!this.authorized);
+    this.setIndicator(this.authorizing);
   },
 
 };
