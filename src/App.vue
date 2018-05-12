@@ -2,8 +2,8 @@
 
 .app
 
-  hello-world(v-if="!authorized")
   router-view(v-if="authorized")
+  hello-world(v-else)
 
 </template>
 <script>
