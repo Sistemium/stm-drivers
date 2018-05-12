@@ -1,19 +1,30 @@
 import * as m from '@/store/auth/mutations';
 import { confirm, login, roles } from '@/services/auth';
 
+const LS_KEY = 'std.authorization';
+
 export const AUTH_INIT = 'AUTH_INIT';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_REQUEST_CONFIRM = 'AUTH_REQUEST_CONFIRM';
 
 export default {
 
-  [AUTH_INIT]({ commit }, accessToken = process.env.ACCESS_TOKEN) {
+  [AUTH_INIT]({ commit }, accessToken) {
 
-    commit(m.AUTHORIZING, accessToken);
+    const token = accessToken || localStorage.getItem(LS_KEY);
 
-    return roles(accessToken)
+    commit(m.AUTHORIZING, token);
+
+    if (!token) {
+      return Promise.resolve();
+    }
+
+    return roles(token)
       .then(res => new Promise(resolve => setTimeout(() => resolve(res), 1000)))
-      .then(res => commit(m.AUTHORIZATION, res))
+      .then(res => {
+        commit(m.AUTHORIZATION, res);
+        localStorage.setItem(LS_KEY, accessToken);
+      })
       .catch(error => commit(m.NOT_AUTHORIZED, error));
 
   },

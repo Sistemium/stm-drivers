@@ -14,8 +14,8 @@ export default {
       .forEach(key => Vue.set(state, key, data[key]));
   },
 
-  [AUTHORIZING](state) {
-    Vue.set(state, 'busy', true);
+  [AUTHORIZING](state, token) {
+    Vue.set(state, 'busy', token || false);
   },
 
   [NOT_AUTHORIZED](state, error) {

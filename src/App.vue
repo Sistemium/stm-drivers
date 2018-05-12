@@ -2,8 +2,13 @@
 
 .app
 
-  router-view(v-if="authorized")
-  hello-world(v-else)
+  router-view(v-if="authorized || $route.name === 'signIn'")
+  .join(v-else)
+    hello-world
+
+    p
+      router-link.solo(to="/sign-in" tag="div")
+        mt-button(type="primary") Вход для клиентов
 
 </template>
 <script>
@@ -54,6 +59,10 @@ export default {
 .app {
   max-width: 420px;
   margin: auto;
+}
+
+.join > p {
+  margin-top: 40px;
 }
 
 </style>
