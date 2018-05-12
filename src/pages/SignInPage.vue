@@ -18,7 +18,7 @@
     mt-field(
     v-model="input"
     :label="label"
-    :attr="{id: 'sign-input'}"
+    :attr="{ id: 'sign-input', autocomplete: 'off' }"
     :placeholder="placeholder"
     )
 
