@@ -5,14 +5,15 @@
   h1 Авторизация
   .lead Пожалуйста, представьтесь:
 
-  .fields
+  mt-field(
+  v-if="phaState==='sms'"
+  label="Телефон"
+  v-model="phone"
+  disabled
+  )
 
-    mt-field(
-    v-if="phaState==='sms'"
-    label="Телефон"
-    v-model="phone"
-    readonly
-    )
+  form.fields(@submit.prevent='sendClick')
+
 
     mt-field(
     v-model="input"
@@ -20,7 +21,6 @@
     :attr="{id: 'sign-input'}"
     :placeholder="placeholder"
     )
-
 
   .buttons
     mt-button(type="primary" :disabled="!isComplete" @click="sendClick") Отправить
@@ -109,7 +109,6 @@ export default {
 
     this.$nextTick(() => {
       this.attachMask();
-      this.element().onkeyup = e => e.which === 13 && this.sendClick();
     });
 
   },
@@ -125,17 +124,19 @@ h1, .lead {
   text-align: center;
 }
 
-.fields {
-  margin: $margin-top * 3 0;
-}
-
 .buttons {
+
+  margin-top: $margin-top * 3;
 
   button {
     display: block;
     width: 100%;
   }
 
+}
+
+.hidden {
+  display: none;
 }
 
 </style>
