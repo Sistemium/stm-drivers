@@ -43,8 +43,6 @@ export default {
     return {
       input: '',
       phone: '',
-      sms: '',
-      // placeholder: mask.replace(/9/g, '_'),
       masked: {},
     };
   },

@@ -7,10 +7,10 @@
     outlet-list
 
   .details-state(v-if="routeState === 'details'")
-    h1
+    h1.has-button-left
       router-link.page-back(:to="{name: 'outlets'}")
         i.mintui.mintui-back
-      span Контрагент
+      span Клиент
     router-view
 
 </template>
@@ -35,7 +35,7 @@ export default {
 <style scoped lang="scss">
 @import "../styles/variables";
 
-h1 {
+h1.has-button-left {
 
   display: flex;
   align-items: center;

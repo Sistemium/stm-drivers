@@ -25,7 +25,7 @@ export default {
 
 .home > p {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 </style>
