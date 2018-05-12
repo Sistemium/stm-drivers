@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import SignInPage from '@/pages/SignInPage';
 import tabs from './tabs';
 import home from './home';
 
@@ -10,6 +11,7 @@ export default new Router({
 
   routes: [
     { path: '*', redirect: '/' },
+    { path: '/sign-in', name: 'signIn', component: SignInPage },
     home,
     tabs,
   ],

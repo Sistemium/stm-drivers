@@ -17,6 +17,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.3.7",
     "es6-promise": "^4.2.4",
+    "inputmask": "^3.3.11",
     "js-data": "^3.0.2",
     "js-data-http": "^3.0.0",
     "lodash": "^4.17.10",
