@@ -2,7 +2,7 @@
 
 .hello
   p
-    img(src="/static/images/icons8-truck.png")
+    img(src="../assets/logo.png")
   h1 {{ msg }}
 
 </template>
