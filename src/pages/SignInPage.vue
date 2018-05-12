@@ -30,6 +30,7 @@
 
 import InputMask from 'inputmask';
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
+import { PHA_AUTH_ID } from '@/store/auth/mutations';
 
 const mask = '+7 (999) 999-99-99';
 const maskPhone = new InputMask(mask);
@@ -42,17 +43,19 @@ export default {
   data() {
     return {
       input: '',
-      phone: '',
       masked: {},
     };
   },
 
   computed: {
+    phone() {
+      return this.$store.state.auth[PHA_AUTH_ID] && this.$store.state.auth[PHA_AUTH_ID].phone;
+    },
     isComplete() {
       return this.masked.isComplete && this.masked.isComplete();
     },
     phaState() {
-      return this.$store.state.auth.PHA_AUTH_ID && this.phone ? 'sms' : 'phone';
+      return this.$store.state.auth[PHA_AUTH_ID] && this.phone ? 'sms' : 'phone';
     },
     placeholder() {
       return this.phaState === 'phone' ? mask.replace(/9/g, '_') : '4-6 цифр в СМС';
@@ -69,19 +72,18 @@ export default {
   },
 
   methods: {
+
     sendClick() {
 
       if (!this.isComplete) {
         return false;
       }
 
-      const value = this.masked.unmaskedvalue();
+      const value = { value: this.masked.unmaskedvalue(), input: this.input };
 
       if (this.phaState === 'phone') {
-        const phone = `8${value}`;
-        return this.$store.dispatch(AUTH_REQUEST, phone)
+        return this.$store.dispatch(AUTH_REQUEST, value)
           .then(() => {
-            this.phone = this.input;
             this.input = '';
           });
       }
@@ -90,17 +92,24 @@ export default {
         .then(() => this.$router.push('/'));
 
     },
+
     element() {
       return document.getElementById('sign-input');
     },
+
     attachMask() {
+
       const el = this.element();
+
       if (!el) {
         return;
       }
+
       const masker = this.phaState === 'phone' ? maskPhone : maskSms;
       this.masked = masker.mask(el);
+
     },
+
   },
 
   mounted() {
@@ -118,7 +127,7 @@ export default {
 
 @import "../styles/variables";
 
-h1, .lead {
+.lead {
   text-align: center;
 }
 
