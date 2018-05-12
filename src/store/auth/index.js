@@ -1,6 +1,6 @@
 import actions from './actions';
 import mutations from './mutations';
 
-const initial = {};
+const state = {};
 
-export { actions, mutations, initial };
+export default { actions, mutations, state };

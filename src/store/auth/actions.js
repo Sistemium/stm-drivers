@@ -29,7 +29,7 @@ export default {
 
   [AUTH_REQUEST_CONFIRM]({ state, dispatch }, { value: code }) {
 
-    return confirm(code, state.auth[m.PHA_AUTH_ID].id)
+    return confirm(code, state[m.PHA_AUTH_ID].id)
       .then(({ accessToken }) => dispatch(AUTH_INIT, accessToken));
 
   },

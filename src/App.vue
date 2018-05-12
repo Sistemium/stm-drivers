@@ -22,7 +22,7 @@ export default {
       return !!this.$store.state.auth.roles;
     },
     authorizing() {
-      return !!this.$store.state.auth.busy;
+      return this.$store.state.auth.busy;
     },
   },
 

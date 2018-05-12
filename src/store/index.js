@@ -1,14 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import * as auth from './auth';
+import auth from './auth';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
 
   state: {
-    auth: auth.initial,
     routePoints: [],
   },
 
@@ -18,12 +17,10 @@ const store = new Vuex.Store({
       state.routePoints.push(...data);
     },
 
-    ...auth.mutations,
-
   },
 
-  actions: {
-    ...auth.actions,
+  modules: {
+    auth,
   },
 
 });
