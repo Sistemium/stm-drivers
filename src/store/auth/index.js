@@ -3,6 +3,8 @@ import roles from '@/services/auth';
 import * as m from './mutations';
 import * as a from './actions';
 
+export const initial = {};
+
 export const mutations = {
 
   [m.AUTHORIZATION](state, data) {
