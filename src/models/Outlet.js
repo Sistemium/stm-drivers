@@ -4,7 +4,8 @@ import './Partner';
 
 export default new STModel('Outlet', {
   relations: {
-    hasOne: {
+    // TODO: fix jsData error on store.clear/removeAll if 'hasOne' instead of 'belongsTo'
+    belongsTo: {
       Partner: {
         localKey: 'partnerId',
         localField: 'partner',
