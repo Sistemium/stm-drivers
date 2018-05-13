@@ -4,7 +4,7 @@ export const AUTHORIZING = 'AUTHORIZING';
 export const AUTHORIZED = 'AUTHORIZED';
 export const NOT_AUTHORIZED = 'NOT_AUTHORIZED';
 
-export const PHA_AUTH_ID = 'PHA_AUTH_ID';
+export const PHA_AUTH_TOKEN = 'PHA_AUTH_TOKEN';
 
 export default {
 
@@ -12,15 +12,15 @@ export default {
     Vue.set(state, 'busy', token || false);
   },
 
-  [PHA_AUTH_ID](state, id) {
+  [PHA_AUTH_TOKEN](state, id) {
     notBusy(state);
-    Vue.set(state, PHA_AUTH_ID, id);
+    Vue.set(state, PHA_AUTH_TOKEN, id);
   },
 
   [AUTHORIZED](state, data) {
     notBusy(state);
-    if (state[PHA_AUTH_ID]) {
-      state[PHA_AUTH_ID] = false;
+    if (state[PHA_AUTH_TOKEN]) {
+      state[PHA_AUTH_TOKEN] = false;
     }
     Object.keys(data)
       .forEach(key => Vue.set(state, key, data[key]));

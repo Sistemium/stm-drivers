@@ -32,7 +32,7 @@ import { mapActions, mapState } from 'vuex';
 import InputMask from 'inputmask';
 
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
-import { PHA_AUTH_ID } from '@/store/auth/mutations';
+import { PHA_AUTH_TOKEN } from '@/store/auth/mutations';
 
 const phoneMask = '+7 (999) 999-99-99';
 const smsMask = '9{4,6}';
@@ -51,10 +51,10 @@ export default {
   computed: {
     ...mapState('auth', {
       phaState(state) {
-        return state[PHA_AUTH_ID] && this.phone ? 'sms' : 'phone';
+        return state[PHA_AUTH_TOKEN] && this.phone ? 'sms' : 'phone';
       },
       phone(state) {
-        return state[PHA_AUTH_ID] && state[PHA_AUTH_ID].phone;
+        return state[PHA_AUTH_TOKEN] && state[PHA_AUTH_TOKEN].phone;
       },
     }),
     isComplete() {

@@ -41,11 +41,11 @@ export default {
 
   [AUTH_REQUEST]({ commit }, { value, input: phone }) {
 
-    commit(m.PHA_AUTH_ID, {});
+    commit(m.PHA_AUTH_TOKEN, {});
     commit(m.AUTHORIZING, phone);
 
     return login(`8${value}`)
-      .then(id => commit(m.PHA_AUTH_ID, { id, phone }));
+      .then(id => commit(m.PHA_AUTH_TOKEN, { id, phone }));
 
   },
 
@@ -57,7 +57,7 @@ export default {
 
     commit(m.AUTHORIZING, code);
 
-    return confirm(code, state[m.PHA_AUTH_ID].id)
+    return confirm(code, state[m.PHA_AUTH_TOKEN].id)
       .then(({ accessToken }) => dispatch(AUTH_INIT, accessToken));
 
   },
