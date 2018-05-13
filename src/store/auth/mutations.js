@@ -19,9 +19,7 @@ export default {
 
   [AUTHORIZED](state, data) {
     notBusy(state);
-    if (state[PHA_AUTH_TOKEN]) {
-      state[PHA_AUTH_TOKEN] = false;
-    }
+    state[PHA_AUTH_TOKEN] = false;
     Object.keys(data)
       .forEach(key => Vue.set(state, key, data[key]));
   },

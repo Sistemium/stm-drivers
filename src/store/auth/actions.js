@@ -44,8 +44,12 @@ export default {
     commit(m.PHA_AUTH_TOKEN, {});
     commit(m.AUTHORIZING, phone);
 
-    return login(`8${value}`)
+    const res = login(`8${value}`)
       .then(id => commit(m.PHA_AUTH_TOKEN, { id, phone }));
+
+    res.catch(error => commit(m.NOT_AUTHORIZED, error));
+
+    return res;
 
   },
 
@@ -57,8 +61,12 @@ export default {
 
     commit(m.AUTHORIZING, code);
 
-    return confirm(code, state[m.PHA_AUTH_TOKEN].id)
+    const res = confirm(code, state[m.PHA_AUTH_TOKEN].id)
       .then(({ accessToken }) => dispatch(AUTH_INIT, accessToken));
+
+    res.catch(error => commit(m.NOT_AUTHORIZED, error));
+
+    return res;
 
   },
 

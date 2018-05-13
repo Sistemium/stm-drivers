@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.app
+.app(:class="{busy: authorizing}")
 
   router-view(v-if="authorized || $route.name === 'signIn'")
   .join(v-else)

@@ -2,7 +2,10 @@
 
 .sign-in
 
-  h1 Авторизация
+  hello-world
+
+  h1 приветствует вас!
+
   .lead Пожалуйста, представьтесь:
 
   .fields
@@ -23,7 +26,7 @@
     )
 
   .buttons
-    mt-button(type="primary" :disabled="!isComplete" @click="sendClick") Отправить
+    mt-button(:type="buttonType" :disabled="!isComplete" @click="sendClick") {{ buttonText }}
 
 </template>
 <script>
@@ -33,13 +36,14 @@ import InputMask from 'inputmask';
 
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
 import { PHA_AUTH_TOKEN } from '@/store/auth/mutations';
+import HelloWorld from '@/components/HelloWorld';
 
 const phoneMask = '+7 (999) 999-99-99';
 const smsMask = '9{4,6}';
 
 export default {
 
-  name: 'SignInPage',
+  components: { HelloWorld },
 
   data() {
     return {
@@ -51,7 +55,7 @@ export default {
   computed: {
     ...mapState('auth', {
       phaState(state) {
-        return state[PHA_AUTH_TOKEN] && this.phone ? 'sms' : 'phone';
+        return state[PHA_AUTH_TOKEN] && state[PHA_AUTH_TOKEN].phone ? 'sms' : 'phone';
       },
       phone(state) {
         return state[PHA_AUTH_TOKEN] && state[PHA_AUTH_TOKEN].phone;
@@ -65,6 +69,12 @@ export default {
     },
     label() {
       return this.phaState === 'phone' ? 'Телефон' : 'Код';
+    },
+    buttonText() {
+      return this.phaState === 'phone' ? 'Укажите регистрационный номер' : 'Отправить код';
+    },
+    buttonType() {
+      return this.phaState === 'phone' ? 'default' : 'primary';
     },
   },
 
@@ -145,8 +155,13 @@ export default {
 
 @import "../styles/variables";
 
+.hello + h1 {
+  margin-top: -15px;
+}
+
 .lead {
   text-align: center;
+  margin-top: 0;
 }
 
 .buttons {

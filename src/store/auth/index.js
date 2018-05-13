@@ -1,8 +1,11 @@
 import actions from './actions';
-import mutations from './mutations';
+import mutations, { PHA_AUTH_TOKEN } from './mutations';
 
 function state() {
-  return {};
+  return {
+    account: undefined,
+    [PHA_AUTH_TOKEN]: {},
+  };
 }
 
 const namespaced = true;
