@@ -8,6 +8,7 @@ export const AUTH_INIT = 'AUTH_INIT';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_REQUEST_CONFIRM = 'AUTH_REQUEST_CONFIRM';
 export const LOGOFF = 'LOGOFF';
+export const CLEAR_ERROR = '';
 
 export default {
 
@@ -48,7 +49,7 @@ export default {
     const res = login(`8${value}`)
       .then(id => commit(m.PHA_AUTH_TOKEN, { id, phone }));
 
-    res.catch(error => commit(m.NOT_AUTHORIZED, error));
+    res.catch(() => commit(m.NOT_AUTHORIZED, 'Неизвестный номер'));
 
     return res;
 
@@ -65,7 +66,7 @@ export default {
     const res = confirm(code, state[m.PHA_AUTH_TOKEN].id)
       .then(({ accessToken }) => dispatch(AUTH_INIT, accessToken));
 
-    res.catch(error => commit(m.NOT_AUTHORIZED, error));
+    res.catch(() => commit(m.NOT_AUTHORIZED, 'Неправильный пароль'));
 
     return res;
 
@@ -78,6 +79,10 @@ export default {
   [LOGOFF]({ commit }) {
     commit(m.AUTHORIZED, { account: false, roles: false });
     localStorage.removeItem(LS_KEY);
+  },
+
+  [CLEAR_ERROR]({ commit }) {
+    commit(m.NOT_AUTHORIZED, false);
   },
 
 };

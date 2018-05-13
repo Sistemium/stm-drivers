@@ -9,7 +9,7 @@
 
   p.buttons
     mt-button(:type="confirm ? 'danger' : 'default'" @click="logoffClick")
-      | {{ confirm ? 'Точно завершить?' : 'Завершить работу' }}
+      | {{ confirm ? 'Подтвердить' : 'Завершить работу' }}
     router-link(to="/tabs")
       mt-button(type="primary") Продолжить работу
 
@@ -59,7 +59,7 @@ export default {
 
 .buttons {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 
   margin-top: 30px;
   @include responsive-only(xxs) {

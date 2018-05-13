@@ -23,10 +23,15 @@
     :label="label"
     :attr="{ id: 'sign-input', autocomplete: 'off' }"
     :placeholder="placeholder"
+    :readonly="!!error"
     )
 
   .buttons
-    mt-button(:type="buttonType" :disabled="!isComplete" @click="sendClick") {{ buttonText }}
+    mt-button(
+    :type="buttonType"
+    :disabled="!isComplete || !!error"
+    @click="sendClick"
+    ) {{ buttonText }}
 
 </template>
 <script>
@@ -60,6 +65,7 @@ export default {
       phone(state) {
         return state[PHA_AUTH_TOKEN] && state[PHA_AUTH_TOKEN].phone;
       },
+      error: 'error',
     }),
     isComplete() {
       return this.masked.isComplete && this.masked.isComplete();
@@ -98,7 +104,7 @@ export default {
 
     sendClick() {
 
-      if (!this.isComplete) {
+      if (!this.isComplete || this.error) {
         return false;
       }
 

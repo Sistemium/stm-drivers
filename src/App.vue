@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.app(:class="{busy: authorizing}")
+.app(:class="{busy: authorizing || error}")
 
   router-view(v-if="authorized || $route.name === 'signIn'")
   .join(v-else)
@@ -13,8 +13,10 @@
 </template>
 <script>
 
-import { Indicator } from 'mint-ui';
+import { mapState, mapActions } from 'vuex';
+import { Indicator, Toast } from 'mint-ui';
 import HelloWorld from '@/components/HelloWorld';
+import { CLEAR_ERROR } from '@/store/auth/actions';
 
 export default {
 
@@ -23,6 +25,7 @@ export default {
   components: { HelloWorld },
 
   computed: {
+    ...mapState('auth', { error: 'error' }),
     authorized() {
       return !!this.$store.state.auth.roles;
     },
@@ -35,9 +38,24 @@ export default {
     authorizing(value) {
       this.setIndicator(value);
     },
+    error(value) {
+
+      if (!value) {
+        return;
+      }
+
+      const toast = Toast(typeof value === 'string' ? value : 'Ошибка');
+
+      setTimeout(() => {
+        this[CLEAR_ERROR]();
+        toast.close();
+      }, 2500);
+
+    },
   },
 
   methods: {
+    ...mapActions('auth', [CLEAR_ERROR]),
     setIndicator(value) {
       if (value) {
         Indicator.open('Идет авторизация');
