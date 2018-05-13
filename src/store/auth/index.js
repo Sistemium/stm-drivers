@@ -1,6 +1,8 @@
 import actions from './actions';
 import mutations from './mutations';
 
-const state = {};
+function state() {
+  return {};
+}
 
 export default { actions, mutations, state };
