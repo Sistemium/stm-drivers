@@ -31,23 +31,22 @@ import { LOGOFF } from '@/store/auth/actions';
 export default {
 
   data() {
-    return {
-      confirm: false,
-    };
+    return { confirm: false };
   },
 
-  computed: mapState('auth', {
-    account: 'account',
-  }),
+  computed: mapState('auth', ['account']),
 
   methods: {
+
     ...mapActions('auth', [LOGOFF]),
+
     logoffClick() {
       if (this.confirm) {
         this[LOGOFF]();
       }
       this.confirm = true;
     },
+
   },
 
 };
