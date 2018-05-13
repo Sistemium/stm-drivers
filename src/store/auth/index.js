@@ -5,4 +5,6 @@ function state() {
   return {};
 }
 
-export default { actions, mutations, state };
+const namespaced = true;
+
+export default { namespaced, actions, mutations, state };

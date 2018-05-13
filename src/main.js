@@ -17,7 +17,7 @@ new Vue({
   components: { App },
   template: '<App/>',
   created() {
-    return store.dispatch(AUTH_INIT);
+    return store.dispatch(`auth/${AUTH_INIT}`);
   },
 });
 

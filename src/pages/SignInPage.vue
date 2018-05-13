@@ -81,13 +81,13 @@ export default {
       const value = { value: this.masked.unmaskedvalue(), input: this.input };
 
       if (this.phaState === 'phone') {
-        return this.$store.dispatch(AUTH_REQUEST, value)
+        return this.$store.dispatch(`auth/${AUTH_REQUEST}`, value)
           .then(() => {
             this.input = '';
           });
       }
 
-      return this.$store.dispatch(AUTH_REQUEST_CONFIRM, value)
+      return this.$store.dispatch(`auth/${AUTH_REQUEST_CONFIRM}`, value)
         .then(() => this.$router.push('/'));
 
     },
