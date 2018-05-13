@@ -28,7 +28,9 @@
 </template>
 <script>
 
+import { mapActions } from 'vuex';
 import InputMask from 'inputmask';
+
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
 import { PHA_AUTH_ID } from '@/store/auth/mutations';
 
@@ -72,6 +74,8 @@ export default {
 
   methods: {
 
+    ...mapActions('auth', [AUTH_REQUEST, AUTH_REQUEST_CONFIRM]),
+
     sendClick() {
 
       if (!this.isComplete) {
@@ -81,13 +85,13 @@ export default {
       const value = { value: this.masked.unmaskedvalue(), input: this.input };
 
       if (this.phaState === 'phone') {
-        return this.$store.dispatch(`auth/${AUTH_REQUEST}`, value)
+        return this[AUTH_REQUEST](value)
           .then(() => {
             this.input = '';
           });
       }
 
-      return this.$store.dispatch(`auth/${AUTH_REQUEST_CONFIRM}`, value)
+      return this[AUTH_REQUEST_CONFIRM](value)
         .then(() => this.$router.push('/'));
 
     },
