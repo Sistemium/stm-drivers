@@ -12,12 +12,13 @@ Vue.config.productionTip = false;
 // Vue.directive('HeightViewport', VKHeightViewport);
 
 // ElementUI
-import { Breadcrumb, BreadcrumbItem } from 'element-ui';
+import { Breadcrumb, BreadcrumbItem, Alert } from 'element-ui';
 import ru from 'element-ui/lib/locale/lang/ru-RU';
 import locale from 'element-ui/lib/locale';
 
 Vue.use(Breadcrumb);
 Vue.use(BreadcrumbItem);
+Vue.use(Alert);
 
 locale.use(ru);
 

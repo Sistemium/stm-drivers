@@ -7,6 +7,7 @@ const LS_KEY = 'std.authorization';
 export const AUTH_INIT = 'AUTH_INIT';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_REQUEST_CONFIRM = 'AUTH_REQUEST_CONFIRM';
+export const LOGOFF = 'LOGOFF';
 
 export default {
 
@@ -68,6 +69,14 @@ export default {
 
     return res;
 
+  },
+
+  /*
+  Clean up
+   */
+
+  [LOGOFF]({ commit }) {
+    commit(m.AUTHORIZED, { account: false, roles: false });
   },
 
 };

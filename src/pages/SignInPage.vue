@@ -171,6 +171,8 @@ export default {
   button {
     display: block;
     width: 100%;
+    padding: $margin-top 12px;
+    height: auto;
   }
 
 }

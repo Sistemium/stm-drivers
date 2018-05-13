@@ -5,7 +5,8 @@
   HelloWorld.hero
 
   p.greeting
-    span Здравствуйте, {{ account.name }}!
+    span Здравствуйте,
+    router-link(to="/account/my") {{ account.name }}!
 
   p
     router-link(to="tabs")
@@ -30,15 +31,20 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .home > p {
   text-align: center;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 .greeting {
+  font-size: 115%;
   font-weight: 700;
+  > a {
+    text-decoration: none;
+    margin-left: 0.5em;
+  }
 }
 
 </style>
