@@ -3,7 +3,9 @@
 .app(:class="{busy: authorizing || error}")
 
   router-view(v-if="authorized || $route.name === 'signIn'")
+
   .join(v-else)
+
     hello-world
 
     p(v-if="!authorizing")
