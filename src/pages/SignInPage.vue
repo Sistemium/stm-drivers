@@ -5,15 +5,14 @@
   h1 Авторизация
   .lead Пожалуйста, представьтесь:
 
-  mt-field(
-  v-if="phaState==='sms'"
-  label="Телефон"
-  v-model="phone"
-  disabled
-  )
+  .fields
 
-  form.fields(@submit.prevent='sendClick')
-
+    mt-field(
+    v-if="phaState==='sms'"
+    label="Телефон"
+    v-model="phone"
+    disabled
+    )
 
     mt-field(
     v-model="input"
@@ -32,9 +31,8 @@ import InputMask from 'inputmask';
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
 import { PHA_AUTH_ID } from '@/store/auth/mutations';
 
-const mask = '+7 (999) 999-99-99';
-const maskPhone = new InputMask(mask);
-const maskSms = new InputMask('9{4,6}');
+const phoneMask = '+7 (999) 999-99-99';
+const smsMask = '9{4,6}';
 
 export default {
 
@@ -58,7 +56,7 @@ export default {
       return this.masked.isComplete && this.masked.isComplete();
     },
     placeholder() {
-      return this.phaState === 'phone' ? mask.replace(/9/g, '_') : '4-6 цифр в СМС';
+      return this.phaState === 'phone' ? phoneMask.replace(/9/g, '_') : '4-6 цифр в СМС';
     },
     label() {
       return this.phaState === 'phone' ? 'Телефон' : 'Код';
@@ -105,8 +103,16 @@ export default {
         return;
       }
 
-      const masker = this.phaState === 'phone' ? maskPhone : maskSms;
-      this.masked = masker.mask(el);
+      this.masked = this.inputMask().mask(el);
+
+    },
+
+    inputMask() {
+
+      return new InputMask({
+        mask: this.phaState === 'phone' ? phoneMask : smsMask,
+        onKeyDown: ({ which }) => which === 13 && this.sendClick(),
+      });
 
     },
 
