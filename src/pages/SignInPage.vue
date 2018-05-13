@@ -65,13 +65,16 @@ export default {
       return this.masked.isComplete && this.masked.isComplete();
     },
     placeholder() {
-      return this.phaState === 'phone' ? phoneMask.replace(/9/g, '_') : '4-6 цифр в СМС';
+      return this.phaState === 'phone' ? phoneMask.replace(/9/g, '_') : '4-6 цифр из СМС';
     },
     label() {
-      return this.phaState === 'phone' ? 'Телефон' : 'Код';
+      return this.phaState === 'phone' ? 'Телефон' : 'Пароль';
     },
     buttonText() {
-      return this.phaState === 'phone' ? 'Укажите регистрационный номер' : 'Отправить код';
+      if (this.phaState === 'phone') {
+        return 'Укажите регистрационный номер';
+      }
+      return this.isComplete ? 'Вход' : 'Вам отправлено СМС';
     },
     buttonType() {
       return this.phaState === 'phone' ? 'default' : 'primary';

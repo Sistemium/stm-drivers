@@ -77,6 +77,7 @@ export default {
 
   [LOGOFF]({ commit }) {
     commit(m.AUTHORIZED, { account: false, roles: false });
+    localStorage.removeItem(LS_KEY);
   },
 
 };
