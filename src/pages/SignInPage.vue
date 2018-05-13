@@ -16,6 +16,7 @@
 
     mt-field(
     v-model="input"
+    type="tel"
     :label="label"
     :attr="{ id: 'sign-input', autocomplete: 'off' }"
     :placeholder="placeholder"
