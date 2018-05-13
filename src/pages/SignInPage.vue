@@ -2,6 +2,8 @@
 
 .sign-in
 
+  bread-crumbs.top-header
+
   hello-world
 
   h1 приветствует вас!
@@ -42,13 +44,14 @@ import InputMask from 'inputmask';
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
 import { PHA_AUTH_TOKEN } from '@/store/auth/mutations';
 import HelloWorld from '@/components/HelloWorld';
+import BreadCrumbs from '@/components/BreadCrumbs';
 
 const phoneMask = '+7 (999) 999-99-99';
 const smsMask = '9{4,6}';
 
 export default {
 
-  components: { HelloWorld },
+  components: { BreadCrumbs, HelloWorld },
 
   data() {
     return {
@@ -163,6 +166,10 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/variables";
+
+.top-header + .hello {
+  margin-top: 60px;
+}
 
 .hello + h1 {
   margin-top: -15px;

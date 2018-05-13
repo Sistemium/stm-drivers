@@ -2,7 +2,7 @@
 
 .tabs-page
 
-  bread-crumbs.header
+  bread-crumbs.top-header
 
   router-view.tab-content
 
@@ -25,27 +25,11 @@ export default {
 };
 
 </script>
-<style lang="scss">
-
-.header {
-
-  position: fixed;
-  z-index: 1;
-  background: white;
-  padding: 16px 0;
-  width: 100%;
-  top: 0;
-
-  .el-breadcrumb {
-    font-size: 110%;
-    line-height: 1.1;
-  }
-
-}
+<style scoped lang="scss">
 
 .tab-content {
   overflow-y: scroll;
-  margin: 35px 0 55px;
+  margin-bottom: 55px;
 }
 
 </style>

@@ -13,7 +13,7 @@ export default new Router({
 
   routes: [
     { path: '*', redirect: '/' },
-    { path: '/sign-in', name: 'signIn', component: SignInPage },
+    { path: '/sign-in', name: 'signIn', component: SignInPage, meta: { title: 'Авторизация' } },
     { path: '/account/my', name: 'myAccount', component: MyAccountPage },
     home,
     tabs,
