@@ -6,7 +6,7 @@
   .join(v-else)
     hello-world
 
-    p
+    p(v-if="!authorizing")
       router-link.solo(to="/sign-in" tag="div")
         mt-button(type="primary") Вход для клиентов
 
