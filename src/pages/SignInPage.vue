@@ -72,6 +72,11 @@ export default {
     phaState() {
       this.attachMask();
     },
+    isComplete(value) {
+      if (value && this.phaState === 'phone') {
+        this.$nextTick(() => this.sendClick());
+      }
+    },
   },
 
   methods: {
