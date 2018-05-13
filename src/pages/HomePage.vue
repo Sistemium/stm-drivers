@@ -2,7 +2,10 @@
 
 .home
 
-  HelloWorld
+  HelloWorld.hero
+
+  p.greeting
+    span Здравствуйте, {{ account.name }}!
 
   p
     router-link(to="tabs")
@@ -13,10 +16,16 @@
 <script>
 
 import HelloWorld from '@/components/HelloWorld';
+import { mapState } from 'vuex';
 
 export default {
-  name: 'HomePage',
+
   components: { HelloWorld },
+
+  computed: mapState('auth', {
+    account: 'account',
+  }),
+
 };
 
 </script>
@@ -26,6 +35,10 @@ export default {
 .home > p {
   text-align: center;
   margin-top: 40px;
+}
+
+.greeting {
+  font-weight: 700;
 }
 
 </style>
