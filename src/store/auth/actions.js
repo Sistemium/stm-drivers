@@ -1,5 +1,6 @@
 import * as m from '@/store/auth/mutations';
 import { confirm, login, roles } from '@/services/auth';
+import { authorize } from '@/jsdata/store';
 
 const LS_KEY = 'std.authorization';
 
@@ -23,7 +24,8 @@ export default {
       .then(res => new Promise(resolve => setTimeout(() => resolve(res), 1000)))
       .then(res => {
         commit(m.AUTHORIZATION, res);
-        localStorage.setItem(LS_KEY, accessToken);
+        localStorage.setItem(LS_KEY, token);
+        authorize(token, res.account.org);
       })
       .catch(error => commit(m.NOT_AUTHORIZED, error));
 
