@@ -1,4 +1,4 @@
-@import "variables";
+@import "responsive";
 
 .section-title {
 
@@ -16,6 +16,9 @@
 h1 {
   font-size: 160%;
   text-align: center;
+  @include responsive-only(xxs) {
+    font-size: 140%;
+  }
 }
 
 
