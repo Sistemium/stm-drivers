@@ -35,6 +35,10 @@ export default {
 <style scoped lang="scss">
 @import "../styles/variables";
 
+h1 {
+  margin-top: 0;
+}
+
 h1.has-button-left {
 
   display: flex;

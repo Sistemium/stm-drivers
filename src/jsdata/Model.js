@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import store from './store';
 
 class Model {
@@ -61,7 +62,7 @@ class Model {
 
     const onDataChange = () => {
       // eslint-disable-next-line
-      component[property] = this.filter(query);
+      Vue.set(component, property, this.filter(query));
       setTimeout(() => component.$forceUpdate());
       // eslint-disable-next-line
       // console.warn('!');

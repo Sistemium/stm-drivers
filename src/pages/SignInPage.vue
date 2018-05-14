@@ -167,10 +167,6 @@ export default {
 
 @import "../styles/variables";
 
-.top-header + .hello {
-  margin-top: 60px;
-}
-
 .hello + h1 {
   margin-top: -15px;
 }
