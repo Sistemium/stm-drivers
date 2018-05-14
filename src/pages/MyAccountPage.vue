@@ -7,20 +7,20 @@
   .lead Здравствуйте,
     strong &nbsp;{{ account.name }}!
 
-  p.buttons
-    mt-button(:type="confirm ? 'danger' : 'default'" @click="logoffClick")
-      | {{ confirm ? 'Подтвердить' : 'Завершить работу' }}
-    <!--router-link(to="/tabs")-->
-      <!--mt-button(type="primary") Продолжить работу-->
-
   el-alert(
   v-if="confirm"
   type="warning"
-  @close="confirm = false"
-  close-text="Отмена"
+  @close="logoffClick"
+  close-text="Подтвердить"
   title="Внимание"
   )
     p Подтвердите завершение работы на этом устройстве
+
+  p.buttons
+    mt-button(
+    :type="confirm ? 'danger' : 'default'" @click="confirm ? cancelClick() : logoffClick()"
+    )
+      | {{ confirm ? 'Отменить завершение работы' : 'Завершить работу' }}
 
 </template>
 <script>
@@ -45,6 +45,12 @@ export default {
         this[LOGOFF]();
       }
       this.confirm = true;
+      setTimeout(this.cancelClick, 3500);
+    },
+
+    cancelClick() {
+      this.confirm = false;
+      // this.$router.push('/');
     },
 
   },
@@ -57,10 +63,12 @@ export default {
 @import "../styles/responsive";
 
 .buttons {
+
   display: flex;
   justify-content: space-between;
 
-  margin-top: 30px;
+  margin-bottom: 30px;
+
   @include responsive-only(xxs) {
     flex-direction: column;
     justify-content: flex-start;
