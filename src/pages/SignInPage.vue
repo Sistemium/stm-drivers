@@ -4,9 +4,9 @@
 
   bread-crumbs.top-header
 
-  hello-world
+  hello-world(h1="")
 
-  h1 приветствует вас!
+  <!--h1 приветствует вас!-->
 
   .lead Пожалуйста, представьтесь:
 
@@ -81,7 +81,7 @@ export default {
     },
     buttonText() {
       if (this.phaState === 'phone') {
-        return 'Укажите регистрационный номер';
+        return 'Ваш номер, который был зарегистрирован';
       }
       return this.isComplete ? 'Вход' : 'Вам отправлено СМС';
     },

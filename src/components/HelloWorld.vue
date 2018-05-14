@@ -3,18 +3,21 @@
 .hello
   p
     img(src="../assets/logo.png")
-  h1 {{ msg }}
+  h1(v-if="h1!==''") {{ msg }}
 
 </template>
 <script>
 
 export default {
-  name: 'HelloWorld',
+
+  props: ['h1'],
+
   data() {
     return {
       msg: 'Программа для водителей',
     };
   },
+
 };
 
 </script>
