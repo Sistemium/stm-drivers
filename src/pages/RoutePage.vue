@@ -6,13 +6,13 @@
 
   .has-driver(v-if="currentDriver")
 
-    .navs-header(v-if="currentRoute")
+    .navs-header
 
       mt-button.prev(:plain="true" @click="prevClick" :disabled="!prevRoute")
         i.el-icon-arrow-left(v-if="prevRoute")
 
       .title
-        strong {{ currentRoute.date }}
+        strong {{ title }}
         a(@click.prevent="chooseDriver(null)")
           i.el-icon-close
 
@@ -48,7 +48,15 @@ export default {
 
   components: { RoutePointList, ChooseDriver },
 
-  computed: mapState('driver', { currentDriver: 'current' }),
+  computed: {
+    ...mapState('driver', { currentDriver: 'current' }),
+    title() {
+      if (this.currentRoute) {
+        return this.currentRoute.date;
+      }
+      return this.loading ? 'Загрузка' : 'Нет заданий';
+    },
+  },
 
   watch: {
     currentDriver() {
@@ -131,7 +139,7 @@ function findAll(filter) {
     .title {
       a {
         position: relative;
-        top: 0px;
+        top: 1px;
         margin-left: $margin-top;
       }
     }

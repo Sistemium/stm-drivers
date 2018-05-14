@@ -2,7 +2,7 @@
 
 .choose-driver
 
-  h1 Выберите водителя
+  h2 Выберите водителя
 
   mt-cell(
   v-for="driver in drivers" :key="driver.id"
