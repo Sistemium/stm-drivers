@@ -121,37 +121,6 @@ function findAll(filter) {
 }
 
 </script>
-<style lang="scss">
-
-@import "../styles/variables";
-
-.route .has-driver {
-
-  .navs-header {
-
-    margin: 7px 0;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-
-    .title {
-      a {
-        position: relative;
-        top: 1px;
-        margin-left: $margin-top;
-      }
-    }
-
-    .prev, .next {
-      min-width: 45px;
-      border: none;
-    }
-
-  }
-
-}
-
+<style scoped lang="scss">
 
 </style>
