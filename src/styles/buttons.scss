@@ -30,10 +30,16 @@
   display: flex;
   justify-content: space-between;
 
+  button {
+    margin: 0 auto;
+  }
+
   @include responsive-only(xxs) {
+
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
     > *, button {
       display: block;
       width: 100%;
@@ -42,6 +48,7 @@
         margin-top: $margin-top * 2;
       }
     }
+
   }
 
 }

@@ -61,11 +61,8 @@ class Model {
     const cid = componentId(component);
 
     const onDataChange = () => {
-      // eslint-disable-next-line
       Vue.set(component, property, this.filter(query));
-      setTimeout(() => component.$forceUpdate());
-      // eslint-disable-next-line
-      // console.warn('!');
+      // setTimeout(() => component.$forceUpdate());
     };
 
     this.offs[cid] = this.offs[cid] || {};
@@ -89,10 +86,7 @@ class Model {
     const cid = componentId(component);
 
     const onDataChange = () => {
-      // eslint-disable-next-line
-      component[property] = this.store.get(this.name, id) || {};
-      // eslint-disable-next-line
-      // console.warn('!');
+      Vue.set(component, property, this.store.get(this.name, id) || {});
     };
 
     this.offs[cid] = this.offs[cid] || {};
@@ -123,13 +117,14 @@ class Model {
     const cid = componentId(component);
 
     if (!this.offs[cid]) {
-      // eslint-disable-next-line
-      console.warn('unbindAll no offs', this);
       return;
     }
-    const props = Object.keys(this.offs[cid]);
-    props.forEach(property => this.unbind(component, property));
+
+    Object.keys(this.offs[cid])
+      .forEach(property => this.unbind(component, property));
+
     delete this.offs[cid];
+
   }
 
 }
