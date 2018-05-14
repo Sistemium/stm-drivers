@@ -117,7 +117,7 @@ export default {
 };
 
 function findAll(filter) {
-  return ShipmentRoute.findAll({ limit: 5, ...filter }, { with: ['routePoints'], force: true });
+  return ShipmentRoute.findAll({ limit: 5, ...filter }, { with: ['routePoints'] });
 }
 
 </script>

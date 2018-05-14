@@ -8,3 +8,20 @@
 .mint-cell-allow-right::after {
   right: 10px;
 }
+
+.cell-list {
+
+  .mint-cell {
+    height: auto;
+  }
+  .mint-cell-wrapper {
+    padding: 7px 4px;
+  }
+  .mint-cell-title {
+    margin-right: 14px;
+  }
+  .mint-cell-text {
+    font-size: 14px;
+  }
+
+}
