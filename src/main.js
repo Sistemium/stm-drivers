@@ -1,6 +1,8 @@
 import Vue from 'vue';
 
 import '@/config/libs';
+import '@/config/global-components';
+
 import '@/styles/index.scss';
 
 import App from './App';

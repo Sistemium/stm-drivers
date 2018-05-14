@@ -4,16 +4,18 @@
 
   .has-driver(v-if="currentDriver")
 
-    .title
-      span {{ currentDriver.name }}
-      a(href @click.prevent="clearDriverClick()")
-        i.el-icon-close
+    .navs-header(v-if="currentRoute")
 
-    mt-header(v-if="currentRoute" :title="currentRoute.date")
-      a.prev(slot="left" v-if="prevRoute" @click="prevClick")
-        i.el-icon-arrow-left
-      a.next(slot="right" v-if="nextRoute" @click="nextClick")
-        i.el-icon-arrow-right
+      mt-button.prev(:plain="true" @click="prevClick" :disabled="!prevRoute")
+        i.el-icon-arrow-left(v-if="prevRoute")
+
+      .title
+        strong {{ currentRoute.date }}
+        a(@click.prevent="chooseDriver(null)")
+          i.el-icon-close
+
+      mt-button.prev(:plain="true" @click="nextClick" :disabled="!nextRoute")
+        i.el-icon-arrow-right(v-if="nextRoute")
 
     route-point-list(:route="currentRoute")
 
@@ -22,8 +24,9 @@
 </template>
 <script>
 
-import { mapState, mapMutations } from 'vuex';
-import { DRIVER_CHOSEN } from '@/store/driver';
+import { mapState, mapActions } from 'vuex';
+
+import { SET_CURRENT } from '@/store/driver';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
@@ -56,7 +59,7 @@ export default {
 
   methods: {
 
-    ...mapMutations('driver', { clearDriverClick: DRIVER_CHOSEN }),
+    ...mapActions('driver', { chooseDriver: SET_CURRENT }),
 
     prevClick() {
       this.setCurrentRoute(this.prevRoute);
@@ -114,27 +117,26 @@ function findAll(filter) {
 
 .route .has-driver {
 
-  > .title {
+  .navs-header {
 
-    a {
-      margin-left: 5px;
-    }
-
-  }
-
-  .mint-header {
-
-    background: none;
-    color: $black;
     margin: 7px 0;
 
-    h1 {
-      font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+    .title {
+      a {
+        position: relative;
+        top: 0px;
+        margin-left: $margin-top;
+      }
     }
 
-    a.prev, a.next {
-      cursor: pointer;
-      padding: 5px;
+    .prev, .next {
+      min-width: 45px;
+      border: none;
     }
 
   }

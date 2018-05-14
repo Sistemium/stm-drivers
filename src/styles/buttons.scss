@@ -1,4 +1,4 @@
-@import "variables";
+@import "responsive";
 
 .page-back {
 
@@ -22,4 +22,26 @@
 
 .solo button {
   width: 100%;
+}
+
+
+.buttons {
+
+  display: flex;
+  justify-content: space-between;
+
+  @include responsive-only(xxs) {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    > *, button {
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      & + * {
+        margin-top: $margin-top * 2;
+      }
+    }
+  }
+
 }

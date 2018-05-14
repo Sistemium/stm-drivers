@@ -2,7 +2,7 @@
 
 .my-account-page
 
-  h1 Персональная страница
+  hello-world.hero(h1="")
 
   .lead Здравствуйте,
     strong &nbsp;{{ account.name }}!
@@ -44,13 +44,18 @@ export default {
       if (this.confirm) {
         this[LOGOFF]();
       }
-      this.confirm = true;
-      setTimeout(this.cancelClick, 3500);
+      this.confirm = setTimeout(this.cancelClick, 3500);
     },
 
     cancelClick() {
+
+      if (!this.confirm) {
+        return;
+      }
+
+      clearTimeout(this.confirm);
       this.confirm = false;
-      // this.$router.push('/');
+
     },
 
   },
@@ -61,28 +66,6 @@ export default {
 <style scoped lang="scss">
 
 @import "../styles/responsive";
-
-.buttons {
-
-  display: flex;
-  justify-content: space-between;
-
-  margin-bottom: 30px;
-
-  @include responsive-only(xxs) {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    > *, button {
-      display: block;
-      width: 100%;
-      text-decoration: none;
-      & + * {
-        margin-top: $margin-top * 2;
-      }
-    }
-  }
-}
 
 .lead {
   text-align: center;
