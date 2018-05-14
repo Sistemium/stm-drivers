@@ -10,8 +10,8 @@
   p.buttons
     mt-button(:type="confirm ? 'danger' : 'default'" @click="logoffClick")
       | {{ confirm ? 'Подтвердить' : 'Завершить работу' }}
-    router-link(to="/tabs")
-      mt-button(type="primary") Продолжить работу
+    <!--router-link(to="/tabs")-->
+      <!--mt-button(type="primary") Продолжить работу-->
 
   el-alert(
   v-if="confirm"

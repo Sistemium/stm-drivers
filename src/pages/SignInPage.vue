@@ -2,7 +2,7 @@
 
 .sign-in
 
-  bread-crumbs.top-header
+  //bread-crumbs.top-header
 
   hello-world(h1="")
 
@@ -25,11 +25,11 @@
     :label="label"
     :attr="{ id: 'sign-input', autocomplete: 'off' }"
     :placeholder="placeholder"
-    :readonly="!!error"
     )
 
   .buttons
     mt-button(
+    :plain="phaState === 'phone'"
     :type="buttonType"
     :disabled="!isComplete || !!error"
     @click="sendClick"
@@ -77,11 +77,11 @@ export default {
       return this.phaState === 'phone' ? phoneMask.replace(/9/g, '_') : '4-6 цифр из СМС';
     },
     label() {
-      return this.phaState === 'phone' ? 'Телефон' : 'Пароль';
+      return this.phaState === 'phone' ? 'Ваш сотовый' : 'Пароль';
     },
     buttonText() {
       if (this.phaState === 'phone') {
-        return 'Ваш номер, который был зарегистрирован';
+        return 'Укажите номер, который на вас зарегистрирован';
       }
       return this.isComplete ? 'Вход' : 'Вам отправлено СМС';
     },
@@ -94,10 +94,15 @@ export default {
     phaState() {
       this.attachMask();
     },
-    isComplete(value) {
-      if (value && this.phaState === 'phone') {
+    input() {
+
+      if ((this.phaState === 'sms' && this.input.length === 6) ||
+        (this.isComplete && this.phaState === 'phone')) {
+
         this.$nextTick(() => this.sendClick());
+
       }
+
     },
   },
 

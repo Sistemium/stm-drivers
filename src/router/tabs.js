@@ -1,9 +1,16 @@
 import RoutePage from '@/pages/RoutePage';
+import MyAccountPage from '@/pages/MyAccountPage';
 import OutletsPage from '@/pages/OutletsPage';
 import TabsPage from '@/pages/TabsPage';
 import OutletPage from '@/pages/OutletPage';
 
 const tabs = [
+  {
+    path: 'profile',
+    name: 'profile',
+    component: MyAccountPage,
+    meta: { title: 'Профиль', img: '/static/images/icons8-home.png' },
+  },
   {
     path: 'route',
     name: 'route',

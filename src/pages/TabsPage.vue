@@ -2,7 +2,7 @@
 
 .tabs-page
 
-  bread-crumbs.top-header
+  //bread-crumbs.top-header
 
   router-view.tab-content
 

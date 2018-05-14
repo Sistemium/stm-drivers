@@ -5,8 +5,7 @@
   HelloWorld.hero
 
   p.greeting
-    span Здравствуйте,
-    router-link(to="/account/my") {{ account.name }}!
+    span Здравствуйте, {{ account.name }}!
 
   p
     router-link(to="tabs")
