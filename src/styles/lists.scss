@@ -1,8 +1,8 @@
 @import "variables";
 
 .mint-cell-wrapper {
-  //padding-right: 0;
-  //padding-left: 0;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .mint-cell-allow-right::after {
@@ -19,6 +19,7 @@
   }
   .mint-cell-title {
     margin-right: 14px;
+    //margin-left: 4px;
   }
   .mint-cell-text {
     font-size: 14px;
