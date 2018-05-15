@@ -2,13 +2,7 @@
 
 .sign-in
 
-  //bread-crumbs.top-header
-
-  hello-world(h1="")
-
-  <!--h1 приветствует вас!-->
-
-  .lead Пожалуйста, представьтесь:
+  hello-world(h1="" lead="Пожалуйста, представьтесь:")
 
   .fields
 
@@ -19,7 +13,7 @@
     disabled
     )
 
-    mt-field(
+    mt-field.long-title(
     v-model="input"
     type="tel"
     :label="label"
@@ -43,15 +37,11 @@ import InputMask from 'inputmask';
 
 import { AUTH_REQUEST, AUTH_REQUEST_CONFIRM } from '@/store/auth/actions';
 import { PHA_AUTH_TOKEN } from '@/store/auth/mutations';
-import HelloWorld from '@/components/HelloWorld';
-import BreadCrumbs from '@/components/BreadCrumbs';
 
 const phoneMask = '+7 (999) 999-99-99';
 const smsMask = '9{4,6}';
 
 export default {
-
-  components: { BreadCrumbs, HelloWorld },
 
   data() {
     return {
@@ -172,30 +162,23 @@ export default {
 
 @import "../styles/variables";
 
-.hello + h1 {
-  margin-top: -15px;
-}
-
-.lead {
-  text-align: center;
-  margin-top: 0;
-}
-
 .buttons {
 
   margin-top: $margin-top * 3;
 
   button {
+
     display: block;
     width: 100%;
     padding: $margin-top 12px;
     height: auto;
+
+    &.is-plain {
+      border: none;
+    }
+
   }
 
-}
-
-.hidden {
-  display: none;
 }
 
 </style>

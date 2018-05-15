@@ -2,10 +2,7 @@
 
 .home
 
-  HelloWorld.hero
-
-  p.greeting
-    span Здравствуйте, {{ account.name }}!
+  hello-world.hero(:lead="`Здравствуйте, ${account.name}!`")
 
   p
     router-link(to="tabs")

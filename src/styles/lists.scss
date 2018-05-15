@@ -1,12 +1,13 @@
 @import "variables";
 
-.mint-cell-wrapper {
-  padding-right: 0;
-  padding-left: 0;
-}
 
 .mint-cell-allow-right::after {
   right: 10px;
+}
+
+.mint-cell-wrapper {
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .cell-list {
@@ -14,13 +15,16 @@
   .mint-cell {
     height: auto;
   }
+
   .mint-cell-wrapper {
     padding: 7px 4px;
   }
+
   .mint-cell-title {
     margin-right: 14px;
     //margin-left: 4px;
   }
+
   .mint-cell-text {
     font-size: 14px;
   }
