@@ -27,31 +27,32 @@
 
 .buttons {
 
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
-  > a {
+  > * {
     display: block;
-    margin: auto;
-  }
-
-  button {
-    margin: 0 auto;
   }
 
   @include responsive-only(xxs) {
 
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: stretch;
 
-    > *, button {
-      display: block;
-      width: 100%;
+    > * {
+
       text-decoration: none;
+
       & + * {
         margin-top: $margin-top * 2;
       }
+
+      & > button {
+        width: 100%;
+      }
+
     }
 
   }
