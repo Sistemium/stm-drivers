@@ -28,10 +28,17 @@ export default {
     ...mapActions('driver', { chooseDriver: SET_CURRENT }),
   },
 
+  watch: {
+    drivers(data) {
+      if (data.length === 1) {
+        this.chooseDriver(data[0]);
+      }
+    },
+  },
+
   created() {
-    const loader = this.$loading.show();
     Driver.findAll()
-      .then(loader.hide);
+      .then(this.$loading.show().hide);
   },
 
 };
