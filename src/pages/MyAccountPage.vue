@@ -4,8 +4,10 @@
 
   hello-world.hero(h1="")
 
-  .lead Здравствуйте,
-    strong &nbsp;{{ account.name }}!
+  .lead
+    span Здравствуйте,
+    = ' '
+    strong {{ account.name }}!
 
   el-alert(
   v-if="confirm"
@@ -69,6 +71,9 @@ export default {
 
 .lead {
   text-align: center;
+  strong {
+    white-space: nowrap;
+  }
 }
 
 </style>
