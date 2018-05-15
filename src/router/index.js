@@ -1,9 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import SignInPage from '@/pages/SignInPage';
-import MyAccountPage from '@/pages/MyAccountPage';
-
 import tabs from './tabs';
 import home from './home';
 
@@ -13,9 +10,7 @@ export default new Router({
 
   routes: [
     { path: '*', redirect: '/' },
-    { path: '/sign-in', name: 'signIn', component: SignInPage, meta: { title: 'Авторизация' } },
-    { path: '/account/my', name: 'myAccount', component: MyAccountPage },
-    home,
+    ...home,
     tabs,
   ],
 
