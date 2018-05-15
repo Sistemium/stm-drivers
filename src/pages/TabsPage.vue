@@ -2,8 +2,6 @@
 
 .tabs-page
 
-  //bread-crumbs.top-header
-
   router-view.tab-content
 
   app-tab-bar(:tabs="tabs")
@@ -12,15 +10,12 @@
 <script>
 
 import AppTabBar from '@/components/AppTabBar';
-import BreadCrumbs from '@/components/BreadCrumbs';
 
 export default {
 
-  components: { BreadCrumbs, AppTabBar },
+  components: { AppTabBar },
 
-  props: {
-    tabs: Array,
-  },
+  props: { tabs: Array },
 
 };
 
