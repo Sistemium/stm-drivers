@@ -30,6 +30,11 @@
   display: flex;
   justify-content: space-between;
 
+  > a {
+    display: block;
+    margin: auto;
+  }
+
   button {
     margin: 0 auto;
   }

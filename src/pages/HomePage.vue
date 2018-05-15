@@ -4,7 +4,7 @@
 
   hello-world.hero(:lead="`Здравствуйте, ${account.name}!`")
 
-  p
+  .buttons
     router-link(to="tabs")
       mt-button(type="primary") Начать работу
 
@@ -29,18 +29,8 @@ export default {
 
 <style scoped lang="scss">
 
-.home > p {
-  text-align: center;
+.buttons {
   margin-top: 30px;
-}
-
-.greeting {
-  font-size: 115%;
-  font-weight: 700;
-  > a {
-    text-decoration: none;
-    margin-left: 0.5em;
-  }
 }
 
 </style>
