@@ -8,11 +8,11 @@
 
   .section-title Адреса
 
-  .outlets
-    mt-cell(
-    v-for="outlet in partner.outlets" :key="outlet.id"
-    :title="outlet.address"
-    )
+  .outlets.cell-list
+    .outlet(v-for="outlet in partner.outlets" :key="outlet.id")
+      mt-cell(
+      :title="outlet.address"
+      )
 
 </template>
 <script>
