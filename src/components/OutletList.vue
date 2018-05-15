@@ -32,8 +32,8 @@ export default {
 
   created() {
 
-    const loader = this.$loading.show();
-    loadData().then(() => loader.hide());
+    loadData()
+      .then(this.$loading.show().hide);
 
     // Outlet.bind(this);
 

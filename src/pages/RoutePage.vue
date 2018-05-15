@@ -96,14 +96,18 @@ export default {
       const { id: driverId } = this.currentDriver || {};
 
       if (driverId) {
+
         const filter = { driverId, orderBy: [['date', 'DESC']] };
         this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
-        const loader = this.$loading.show();
+
         findAll(filter)
-          .then(loader.hide);
+          .then(this.$loading.show().hide);
+
       } else {
+
         ShipmentRoute.unbindAll(this);
         this.shipmentRoutes = [];
+
       }
 
     },
