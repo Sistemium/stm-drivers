@@ -57,8 +57,4 @@ function loadData() {
 </script>
 <style scoped>
 
-.name {
-  cursor: pointer;
-}
-
 </style>

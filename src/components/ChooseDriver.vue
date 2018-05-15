@@ -39,22 +39,4 @@ export default {
 </script>
 <style scoped lang="scss">
 
-@import "../styles/variables";
-
-h1 {
-  margin-top: $margin-top;
-}
-
-.title {
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  a {
-    padding: 5px;
-  }
-
-}
-
 </style>

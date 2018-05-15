@@ -21,8 +21,6 @@ import Partner from '@/models/Partner';
 
 export default {
 
-  name: 'PartnerInfo',
-
   props: { partnerId: String },
 
   data() {
@@ -43,9 +41,5 @@ export default {
 
 </script>
 <style scoped lang="scss">
-
-h2 {
-  text-align: center;
-}
 
 </style>
