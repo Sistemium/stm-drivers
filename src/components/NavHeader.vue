@@ -6,7 +6,8 @@
     i.el-icon-arrow-left(v-if="prev")
 
   .title
-    strong {{ title }}
+    slot
+      strong {{ title }}
 
   mt-button.prev(:plain="true" @click="nextClick" :disabled="!next")
     i.el-icon-arrow-right(v-if="next")

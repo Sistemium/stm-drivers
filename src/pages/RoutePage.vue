@@ -6,18 +6,13 @@
 
   .has-driver(v-if="currentDriver")
 
-    .navs-header
-
-      mt-button.prev(:plain="true" @click="prevClick" :disabled="!prevRoute")
-        i.el-icon-arrow-left(v-if="prevRoute")
-
-      .title
-        strong {{ title }}
-        a(@click.prevent="chooseDriver(null)")
-          i.el-icon-close
-
-      mt-button.prev(:plain="true" @click="nextClick" :disabled="!nextRoute")
-        i.el-icon-arrow-right(v-if="nextRoute")
+    nav-header(
+    :prev="prevRoute ? prevClick : undefined"
+    :next="nextRoute ? nextClick : undefined"
+    )
+      small {{ title }}
+      a( @click.prevent="chooseDriver(null)")
+        i.el-icon-close
 
     route-point-list(:route="currentRoute")
 
