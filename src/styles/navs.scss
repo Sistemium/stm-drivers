@@ -1,8 +1,8 @@
 @import "responsive";
 
-.navs-header {
+.navs-header, .nav-header {
 
-  margin: 7px 0;
+  margin-bottom: 7px;
 
   display: flex;
   justify-content: space-between;
@@ -10,15 +10,25 @@
   text-align: center;
 
   .title {
+
+    font-size: 120%;
+    color: $black;
+
     a {
       position: relative;
       top: 1px;
       margin-left: $margin-top;
     }
+
+    strong {
+      font-weight: 700;
+    }
+
   }
 
   .prev, .next {
     min-width: 45px;
+    font-size: 130%;
     border: none;
   }
 
