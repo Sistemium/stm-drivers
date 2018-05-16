@@ -16,7 +16,7 @@
 
 export default {
 
-  name: 'NavHeader',
+  name: 'nav-header',
 
   props: {
     title: String,

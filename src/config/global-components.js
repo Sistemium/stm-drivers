@@ -4,4 +4,4 @@ import HelloWorld from '@/components/HelloWorld';
 import NavHeader from '@/components/NavHeader';
 
 Vue.component('HelloWorld', HelloWorld);
-Vue.component('NavHeader', NavHeader);
+Vue.component(NavHeader.name, NavHeader);
