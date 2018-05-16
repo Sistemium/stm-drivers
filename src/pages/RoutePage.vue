@@ -10,9 +10,10 @@
     :prev="prevRoute ? prevClick : undefined"
     :next="nextRoute ? nextClick : undefined"
     )
-      small {{ title }}
-      a( @click.prevent="chooseDriver(null)")
-        i.el-icon-close
+      small
+        span {{ title }}
+        a( @click.prevent="chooseDriver(null)")
+          i.el-icon-close
 
     route-point-list(:route="currentRoute")
 
