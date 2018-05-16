@@ -22,7 +22,7 @@ const tabs = [
     name: 'outlets',
     component: OutletsPage,
     meta: {
-      title: 'Точки',
+      title: 'Клиенты',
       img: '/static/images/icons8-shop.png',
       scrollBehavior(to, from) {
         if (from.params.id) {
