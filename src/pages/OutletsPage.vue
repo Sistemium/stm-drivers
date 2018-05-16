@@ -7,10 +7,7 @@
     outlet-list
 
   .details-state(v-if="routeState === 'details'")
-    h1.has-button-left
-      router-link.page-back(:to="{name: 'outlets'}")
-        i.mintui.mintui-back
-      span Клиент
+    nav-header(title="Клиент" :prev="backClick")
     router-view
 
 </template>
@@ -29,33 +26,15 @@ export default {
     },
   },
 
+  methods: {
+    backClick() {
+      this.$router.push({ name: 'outlets' });
+    },
+  },
+
 };
 
 </script>
 <style scoped lang="scss">
-@import "../styles/variables";
-
-h1 {
-  margin-top: 0;
-}
-
-h1.has-button-left {
-
-  display: flex;
-  align-items: center;
-
-  > span {
-    flex: 1;
-    margin-right: $icon-button-width;
-    text-align: center;
-    margin-left: auto;
-  }
-
-  button.back {
-    display: block;
-    margin-left: 1px;
-  }
-
-}
 
 </style>
