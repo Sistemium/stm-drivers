@@ -47,6 +47,12 @@ export default {
 };
 
 </script>
-<style scoped>
+<style>
+
+@media (max-height: 414px) and (orientation: landscape) {
+  .mint-tab-item-icon {
+    display: none;
+  }
+}
 
 </style>
