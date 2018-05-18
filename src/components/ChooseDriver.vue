@@ -7,7 +7,7 @@
   mt-cell(
   v-for="driver in drivers" :key="driver.id"
   )
-    span(slot="title" @click="chooseDriver(driver)") {{ driver.name }}
+    .name(slot="title" @click="chooseDriver(driver)") {{ driver.name }}
 
 </template>
 <script>
@@ -45,5 +45,10 @@ export default {
 
 </script>
 <style scoped lang="scss">
+
+.mint-cell .name {
+  padding: 10px 0;
+  cursor: pointer;
+}
 
 </style>
