@@ -9,11 +9,8 @@
     nav-header(
     :prev="prevRoute ? prevClick : undefined"
     :next="nextRoute ? nextClick : undefined"
+    :title="title"
     )
-      small
-        span {{ title }}
-        a( @click.prevent="chooseDriver(null)")
-          i.el-icon-close
 
     route-point-list(:route="currentRoute")
 

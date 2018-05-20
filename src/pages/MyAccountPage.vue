@@ -2,12 +2,7 @@
 
 .my-account-page
 
-  hello-world.hero(h1="")
-
-  .lead
-    span Здравствуйте,
-    = ' '
-    strong {{ account.name }}!
+  hello-world.hero(:h1="`Здравствуйте, ${account.name}!`")
 
   el-alert(
   v-if="confirm"
@@ -24,13 +19,19 @@
     )
       | {{ confirm ? 'Отменить завершение работы' : 'Завершить работу' }}
 
+  chosen-driver
+
 </template>
 <script>
 
 import { mapState, mapActions } from 'vuex';
 import { LOGOFF } from '@/store/auth/actions';
 
+import ChosenDriver from '@/components/ChosenDriver';
+
 export default {
+
+  components: { ChosenDriver },
 
   data() {
     return { confirm: false };
