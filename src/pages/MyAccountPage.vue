@@ -2,7 +2,7 @@
 
 .my-account-page
 
-  hello-world.hero(:h1="`Здравствуйте, ${account.name}!`")
+  hello-world.hero(h1="")
 
   current-user
 
@@ -11,8 +11,6 @@
 </template>
 <script>
 
-import { mapState } from 'vuex';
-
 import ChosenDriver from '@/components/ChosenDriver';
 import CurrentUser from '@/components/CurrentUser';
 
@@ -20,20 +18,9 @@ export default {
 
   components: { ChosenDriver, CurrentUser },
 
-  computed: mapState('auth', ['account']),
-
 };
 
 </script>
 <style scoped lang="scss">
-
-@import "../styles/responsive";
-
-.lead {
-  text-align: center;
-  strong {
-    white-space: nowrap;
-  }
-}
 
 </style>

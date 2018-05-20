@@ -2,20 +2,24 @@
 
 .current-user
 
+  mt-cell(v-if="account" :title="account.name" label="Пользователь")
+    mt-button(size="small" @click="confirm ? cancelClick() : logoffClick()")
+      | {{ confirm ? 'Отменить' : 'Выход' }}
+
   el-alert(
   v-if="confirm"
   type="warning"
-  @close="logoffClick"
-  close-text="Подтвердить"
+  @close="cancelClick"
+  close-text="Отменить"
   title="Внимание"
   )
     p Подтвердите завершение работы на этом устройстве
 
-  p.buttons
+  p.buttons(v-if="confirm")
     mt-button(
-    :type="confirm ? 'danger' : 'default'" @click="confirm ? cancelClick() : logoffClick()"
+    :type="confirm ? 'danger' : 'default'" @click="logoffClick()"
     )
-      | {{ confirm ? 'Отменить завершение работы' : 'Завершить работу' }}
+      | {{ confirm ? 'Подтвердить' : 'Завершить работу' }}
 
 </template>
 <script>
