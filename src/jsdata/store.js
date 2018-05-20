@@ -20,6 +20,9 @@ export function authorize(token, org) {
     queryTransform(mapper, params, options) {
       return queryTransform(params, options);
     },
+    afterFindAll(mapper, query, opts, response) {
+      return response || [];
+    },
   };
 
   const httpAdapter = new HttpAdapter(httpOptions);
