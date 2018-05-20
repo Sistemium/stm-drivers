@@ -3,7 +3,8 @@
 .route-point-list.cell-list
   .route-point(v-for='point in routePoints' :key="point.id")
     mt-cell(
-    :title="point.name"
+    :title="point.outlet.partner.name"
+    :label="point.outlet.address"
     :value="point.ord || '?'"
     )
 
