@@ -4,64 +4,23 @@
 
   hello-world.hero(:h1="`Здравствуйте, ${account.name}!`")
 
-  el-alert(
-  v-if="confirm"
-  type="warning"
-  @close="logoffClick"
-  close-text="Подтвердить"
-  title="Внимание"
-  )
-    p Подтвердите завершение работы на этом устройстве
-
-  p.buttons
-    mt-button(
-    :type="confirm ? 'danger' : 'default'" @click="confirm ? cancelClick() : logoffClick()"
-    )
-      | {{ confirm ? 'Отменить завершение работы' : 'Завершить работу' }}
+  current-user
 
   chosen-driver
 
 </template>
 <script>
 
-import { mapState, mapActions } from 'vuex';
-import { LOGOFF } from '@/store/auth/actions';
+import { mapState } from 'vuex';
 
 import ChosenDriver from '@/components/ChosenDriver';
+import CurrentUser from '@/components/CurrentUser';
 
 export default {
 
-  components: { ChosenDriver },
-
-  data() {
-    return { confirm: false };
-  },
+  components: { ChosenDriver, CurrentUser },
 
   computed: mapState('auth', ['account']),
-
-  methods: {
-
-    ...mapActions('auth', [LOGOFF]),
-
-    logoffClick() {
-      if (this.confirm) {
-        this[LOGOFF]();
-      }
-      this.confirm = setTimeout(this.cancelClick, 3500);
-    },
-
-    cancelClick() {
-
-      if (!this.confirm) {
-        return;
-      }
-
-      clearTimeout(this.confirm);
-      this.confirm = false;
-
-    },
-
-  },
 
 };
 
