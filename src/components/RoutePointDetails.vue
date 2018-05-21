@@ -3,13 +3,21 @@
 .route-point-details
 
   .cell-list
+
     mt-cell(
     :title="routePoint.outlet.partner.name"
     :label="routePoint.outlet.address"
     ) {{ routePoint.ord }}
 
+    mt-cell(
+    v-if="routePoint.reachedAtLocation"
+    title="Прибытие отмечено"
+    :label="routePoint.reachedAtLocation.timestamp"
+    )
+      i.el-icon-check
+
   .buttons
-    mt-button(type="primary" @click="checkInClick") Отметить прибытие
+    mt-button(type="primary" @click="checkInClick" v-if="!routePoint.isReached") Отметить прибытие
 
 </template>
 <script>
@@ -22,13 +30,17 @@ export default {
 
   methods: {
     checkInClick() {
+
       MessageBox({
         title: 'Вопрос',
         message: 'Отметить прибытие в точку?',
         showCancelButton: true,
         confirmButtonText: 'Да',
         cancelButtonText: 'Нет',
-      });
+      })
+        .then(result => {
+          this.routePoint.isReached = result === 'confirm';
+        });
     },
   },
 

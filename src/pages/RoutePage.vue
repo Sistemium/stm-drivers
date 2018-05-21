@@ -105,6 +105,7 @@ export default {
       const { id } = this.$route.params;
       if (id) {
         this.routePoint = ShipmentRoutePoint.bindOne(this, id, 'routePoint');
+        // ShipmentRoutePoint.find(id, { with: ['Location'] });
       }
     },
 
@@ -158,7 +159,7 @@ export default {
 function findAll(filter) {
   return ShipmentRoute.findAll(
     { limit: 5, ...filter },
-    { with: ['routePoints', 'routePoints.outlet', 'routePoints.outlet.partner'] },
+    { with: ['routePoints', 'routePoints.outlet', 'routePoints.outlet.partner', 'routePoints.reachedAtLocation'] },
   );
 }
 
