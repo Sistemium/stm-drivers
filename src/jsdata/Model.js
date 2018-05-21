@@ -12,6 +12,10 @@ class Model {
 
   }
 
+  get(id) {
+    return this.store.get(this.name, id);
+  }
+
   find(id, options) {
     return this.store.find(this.name, id, options);
   }
@@ -85,8 +89,10 @@ class Model {
 
     const cid = componentId(component);
 
+    const getDataById = () => this.store.get(this.name, id) || {};
+
     const onDataChange = () => {
-      Vue.set(component, property, this.store.get(this.name, id) || {});
+      Vue.set(component, property, getDataById());
     };
 
     this.offs[cid] = this.offs[cid] || {};
@@ -101,7 +107,7 @@ class Model {
       this.mon('remove', onDataChange),
     ];
 
-    return this.store.get(this.name, id) || {};
+    return getDataById();
 
   }
 
