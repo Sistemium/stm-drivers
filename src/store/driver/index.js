@@ -1,13 +1,13 @@
 import Vue from 'vue';
 
-const namespaced = true;
-
+// mutations
 export const DRIVER_CHOSEN = 'DRIVER_CHOSEN';
 
+// actions
 export const SET_CURRENT = 'SET_CURRENT';
 
 function initialState() {
-  return {};
+  return { current: null };
 }
 
 const mutations = {
@@ -24,4 +24,4 @@ const actions = {
   },
 };
 
-export default { namespaced, state: initialState, mutations, actions };
+export default { namespaced: true, state: initialState, mutations, actions };
