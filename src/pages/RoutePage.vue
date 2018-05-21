@@ -4,15 +4,26 @@
 
   h1 Маршрутные задания
 
-  .has-driver(v-if="currentDriver")
+  mt-tab-container(v-if="currentDriver" :value="containerPage")
 
-    nav-header(
-    :prev="prevRoute ? prevClick : undefined"
-    :next="nextRoute ? nextClick : undefined"
-    :title="title"
-    )
+    mt-tab-container-item#list
 
-    route-point-list(:route="currentRoute")
+      nav-header(
+      :prev="prevRoute ? prevClick : undefined"
+      :next="nextRoute ? nextClick : undefined"
+      :title="title"
+      )
+
+      route-point-list(:route="currentRoute")
+
+    mt-tab-container-item#item(v-if="routePoint")
+
+      nav-header(
+      :prev="showList"
+      :title="`${title} / ${routePoint.ord || '?'}`"
+      )
+
+      route-point-details(:route-point="routePoint")
 
   choose-driver(v-else)
 
@@ -25,8 +36,10 @@ import { SET_CURRENT } from '@/store/driver';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
+import RoutePointDetails from '@/components/RoutePointDetails';
 
 import ShipmentRoute from '@/models/ShipmentRoute';
+import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 
 export default {
 
@@ -36,19 +49,28 @@ export default {
       currentRoute: undefined,
       nextRoute: undefined,
       prevRoute: undefined,
+      routePoint: undefined,
     };
   },
 
-  components: { RoutePointList, ChooseDriver },
+  components: { RoutePointList, ChooseDriver, RoutePointDetails },
 
   computed: {
+
     ...mapState('driver', { currentDriver: 'current' }),
+
     title() {
       if (this.currentRoute) {
         return this.currentRoute.date;
       }
       return this.loading ? 'Загрузка' : 'Нет заданий';
     },
+
+    containerPage() {
+      const { id } = this.$route.params;
+      return id ? 'item' : 'list';
+    },
+
   },
 
   watch: {
@@ -57,6 +79,9 @@ export default {
     },
     shipmentRoutes() {
       this.setCurrentRoute();
+    },
+    containerPage() {
+      this.setCurrentRoutePoint();
     },
   },
 
@@ -70,6 +95,17 @@ export default {
 
     nextClick() {
       this.setCurrentRoute(this.nextRoute);
+    },
+
+    showList() {
+      this.$router.push({ name: 'route' });
+    },
+
+    setCurrentRoutePoint() {
+      const { id } = this.$route.params;
+      if (id) {
+        this.routePoint = ShipmentRoutePoint.bindOne(this, id, 'routePoint');
+      }
     },
 
     setCurrentRoute(route) {
@@ -94,6 +130,7 @@ export default {
         this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
 
         findAll(filter)
+          .then(this.setCurrentRoutePoint)
           .then(this.$loading.show().hide);
 
       } else {
@@ -109,6 +146,11 @@ export default {
 
   created() {
     this.refresh();
+  },
+
+  beforeDestroy() {
+    ShipmentRoute.unbindAll(this);
+    ShipmentRoutePoint.unbindAll(this);
   },
 
 };

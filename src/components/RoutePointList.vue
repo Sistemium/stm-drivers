@@ -1,11 +1,13 @@
 <template lang="pug">
 
 .route-point-list.cell-list
-  .route-point(v-for='point in routePoints' :key="point.id")
+  .route-point(v-for='routePoint in routePoints' :key="routePoint.id")
     mt-cell(
-    :title="point.outlet.partner.name"
-    :label="point.outlet.address"
-    :value="point.ord || '?'"
+    :title="routePoint.outlet.partner.name"
+    :label="routePoint.outlet.address"
+    :value="routePoint.ord || '?'"
+    :to="{name: 'routePoint', params: {id: routePoint.id}}"
+    is-link
     )
 
 </template>
