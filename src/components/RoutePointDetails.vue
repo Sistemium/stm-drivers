@@ -2,7 +2,7 @@
 
 .route-point-details
 
-  .name
+  .cell-list
     mt-cell(
     :title="routePoint.outlet.partner.name"
     :label="routePoint.outlet.address"
