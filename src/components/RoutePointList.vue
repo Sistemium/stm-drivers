@@ -17,13 +17,13 @@ import sortBy from 'lodash/sortBy';
 
 export default {
 
+  props: { shipmentRoute: Object },
+
   computed: {
     routePoints() {
-      return this.route && sortBy(this.route.routePoints, 'ord');
+      return this.shipmentRoute && sortBy(this.shipmentRoute.routePoints, 'ord');
     },
   },
-
-  props: ['route'],
 
 };
 

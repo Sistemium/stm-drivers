@@ -15,6 +15,7 @@ const tabs = [
     path: 'route',
     name: 'route',
     component: RoutePage,
+    props: { routeName: 'route' },
     meta: { title: 'Маршрут', img: '/static/images/icons8-to_do.png' },
     children: [
       { name: 'routePoint', path: 'routePoint/:id' },

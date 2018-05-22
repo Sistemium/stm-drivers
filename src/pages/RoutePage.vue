@@ -14,7 +14,7 @@
       :title="title"
       )
 
-      route-point-list(:route="currentRoute")
+      route-point-list(:shipment-route="currentRoute")
 
     mt-tab-container-item#item(v-if="routePoint")
 
@@ -42,6 +42,8 @@ import ShipmentRoute from '@/models/ShipmentRoute';
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 
 export default {
+
+  props: { routeName: String },
 
   data() {
     return {
@@ -98,7 +100,7 @@ export default {
     },
 
     showList() {
-      this.$router.push({ name: 'route' });
+      this.$router.push({ name: this.routeName });
     },
 
     setCurrentRoutePoint() {
