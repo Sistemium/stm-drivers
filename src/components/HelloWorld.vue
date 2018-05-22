@@ -5,7 +5,7 @@
   p.logo
     img(src="../assets/logo.png")
 
-  h1(v-if="h1!==''") {{ h1 || msg }}
+  h1(v-if="h1") {{ h1 }}
 
   .lead(v-if="lead") {{ lead }}
 
@@ -14,12 +14,9 @@
 
 export default {
 
-  props: { h1: String, lead: String },
-
-  data() {
-    return {
-      msg: 'Программа для водителей',
-    };
+  props: {
+    h1: { type: String, default: 'Программа для водителей' },
+    lead: String,
   },
 
 };

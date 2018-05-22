@@ -16,10 +16,7 @@
     p Подтвердите завершение работы на этом устройстве
 
   p.buttons(v-if="confirm")
-    mt-button(
-    :type="confirm ? 'danger' : 'default'" @click="logoffClick()"
-    )
-      | {{ confirm ? 'Подтвердить' : 'Завершить работу' }}
+    mt-button(type="danger" @click="logoffClick") Подтвердить
 
 </template>
 <script>
