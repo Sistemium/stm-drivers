@@ -6,7 +6,7 @@
     :title="routePoint.outlet.partner.shortName"
     :label="routePoint.outlet.address"
     :value="routePoint.ord || '?'"
-    :to="{name: 'routePoint', params: {id: routePoint.id}}"
+    :to="{name: routeName, params: {[routeParamName]: routePoint.id}}"
     is-link
     )
 
@@ -17,7 +17,11 @@ import sortBy from 'lodash/sortBy';
 
 export default {
 
-  props: { shipmentRoute: Object },
+  props: {
+    shipmentRoute: Object,
+    routeName: { type: String, default: 'routePoint' },
+    routeParamName: { type: String, default: 'id' },
+  },
 
   computed: {
     routePoints() {
