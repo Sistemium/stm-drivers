@@ -1,16 +1,18 @@
 <template lang="pug">
 
-.outlet-list
+.outlet-list.cell-list
 
-  mt-cell(
+  .partner(
   v-for="partner in partners"
   :id="`id-${partner.id}`"
   :key="partner.id"
-  :label="`Адресов: ${partner.outlets.length}`"
-  :title="partner.shortName"
-  :to="{name: 'outlet', params: {id: partner.id}}"
-  is-link
   )
+    mt-cell(
+    :label="`Адресов: ${partner.outlets.length}`"
+    :title="partner.shortName"
+    :to="{name: 'outlet', params: {id: partner.id}}"
+    is-link
+    )
 
 </template>
 <script>
