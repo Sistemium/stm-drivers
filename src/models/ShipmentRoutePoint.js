@@ -4,9 +4,9 @@ import './ShipmentRoute';
 import './Outlet';
 import './Location';
 
-export default new Model('ShipmentRoutePoint', {
+export default new Model({
 
-  notify: false,
+  name: 'ShipmentRoutePoint',
 
   relations: {
     belongsTo: {

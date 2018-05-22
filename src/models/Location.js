@@ -1,8 +1,8 @@
 import Model from '@/jsdata/Model';
 
-export default new Model('Location', {
+export default new Model({
 
-  notify: false,
+  name: 'Location',
 
   relations: {
     hasMany: {

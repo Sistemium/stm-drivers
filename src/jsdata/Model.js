@@ -3,11 +3,11 @@ import store from './store';
 
 class Model {
 
-  constructor(name, config) {
+  constructor(config) {
 
-    this.name = name;
+    this.name = config.name;
     this.store = store;
-    this.mapper = store.defineMapper(name, config);
+    this.mapper = store.defineMapper(this.name, { notify: false, ...config });
     this.offs = {};
 
   }

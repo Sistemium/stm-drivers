@@ -2,9 +2,9 @@ import STModel from '@/jsdata/Model';
 
 import './Outlet';
 
-export default new STModel('Partner', {
+export default new STModel({
 
-  notify: false,
+  name: 'Partner',
   // keepChangeHistory: false,
   applySchema: false,
   // validateOnSet: false,

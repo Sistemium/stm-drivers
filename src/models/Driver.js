@@ -1,7 +1,7 @@
 import Model from '@/jsdata/Model';
 
-export default new Model('Driver', {
+export default new Model({
 
-  notify: false,
+  name: 'Driver',
 
 });

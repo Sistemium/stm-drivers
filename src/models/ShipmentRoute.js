@@ -3,9 +3,9 @@ import Model from '@/jsdata/Model';
 import './Driver';
 import './ShipmentRoutePoint';
 
-export default new Model('ShipmentRoute', {
+export default new Model({
 
-  notify: false,
+  name: 'ShipmentRoute',
 
   relations: {
     belongsTo: {
