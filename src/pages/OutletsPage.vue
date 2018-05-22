@@ -2,13 +2,15 @@
 
 .outlets-page
 
-  .list-state(v-if="routeState === 'list'")
-    h1 Торговые точки
-    outlet-list
+  mt-tab-container(:value='routeState')
 
-  .details-state(v-if="routeState === 'details'")
-    nav-header(title="Клиент" :prev="backClick")
-    router-view
+    mt-tab-container-item#outlets
+      h1 Торговые точки
+      outlet-list
+
+    mt-tab-container-item#outlet
+      nav-header(title="Клиент" :prev="backClick")
+      router-view
 
 </template>
 <script>
@@ -22,7 +24,7 @@ export default {
 
   computed: {
     routeState() {
-      return this.$route.params.id ? 'details' : 'list';
+      return this.$route.name;
     },
   },
 
