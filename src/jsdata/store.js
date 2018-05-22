@@ -10,7 +10,7 @@ export default store;
 export function authorize(token, org) {
 
   const httpOptions = {
-    basePath: `https://api.sistemium.com/v4d/${org}`,
+    basePath: `/api/${org}`,
     httpConfig: {
       headers: {
         authorization: token,
