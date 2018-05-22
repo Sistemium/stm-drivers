@@ -19,6 +19,16 @@
   .buttons
     mt-button(type="primary" @click="checkInClick" v-if="!routePoint.isReached") Отметить прибытие
 
+  .section-title Накладные
+
+  .cell-list
+
+    .shipment(v-for="item in routePoint.routePointShipments" :key="item.id")
+
+      mt-cell(
+      :title="item.shipment.ndoc"
+      )
+
 </template>
 <script>
 

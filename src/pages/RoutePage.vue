@@ -193,7 +193,13 @@ export default {
 function findAll(filter) {
   return ShipmentRoute.findAll(
     { limit: 5, ...filter },
-    { with: ['routePoints', 'routePoints.outlet', 'routePoints.outlet.partner', 'routePoints.reachedAtLocation'] },
+    {
+      with: [
+        'routePoints', 'routePoints.outlet', 'routePoints.outlet.partner',
+        'routePoints.reachedAtLocation', 'routePoints.routePointShipments',
+        'routePoints.routePointShipments.shipment',
+      ],
+    },
   );
 }
 
