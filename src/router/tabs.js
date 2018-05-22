@@ -12,7 +12,7 @@ const tabs = [
     meta: { title: 'Профиль', img: '/static/images/icons8-home.png' },
   },
   {
-    path: 'route',
+    path: 'route/:date?',
     name: 'route',
     component: RoutePage,
     props: { routeName: 'route' },

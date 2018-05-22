@@ -6,7 +6,7 @@
     :title="routePoint.outlet.partner.shortName"
     :label="routePoint.outlet.address"
     :value="routePoint.ord || '?'"
-    :to="{name: routeName, params: {[routeParamName]: routePoint.id}}"
+    :to="{name: routeName, params: routeParams(routePoint)}"
     is-link
     )
 
@@ -26,6 +26,12 @@ export default {
   computed: {
     routePoints() {
       return this.shipmentRoute && sortBy(this.shipmentRoute.routePoints, 'ord');
+    },
+  },
+
+  methods: {
+    routeParams(routePoint) {
+      return { ...this.$route.params, [this.routeParamName]: routePoint.id };
     },
   },
 

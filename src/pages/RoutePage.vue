@@ -30,9 +30,9 @@
 </template>
 <script>
 
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
-import { SET_CURRENT } from '@/store/driver';
+import find from 'lodash/find';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
@@ -89,8 +89,6 @@ export default {
 
   methods: {
 
-    ...mapActions('driver', { chooseDriver: SET_CURRENT }),
-
     prevClick() {
       this.setCurrentRoute(this.prevRoute);
     },
@@ -100,7 +98,8 @@ export default {
     },
 
     showList() {
-      this.$router.push({ name: this.routeName });
+      const { date } = this.$route.params;
+      this.$router.push({ name: this.routeName, params: { date } });
     },
 
     setCurrentRoutePoint() {
@@ -114,13 +113,25 @@ export default {
     setCurrentRoute(route) {
 
       const { shipmentRoutes } = this;
-      this.currentRoute = route || shipmentRoutes[0];
+
+      this.currentRoute = route || this.routeByDate(this.$route.params.date);
 
       const idx = shipmentRoutes.indexOf(this.currentRoute);
 
       this.nextRoute = idx > 0 ? shipmentRoutes[idx - 1] : undefined;
       this.prevRoute = idx >= 0 ? shipmentRoutes[idx + 1] : undefined;
 
+      if (this.currentRoute) {
+        this.$router.push({
+          name: this.$route.name,
+          params: { ...this.$route.params, date: this.currentRoute.date },
+        });
+      }
+
+    },
+
+    routeByDate(date) {
+      return find(this.shipmentRoutes, { date }) || this.shipmentRoutes[0];
     },
 
     refresh() {
@@ -154,6 +165,18 @@ export default {
   beforeDestroy() {
     ShipmentRoute.unbindAll(this);
     ShipmentRoutePoint.unbindAll(this);
+  },
+
+  beforeRouteUpdate(to, from, next) {
+
+    if (to.name === this.routeName) {
+      if (to.params.date !== this.currentRoute.date) {
+        this.setCurrentRoute(this.routeByDate(to.params.date));
+      }
+    }
+
+    next();
+
   },
 
 };
