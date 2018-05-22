@@ -30,7 +30,8 @@
 </template>
 <script>
 
-import { mapState } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
+import { SET_DATE, LAST_DATE } from '@/store/driver';
 
 import find from 'lodash/find';
 
@@ -60,6 +61,7 @@ export default {
   computed: {
 
     ...mapState('driver', { currentDriver: 'current' }),
+    ...mapGetters('driver', [LAST_DATE]),
 
     title() {
       if (this.currentRoute) {
@@ -89,6 +91,8 @@ export default {
 
   methods: {
 
+    ...mapActions('driver', { setLastDate: SET_DATE }),
+
     prevClick() {
       this.setCurrentRoute(this.prevRoute);
     },
@@ -114,7 +118,7 @@ export default {
 
       const { shipmentRoutes } = this;
 
-      const lastDate = this.$route.params.date || this.$store.driver.lastDate;
+      const lastDate = this.$route.params.date || this[LAST_DATE];
 
       this.currentRoute = route || this.routeByDate(lastDate);
 
@@ -129,7 +133,8 @@ export default {
           params: { ...this.$route.params, date: this.currentRoute.date },
         });
 
-        // TODO: save date to vuex "driver.lastDate"
+        this.setLastDate(this.currentRoute.date);
+
       }
 
     },
