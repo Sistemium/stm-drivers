@@ -4,17 +4,18 @@
 
   .cell-list
 
-    mt-cell(
-    :title="routePoint.outlet.partner.name"
-    :label="routePoint.outlet.address"
-    ) {{ routePoint.ord }}
+    .outlet
+      mt-cell(
+      :title="routePoint.outlet.partner.name"
+      :label="routePoint.outlet.address"
+      ) {{ routePoint.ord }}
 
-    mt-cell(
-    v-if="routePoint.reachedAtLocation"
-    title="Прибытие отмечено"
-    :label="routePoint.reachedAtLocation.timestamp"
-    )
-      i.el-icon-check
+    .reached-at(v-if="routePoint.reachedAtLocation")
+      mt-cell(
+      title="Прибытие отмечено"
+      :label="routePoint.reachedAtLocation.timestamp"
+      )
+        i.el-icon-check
 
   .buttons
     mt-button(type="primary" @click="checkInClick" v-if="!routePoint.isReached") Отметить прибытие
