@@ -114,7 +114,9 @@ export default {
 
       const { shipmentRoutes } = this;
 
-      this.currentRoute = route || this.routeByDate(this.$route.params.date);
+      const lastDate = this.$route.params.date || this.$store.driver.lastDate;
+
+      this.currentRoute = route || this.routeByDate(lastDate);
 
       const idx = shipmentRoutes.indexOf(this.currentRoute);
 
@@ -126,6 +128,8 @@ export default {
           name: this.$route.name,
           params: { ...this.$route.params, date: this.currentRoute.date },
         });
+
+        // TODO: save date to vuex "driver.lastDate"
       }
 
     },
