@@ -3,6 +3,7 @@ import Model from '@/jsdata/Model';
 import './ShipmentRoute';
 import './Outlet';
 import './Location';
+import './ShipmentRoutePointShipment';
 
 export default new Model({
 
@@ -23,7 +24,11 @@ export default new Model({
         localField: 'reachedAtLocation',
       },
     },
-    hasOne: {
+    hasMany: {
+      ShipmentRoutePointShipment: {
+        localField: 'routePointShipments',
+        foreignKey: 'shipmentRoutePointId',
+      },
     },
   },
 
