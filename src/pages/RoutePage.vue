@@ -25,6 +25,15 @@
 
       route-point-details(:route-point="routePoint")
 
+    mt-tab-container-item#shipment(v-if="shipment")
+
+      nav-header(
+      :prev="backFromShipment"
+      :title="shipment.ndoc"
+      )
+
+      shipment-details(:shipment="shipment")
+
   choose-driver(v-else)
 
 </template>
@@ -38,9 +47,11 @@ import find from 'lodash/find';
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
 import RoutePointDetails from '@/components/RoutePointDetails';
+import ShipmentDetails from '@/components/ShipmentDetails';
 
 import ShipmentRoute from '@/models/ShipmentRoute';
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
+import Shipment from '@/models/Shipment';
 
 export default {
 
@@ -53,10 +64,11 @@ export default {
       nextRoute: undefined,
       prevRoute: undefined,
       routePoint: undefined,
+      shipment: undefined,
     };
   },
 
-  components: { RoutePointList, ChooseDriver, RoutePointDetails },
+  components: { RoutePointList, ChooseDriver, RoutePointDetails, ShipmentDetails },
 
   computed: {
 
@@ -71,7 +83,12 @@ export default {
     },
 
     containerPage() {
-      const { id } = this.$route.params;
+      const { id, shipmentId } = this.$route.params;
+
+      if (shipmentId) {
+        return 'shipment';
+      }
+
       return id ? 'item' : 'list';
     },
 
@@ -85,7 +102,7 @@ export default {
       this.setCurrentRoute();
     },
     containerPage() {
-      this.setCurrentRoutePoint();
+      this.setCurrentRoutePointAndShipment();
     },
   },
 
@@ -106,8 +123,22 @@ export default {
       this.$router.push({ name: this.routeName, params: { date } });
     },
 
-    setCurrentRoutePoint() {
-      const { id } = this.$route.params;
+    backFromShipment() {
+
+      const { date, id } = this.$route.params;
+
+      this.$router.push({ name: 'routePoint', params: { date, id } });
+    },
+
+    setCurrentRoutePointAndShipment() {
+      const { id, shipmentId } = this.$route.params;
+
+      if (shipmentId) {
+
+        this.shipment = Shipment.bindOne(this, shipmentId, 'shipment');
+
+      }
+
       if (id) {
         this.routePoint = ShipmentRoutePoint.bindOne(this, id, 'routePoint');
         // ShipmentRoutePoint.find(id, { with: ['Location'] });
@@ -153,7 +184,7 @@ export default {
         this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
 
         findAll(filter)
-          .then(this.setCurrentRoutePoint)
+          .then(this.setCurrentRoutePointAndShipment)
           .then(this.$loading.show().hide);
 
       } else {
@@ -174,6 +205,7 @@ export default {
   beforeDestroy() {
     ShipmentRoute.unbindAll(this);
     ShipmentRoutePoint.unbindAll(this);
+    Shipment.unbindAll(this);
   },
 
   beforeRouteUpdate(to, from, next) {

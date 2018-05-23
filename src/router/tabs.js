@@ -18,7 +18,11 @@ const tabs = [
     props: { routeName: 'route' },
     meta: { title: 'Маршрут', img: '/static/images/icons8-to_do.png' },
     children: [
-      { name: 'routePoint', path: 'routePoint/:id' },
+      {
+        name: 'routePoint',
+        path: 'routePoint/:id',
+        children: [{ name: 'routePointShipment', path: 'shipment/:shipmentId' }],
+      },
     ],
   },
   {

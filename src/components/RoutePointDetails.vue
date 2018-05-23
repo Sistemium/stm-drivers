@@ -27,6 +27,7 @@
 
       mt-cell(
       :title="item.shipment.ndoc"
+      :to="{name: 'routePointShipment', params: routeParams(item.shipment)}"
       )
 
 </template>
@@ -52,6 +53,11 @@ export default {
           this.routePoint.isReached = result === 'confirm';
         });
     },
+
+    routeParams(shipment) {
+      return { ...this.$route.params, shipmentId: shipment.id };
+    },
+
   },
 
 };
