@@ -1,4 +1,5 @@
 import RoutePage from '@/pages/RoutePage';
+import RoutePointPage from '@/pages/RoutePointPage';
 import MyAccountPage from '@/pages/MyAccountPage';
 import OutletsPage from '@/pages/OutletsPage';
 import TabsPage from '@/pages/TabsPage';
@@ -19,7 +20,9 @@ const tabs = [
     children: [
       {
         name: 'routePoint',
-        path: 'routePoint/:id',
+        path: 'routePoint/:routePointId',
+        component: RoutePointPage,
+        props: true,
         children: [{ name: 'routePointShipment', path: 'shipment/:shipmentId' }],
       },
     ],
@@ -42,7 +45,13 @@ const tabs = [
       },
     },
     children: [
-      { path: ':id', name: OutletPage.name, component: OutletPage, meta: { title: 'Подробности' } },
+      {
+        path: ':id',
+        name: OutletPage.name,
+        component: OutletPage,
+        meta: { title: 'Подробности' },
+        props: true,
+      },
     ],
   },
 ];

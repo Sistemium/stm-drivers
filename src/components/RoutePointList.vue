@@ -33,7 +33,7 @@ export default {
   props: {
     shipmentRouteId: String,
     routeName: { type: String, default: 'routePoint' },
-    routeParamName: { type: String, default: 'id' },
+    routeParamName: { type: String, default: 'routePointId' },
   },
 
   methods: {
@@ -64,21 +64,26 @@ export default {
 
 };
 
-function findAll(shipmentRouteId) {
+async function findAll(shipmentRouteId) {
 
   if (!shipmentRouteId) {
     return Promise.resolve();
   }
 
-  return ShipmentRoutePoint.findAll({ shipmentRouteId }, {
+  const res = await ShipmentRoutePoint.findAll({ shipmentRouteId }, {
     with: [
       'outlet',
       'outlet.partner',
       'reachedAtLocation',
-      'routePointShipments',
-      'routePointShipments.shipment',
     ],
   });
+
+  return Promise.all(res.map(routePoint =>
+    routePoint.loadRelations([
+      'routePointShipments',
+      'routePointShipments.shipment',
+      // 'routePointShipments.shipment.positions',
+    ])));
 
 }
 

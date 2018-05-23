@@ -16,14 +16,9 @@
 
       route-point-list(v-if="currentRoute" :shipment-route-id="currentRoute.id")
 
-    mt-tab-container-item#routePoint(v-if="routePoint")
+    mt-tab-container-item#routePoint
 
-      nav-header(
-      :prev="backFromRoutePoint"
-      :title="`${title} / ${routePoint.ord || '?'}`"
-      )
-
-      route-point-details(:route-point="routePoint")
+      router-view
 
     mt-tab-container-item#routePointShipment(v-if="shipment")
 
@@ -48,11 +43,9 @@ import { dateFormat } from '@/config/moments';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
-import RoutePointDetails from '@/components/RoutePointDetails';
 import ShipmentDetails from '@/components/ShipmentDetails';
 
 import ShipmentRoute from '@/models/ShipmentRoute';
-import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 import Shipment from '@/models/Shipment';
 
 const name = 'RoutePage';
@@ -67,12 +60,11 @@ export default {
       currentRoute: undefined,
       nextRoute: undefined,
       prevRoute: undefined,
-      routePoint: undefined,
       shipment: undefined,
     };
   },
 
-  components: { RoutePointList, ChooseDriver, RoutePointDetails, ShipmentDetails },
+  components: { RoutePointList, ChooseDriver, ShipmentDetails },
 
   computed: {
 
@@ -109,28 +101,18 @@ export default {
       this.setCurrentRoute(this.nextRoute);
     },
 
-    backFromRoutePoint() {
-      const { params } = this.$route;
-      this.$router.push({ name, params });
-    },
-
     backFromShipment() {
       const { params } = this.$route;
       this.$router.push({ name: 'routePoint', params });
     },
 
     setCurrentRoutePointAndShipment(params) {
-      const { id, shipmentId } = params || this.$route.params;
+      const { shipmentId } = params || this.$route.params;
 
       if (shipmentId) {
 
         this.shipment = Shipment.bindOne(this, shipmentId, 'shipment');
 
-      }
-
-      if (id) {
-        this.routePoint = ShipmentRoutePoint.bindOne(this, id, 'routePoint');
-        // ShipmentRoutePoint.find(id, { with: ['Location'] });
       }
     },
 
@@ -172,7 +154,7 @@ export default {
         const filter = { driverId, orderBy: [['date', 'DESC']] };
         this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
 
-        await findAll(filter)
+        await ShipmentRoute.findAll({ limit: 50, ...filter })
           .then(this.$loading.show().hide);
 
         this.setCurrentRoutePointAndShipment();
@@ -194,7 +176,6 @@ export default {
 
   beforeDestroy() {
     ShipmentRoute.unbindAll(this);
-    ShipmentRoutePoint.unbindAll(this);
     Shipment.unbindAll(this);
   },
 
@@ -214,9 +195,6 @@ export default {
 
 };
 
-function findAll(filter) {
-  return ShipmentRoute.findAll({ limit: 50, ...filter });
-}
 
 </script>
 <style scoped lang="scss">

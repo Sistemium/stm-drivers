@@ -1,7 +1,7 @@
 <template lang="pug">
 
 .outlet-page
-  partner-info(:partner-id="$route.params.id")
+  partner-info(:partner-id="id")
 
 </template>
 
@@ -13,6 +13,7 @@ export default {
 
   name: 'OutletPage',
   components: { PartnerInfo },
+  props: ['id'],
 
 };
 

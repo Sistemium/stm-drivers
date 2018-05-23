@@ -8,14 +8,14 @@
       mt-cell(
       :title="routePoint.outlet.partner.name"
       :label="routePoint.outlet.address"
-      ) {{ routePoint.ord }}
+      )
 
     .reached-at(v-if="routePoint.reachedAtLocation")
       mt-cell(
       title="Прибытие отмечено"
-      :label="routePoint.reachedAtLocation.timestamp"
+      :label="routePoint.reachedAtLocation.timestamp | dateTime"
       )
-        i.el-icon-check
+        i.el-icon-location
 
   .buttons
     mt-button(type="primary" @click="checkInClick" v-if="!routePoint.isReached") Отметить прибытие
@@ -30,11 +30,13 @@
       :title="item.shipment.ndoc"
       :to="{name: 'routePointShipment', params: routeParams(item.shipment)}"
       )
+        <!--span {{ item.shipment.totalBoxes() }}-->
 
 </template>
 <script>
 
 import { MessageBox } from 'mint-ui';
+import ShipmentRoutePointShipment from '@/models/ShipmentRoutePointShipment';
 
 export default {
 
@@ -61,6 +63,14 @@ export default {
 
   },
 
+  created() {
+    ShipmentRoutePointShipment.bind(this);
+  },
+
+  beforeDestroy() {
+    ShipmentRoutePointShipment.unbindAll(this);
+  },
+
 };
 
 </script>
@@ -68,6 +78,11 @@ export default {
 
 .buttons {
   margin-top: 10px;
+}
+
+.el-icon-location {
+  font-size: 120%;
+  color: lighten(green, 10%);
 }
 
 </style>
