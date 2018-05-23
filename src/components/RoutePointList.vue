@@ -13,29 +13,74 @@
 </template>
 <script>
 
-import sortBy from 'lodash/sortBy';
+import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 
 export default {
 
+  data() {
+    return {
+      routePoints: this.bindRoutePoints(),
+    };
+  },
+
+  watch: {
+    shipmentRouteId() {
+      this.routePoints = this.bindRoutePoints();
+      this.refresh();
+    },
+  },
+
   props: {
-    shipmentRoute: Object,
+    shipmentRouteId: String,
     routeName: { type: String, default: 'routePoint' },
     routeParamName: { type: String, default: 'id' },
   },
 
-  computed: {
-    routePoints() {
-      return this.shipmentRoute && sortBy(this.shipmentRoute.routePoints, 'ord');
-    },
-  },
-
   methods: {
+
+    bindRoutePoints() {
+      const { shipmentRouteId } = this;
+      return ShipmentRoutePoint.bindAll(this, { shipmentRouteId, orderBy: [['ord', 'ASC']] }, 'routePoints');
+    },
+
     routeParams(routePoint) {
       return { ...this.$route.params, [this.routeParamName]: routePoint.id };
     },
+
+    refresh() {
+      findAll(this.shipmentRouteId)
+        .then(this.$loading.show().hide);
+    },
+
+  },
+
+  created() {
+    this.refresh();
+  },
+
+  beforeDestroy() {
+    ShipmentRoutePoint.unbindAll(this);
   },
 
 };
+
+function findAll(shipmentRouteId) {
+
+  if (!shipmentRouteId) {
+    return Promise.resolve();
+  }
+
+  return ShipmentRoutePoint.findAll({ shipmentRouteId }, {
+    with: [
+      'outlet',
+      'outlet.partner',
+      'reachedAtLocation',
+      'routePointShipments',
+      'routePointShipments.shipment',
+    ],
+  });
+
+}
 
 </script>
 <style scoped lang="scss">
