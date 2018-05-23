@@ -4,7 +4,7 @@
 
   h1 Маршрутные задания
 
-  mt-tab-container(v-if="currentDriver" :value="currentRouteName")
+  mt-tab-container(v-if="currentDriver" :value="$route.name")
 
     mt-tab-container-item#RoutePage
 
@@ -84,10 +84,6 @@ export default {
       return this.loading ? 'Загрузка' : 'Нет заданий';
     },
 
-    currentRouteName() {
-      return this.$route.name;
-    },
-
   },
 
   watch: {
@@ -96,9 +92,6 @@ export default {
     },
     shipmentRoutes() {
       this.setCurrentRoute();
-    },
-    currentRouteName() {
-      this.setCurrentRoutePointAndShipment();
     },
   },
 
@@ -124,8 +117,8 @@ export default {
       this.$router.push({ name: 'routePoint', params });
     },
 
-    setCurrentRoutePointAndShipment() {
-      const { id, shipmentId } = this.$route.params;
+    setCurrentRoutePointAndShipment(params) {
+      const { id, shipmentId } = params || this.$route.params;
 
       if (shipmentId) {
 
@@ -168,7 +161,7 @@ export default {
       return find(this.shipmentRoutes, { date }) || this.shipmentRoutes[0];
     },
 
-    refresh() {
+    async refresh() {
 
       const { id: driverId } = this.currentDriver || {};
 
@@ -177,9 +170,10 @@ export default {
         const filter = { driverId, orderBy: [['date', 'DESC']] };
         this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
 
-        findAll(filter)
-          .then(this.setCurrentRoutePointAndShipment)
+        await findAll(filter)
           .then(this.$loading.show().hide);
+
+        this.setCurrentRoutePointAndShipment();
 
       } else {
 
@@ -210,6 +204,8 @@ export default {
       }
     }
 
+    this.setCurrentRoutePointAndShipment(to.params);
+
     next();
 
   },
@@ -221,8 +217,11 @@ function findAll(filter) {
     { limit: 5, ...filter },
     {
       with: [
-        'routePoints', 'routePoints.outlet', 'routePoints.outlet.partner',
-        'routePoints.reachedAtLocation', 'routePoints.routePointShipments',
+        'routePoints',
+        'routePoints.outlet',
+        'routePoints.outlet.partner',
+        'routePoints.reachedAtLocation',
+        'routePoints.routePointShipments',
         'routePoints.routePointShipments.shipment',
       ],
     },
