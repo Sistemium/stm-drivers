@@ -1,6 +1,7 @@
 import Model from '@/jsdata/Model';
 
 import './Shipment';
+import './Article';
 
 export default new Model({
 
@@ -11,6 +12,10 @@ export default new Model({
       Shipment: {
         localField: 'shipment',
         localKey: 'shipmentId',
+      },
+      Article: {
+        localField: 'article',
+        localKey: 'articleId',
       },
     },
   },
