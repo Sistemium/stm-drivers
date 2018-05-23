@@ -10,7 +10,7 @@
     mt-cell(
     :label="`Адресов: ${partner.outlets.length}`"
     :title="partner.shortName"
-    :to="{name: 'outlet', params: {id: partner.id}}"
+    :to="{name: 'OutletPage', params: {id: partner.id}}"
     is-link
     )
 
