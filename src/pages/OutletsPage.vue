@@ -2,33 +2,31 @@
 
 .outlets-page
 
-  .list-state(v-if="routeState === 'list'")
-    h1 Торговые точки
-    outlet-list
+  mt-tab-container(:value='$route.name')
 
-  .details-state(v-if="routeState === 'details'")
-    nav-header(title="Клиент" :prev="backClick")
-    router-view
+    mt-tab-container-item#OutletsPage
+      h1 Торговые точки
+      outlet-list
+
+    mt-tab-container-item#OutletPage
+      nav-header(title="Клиент" :prev="backClick")
+      router-view
 
 </template>
 <script>
 
 import OutletList from '@/components/OutletList';
 
+const name = 'OutletsPage';
+
 export default {
 
   components: { OutletList },
-  name: 'outlets-page',
-
-  computed: {
-    routeState() {
-      return this.$route.params.id ? 'details' : 'list';
-    },
-  },
+  name,
 
   methods: {
     backClick() {
-      this.$router.push({ name: 'outlets' });
+      this.$router.push({ name });
     },
   },
 

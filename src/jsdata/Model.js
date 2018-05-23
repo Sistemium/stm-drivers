@@ -89,7 +89,7 @@ class Model {
 
     const cid = componentId(component);
 
-    const getDataById = () => this.store.get(this.name, id) || {};
+    const getDataById = () => this.store.get(this.name, id);
 
     const onDataChange = () => {
       Vue.set(component, property, getDataById());

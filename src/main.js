@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import '@/config/libs';
 import '@/config/global-components';
+import '@/config/filters';
 
 import '@/styles/index.scss';
 

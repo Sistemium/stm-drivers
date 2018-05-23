@@ -26,7 +26,7 @@ const tabs = [
   },
   {
     path: 'outlets',
-    name: 'outlets',
+    name: OutletsPage.name,
     component: OutletsPage,
     meta: {
       title: 'Клиенты',
@@ -42,7 +42,7 @@ const tabs = [
       },
     },
     children: [
-      { path: ':id', name: 'outlet', component: OutletPage, meta: { title: 'Подробности' } },
+      { path: ':id', name: OutletPage.name, component: OutletPage, meta: { title: 'Подробности' } },
     ],
   },
 ];
