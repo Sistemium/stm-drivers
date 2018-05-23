@@ -4,9 +4,9 @@
 
   h1 Маршрутные задания
 
-  mt-tab-container(v-if="currentDriver" :value="containerPage")
+  mt-tab-container(v-if="currentDriver" :value="currentRouteName")
 
-    mt-tab-container-item#list
+    mt-tab-container-item#RoutePage
 
       nav-header(
       :prev="prevRoute ? prevClick : undefined"
@@ -16,16 +16,16 @@
 
       route-point-list(:shipment-route="currentRoute")
 
-    mt-tab-container-item#item(v-if="routePoint")
+    mt-tab-container-item#routePoint(v-if="routePoint")
 
       nav-header(
-      :prev="showList"
+      :prev="backFromRoutePoint"
       :title="`${title} / ${routePoint.ord || '?'}`"
       )
 
       route-point-details(:route-point="routePoint")
 
-    mt-tab-container-item#shipment(v-if="shipment")
+    mt-tab-container-item#routePointShipment(v-if="shipment")
 
       nav-header(
       :prev="backFromShipment"
@@ -53,9 +53,11 @@ import ShipmentRoute from '@/models/ShipmentRoute';
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 import Shipment from '@/models/Shipment';
 
+const name = 'RoutePage';
+
 export default {
 
-  props: { routeName: String },
+  name,
 
   data() {
     return {
@@ -82,14 +84,8 @@ export default {
       return this.loading ? 'Загрузка' : 'Нет заданий';
     },
 
-    containerPage() {
-      const { id, shipmentId } = this.$route.params;
-
-      if (shipmentId) {
-        return 'shipment';
-      }
-
-      return id ? 'item' : 'list';
+    currentRouteName() {
+      return this.$route.name;
     },
 
   },
@@ -101,7 +97,7 @@ export default {
     shipmentRoutes() {
       this.setCurrentRoute();
     },
-    containerPage() {
+    currentRouteName() {
       this.setCurrentRoutePointAndShipment();
     },
   },
@@ -118,16 +114,14 @@ export default {
       this.setCurrentRoute(this.nextRoute);
     },
 
-    showList() {
-      const { date } = this.$route.params;
-      this.$router.push({ name: this.routeName, params: { date } });
+    backFromRoutePoint() {
+      const { params } = this.$route;
+      this.$router.push({ name, params });
     },
 
     backFromShipment() {
-
-      const { date, id } = this.$route.params;
-
-      this.$router.push({ name: 'routePoint', params: { date, id } });
+      const { params } = this.$route;
+      this.$router.push({ name: 'routePoint', params });
     },
 
     setCurrentRoutePointAndShipment() {
@@ -210,7 +204,7 @@ export default {
 
   beforeRouteUpdate(to, from, next) {
 
-    if (to.name === this.routeName) {
+    if (to.name === name) {
       if (to.params.date !== this.currentRoute.date) {
         this.setCurrentRoute(this.routeByDate(to.params.date));
       }
