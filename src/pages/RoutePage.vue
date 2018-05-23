@@ -14,7 +14,7 @@
       :title="title"
       )
 
-      route-point-list(:shipment-route="currentRoute")
+      route-point-list(v-if="currentRoute" :shipment-route-id="currentRoute.id")
 
     mt-tab-container-item#routePoint(v-if="routePoint")
 
@@ -43,6 +43,8 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import { SET_DATE, LAST_DATE } from '@/store/driver';
 
 import find from 'lodash/find';
+
+import { dateFormat } from '@/config/moments';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
@@ -79,7 +81,7 @@ export default {
 
     title() {
       if (this.currentRoute) {
-        return this.currentRoute.date;
+        return dateFormat(this.currentRoute.date);
       }
       return this.loading ? 'Загрузка' : 'Нет заданий';
     },
@@ -213,19 +215,7 @@ export default {
 };
 
 function findAll(filter) {
-  return ShipmentRoute.findAll(
-    { limit: 5, ...filter },
-    {
-      with: [
-        'routePoints',
-        'routePoints.outlet',
-        'routePoints.outlet.partner',
-        'routePoints.reachedAtLocation',
-        'routePoints.routePointShipments',
-        'routePoints.routePointShipments.shipment',
-      ],
-    },
-  );
+  return ShipmentRoute.findAll({ limit: 50, ...filter });
 }
 
 </script>
