@@ -60,14 +60,33 @@ export default {
       return { ...this.$route.params, shipmentId: shipment.id };
     },
 
+    async refresh() {
+
+      await Promise.all(this.routePoint.routePointShipments.map(routePointShipment =>
+        routePointShipment.shipment.loadRelations([
+          'positions',
+          'positions.article',
+        ]))).then(this.$loading.show().hide);
+
+      this.$forceUpdate();
+
+    },
+
   },
 
   created() {
     ShipmentRoutePointShipment.bind(this);
+    this.refresh();
   },
 
   beforeDestroy() {
     ShipmentRoutePointShipment.unbindAll(this);
+  },
+
+  watch: {
+    routePoint() {
+      this.refresh();
+    },
   },
 
 };
