@@ -43,7 +43,17 @@ export default {
       this.$router.push({ name: RoutePage.name, params });
     },
     rebind() {
-      this.routePoint = ShipmentRoutePoint.bindOne(this, this.routePointId, 'routePoint');
+      const { routePointId } = this;
+      this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
+      return ShipmentRoutePoint.find(routePointId, {
+        with: [
+          'outlet',
+          'outlet.partner',
+          'reachedAtLocation',
+          'routePointShipments',
+          'routePointShipments.shipment',
+        ],
+      });
     },
   },
 
