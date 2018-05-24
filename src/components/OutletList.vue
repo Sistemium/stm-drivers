@@ -53,7 +53,7 @@ export default {
 
   mounted() {
     window.addEventListener('resize', this.handleResize);
-    this.handleResize();
+    this.$nextTick(this.handleResize);
   },
 
   methods: {
