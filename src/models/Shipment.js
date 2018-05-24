@@ -1,5 +1,7 @@
 import Model from '@/jsdata/Model';
 
+import sumBy from 'lodash/sumBy';
+
 import './ShipmentPosition';
 import './ShipmentRoutePointShipment';
 import './Outlet';
@@ -25,6 +27,16 @@ export default new Model({
         foreignKey: 'shipmentId',
       },
     },
+  },
+
+  methods: {
+
+    totalBoxes() {
+
+      return Math.ceil(sumBy(this.positions, it => it.volume / it.article.packageRel));
+
+    },
+
   },
 
 });
