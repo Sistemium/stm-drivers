@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.tabs-page
+.tabs-page(:style="style")
 
   router-view.tab-content
 
@@ -17,13 +17,32 @@ export default {
 
   props: { tabs: Array },
 
+  data() {
+    return { style: {} };
+  },
+
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  methods: {
+    handleResize() {
+      const height = window.innerHeight;
+      this.style = { height: `${height}px` };
+    },
+  },
+
 };
 
 </script>
 <style scoped lang="scss">
 
 .tabs-page {
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
