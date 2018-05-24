@@ -4,14 +4,11 @@
 
   h1 Торговые точки
 
-  mt-tab-container(:value='$route.name')
+  outlet-list(v-if="$route.name === 'OutletsPage'")
 
-    mt-tab-container-item#OutletsPage
-      outlet-list
-
-    mt-tab-container-item#OutletPage
-      nav-header(title="Клиент" :prev="backClick")
-      router-view
+  .outlet-page(v-else)
+    nav-header(title="Клиент" :prev="backClick")
+    router-view
 
 </template>
 <script>
