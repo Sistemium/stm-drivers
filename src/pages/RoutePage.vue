@@ -16,18 +16,13 @@
 
       route-point-list(v-if="currentRoute" :shipment-route-id="currentRoute.id")
 
-    mt-tab-container-item#routePoint
+    mt-tab-container-item#RoutePointPage
 
       router-view
 
-    mt-tab-container-item#routePointShipment(v-if="shipment")
+    mt-tab-container-item#RoutePointShipmentPage
 
-      nav-header(
-      :prev="backFromShipment"
-      :title="shipment.ndoc"
-      )
-
-      shipment-details(:shipment="shipment")
+      router-view
 
   choose-driver(v-else)
 
@@ -43,10 +38,8 @@ import { dateFormat } from '@/config/moments';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
-import ShipmentDetails from '@/components/ShipmentDetails';
 
 import ShipmentRoute from '@/models/ShipmentRoute';
-import Shipment from '@/models/Shipment';
 
 const name = 'RoutePage';
 
@@ -60,11 +53,10 @@ export default {
       currentRoute: undefined,
       nextRoute: undefined,
       prevRoute: undefined,
-      shipment: undefined,
     };
   },
 
-  components: { RoutePointList, ChooseDriver, ShipmentDetails },
+  components: { RoutePointList, ChooseDriver },
 
   computed: {
 
@@ -99,21 +91,6 @@ export default {
 
     nextClick() {
       this.setCurrentRoute(this.nextRoute);
-    },
-
-    backFromShipment() {
-      const { params } = this.$route;
-      this.$router.push({ name: 'routePoint', params });
-    },
-
-    setCurrentRoutePointAndShipment(params) {
-      const { shipmentId } = params || this.$route.params;
-
-      if (shipmentId) {
-
-        this.shipment = Shipment.bindOne(this, shipmentId, 'shipment');
-
-      }
     },
 
     setCurrentRoute(route) {
@@ -157,8 +134,6 @@ export default {
         await ShipmentRoute.findAll({ limit: 50, ...filter })
           .then(this.$loading.show().hide);
 
-        this.setCurrentRoutePointAndShipment();
-
       } else {
 
         ShipmentRoute.unbindAll(this);
@@ -176,7 +151,6 @@ export default {
 
   beforeDestroy() {
     ShipmentRoute.unbindAll(this);
-    Shipment.unbindAll(this);
   },
 
   beforeRouteUpdate(to, from, next) {
@@ -186,8 +160,6 @@ export default {
         this.setCurrentRoute(this.routeByDate(to.params.date));
       }
     }
-
-    this.setCurrentRoutePointAndShipment(to.params);
 
     next();
 
