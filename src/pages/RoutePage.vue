@@ -4,9 +4,9 @@
 
   h1 Маршрутные задания
 
-  mt-tab-container(v-if="currentDriver" :value="$route.name")
+  div(v-if="currentDriver")
 
-    mt-tab-container-item#RoutePage
+    div(v-if="$route.name === 'RoutePage'")
 
       nav-header(
       :prev="prevRoute ? prevClick : undefined"
@@ -16,13 +16,7 @@
 
       route-point-list(v-if="currentRoute" :shipment-route-id="currentRoute.id")
 
-    mt-tab-container-item#RoutePointPage
-
-      router-view
-
-    mt-tab-container-item#RoutePointShipmentPage
-
-      router-view
+    router-view(v-else)
 
   choose-driver(v-else)
 
