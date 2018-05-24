@@ -6,8 +6,8 @@
 }
 
 .mint-cell-wrapper {
-  padding-right: 0;
-  padding-left: 0;
+  padding-right: 7px;
+  padding-left: 7px;
 }
 
 .cell-list {
@@ -17,7 +17,7 @@
   }
 
   .mint-cell-wrapper {
-    padding: 7px 4px;
+    padding: 7px;
   }
 
   .mint-cell-title {
@@ -29,4 +29,14 @@
     //font-size: 14px;
   }
 
+}
+
+.mint-indexsection-index {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mint-indexlist-content {
+  -webkit-overflow-scrolling: touch;
 }
