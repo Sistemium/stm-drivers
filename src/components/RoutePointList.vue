@@ -32,7 +32,7 @@ export default {
 
   props: {
     shipmentRouteId: String,
-    routeName: { type: String, default: 'routePoint' },
+    routeName: { type: String, default: 'RoutePointPage' },
     routeParamName: { type: String, default: 'routePointId' },
   },
 

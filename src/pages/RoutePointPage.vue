@@ -2,12 +2,20 @@
 
 .route-point-page
 
-  nav-header(
-  :prev="backFromRoutePoint"
-  :title="`Точка маршрута №${routePoint ? routePoint.ord : '?'}`"
-  )
+  mt-tab-container(v-if="routePoint" :value="$route.name")
 
-  route-point-details(v-if="routePoint" :route-point="routePoint")
+    mt-tab-container-item#RoutePointPage
+
+      nav-header(
+      :prev="backFromRoutePoint"
+      :title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"
+      )
+
+      route-point-details(v-if="routePoint" :route-point="routePoint")
+
+    mt-tab-container-item#RoutePointShipmentPage
+
+      router-view
 
 </template>
 <script>

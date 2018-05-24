@@ -4,6 +4,7 @@ import MyAccountPage from '@/pages/MyAccountPage';
 import OutletsPage from '@/pages/OutletsPage';
 import TabsPage from '@/pages/TabsPage';
 import OutletPage from '@/pages/OutletPage';
+import RoutePointShipmentPage from '@/pages/RoutePointShipmentPage';
 
 const tabs = [
   {
@@ -19,11 +20,16 @@ const tabs = [
     meta: { title: 'Маршрут', img: '/static/images/icons8-to_do.png' },
     children: [
       {
-        name: 'routePoint',
         path: 'routePoint/:routePointId',
+        name: RoutePointPage.name,
         component: RoutePointPage,
         props: true,
-        children: [{ name: 'routePointShipment', path: 'shipment/:shipmentId' }],
+        children: [{
+          path: 'shipment/:shipmentId',
+          name: RoutePointShipmentPage.name,
+          component: RoutePointShipmentPage,
+          props: true,
+        }],
       },
     ],
   },

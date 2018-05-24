@@ -28,8 +28,8 @@
 
       mt-cell(
       :title="item.shipment.ndoc"
-      :to="{name: 'routePointShipment', params: routeParams(item.shipment)}"
-      )
+      :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
+      ) test
         <!--span {{ item.shipment.totalBoxes() }}-->
 
 </template>
