@@ -2,15 +2,13 @@
 
 .outlets-page
 
-  mt-tab-container(:value='$route.name')
+  h1 Торговые точки
 
-    mt-tab-container-item#OutletsPage
-      h1 Торговые точки
-      outlet-list
+  outlet-list(v-if="$route.name === 'OutletsPage'")
 
-    mt-tab-container-item#OutletPage
-      nav-header(title="Клиент" :prev="backClick")
-      router-view
+  .outlet-page(v-else)
+    nav-header(title="Клиент" :prev="backClick")
+    router-view
 
 </template>
 <script>

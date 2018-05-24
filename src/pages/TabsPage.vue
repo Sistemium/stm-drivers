@@ -32,8 +32,8 @@ export default {
 
   methods: {
     handleResize() {
-      const height = window.innerHeight;
-      this.style = { height: `${height}px` };
+      const height = `${window.innerHeight}px`;
+      this.style = { height };
     },
   },
 
