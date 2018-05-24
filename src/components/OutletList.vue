@@ -2,20 +2,27 @@
 
 .outlet-list.cell-list
 
-  .partner(
-  v-for="partner in partners"
-  :id="`id-${partner.id}`"
-  :key="partner.id"
-  )
-    mt-cell(
-    :label="`Адресов: ${partner.outlets.length}`"
-    :title="partner.shortName"
-    :to="{name: 'OutletPage', params: {id: partner.id}}"
-    is-link
-    )
+  mt-index-list
+    mt-index-section(v-for="group in index" :index="group.key" :key="group.key")
+      .partner(
+      v-for= "partner in group.partners"
+      :id="`id-${partner.id}`"
+      :key="partner.id"
+      )
+        mt-cell(
+        :label="`Адресов: ${partner.outlets.length}`"
+        :title="partner.shortName"
+        :to="{name: 'OutletPage', params: {id: partner.id}}"
+        )
 
 </template>
 <script>
+
+import groupBy from 'lodash/groupBy';
+import upperCase from 'lodash/upperCase';
+import first from 'lodash/first';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 
 import Partner from '@/models/Partner';
 // import Outlet from '@/models/Outlet';
@@ -30,7 +37,12 @@ export default {
     };
   },
 
-  methods: {},
+  computed: {
+    index() {
+      const grouped = groupBy(this.partners, partner => upperCase(first(partner.shortName)));
+      return sortBy(map(grouped, (partners, key) => ({ key, partners })), 'key');
+    },
+  },
 
   created() {
 
