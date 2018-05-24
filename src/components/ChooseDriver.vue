@@ -4,10 +4,10 @@
 
   h2 Выберите водителя
 
-  mt-cell(
-  v-for="driver in drivers" :key="driver.id"
-  )
-    .name(slot="title" @click="chooseDriver(driver)") {{ driver.name }}
+  .cell-list
+    .driver(v-for="driver in drivers" :key="driver.id")
+      mt-cell
+        .name(slot="title" @click="chooseDriver(driver)") {{ driver.name }}
 
 </template>
 <script>
