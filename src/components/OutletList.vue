@@ -1,19 +1,21 @@
 <template lang="pug">
 
-.outlet-list.cell-list
+.outlet-list
 
-  mt-index-list
-    mt-index-section(v-for="group in index" :index="group.key" :key="group.key")
-      .partner(
-      v-for= "partner in group.partners"
-      :id="`id-${partner.id}`"
-      :key="partner.id"
-      )
-        mt-cell(
-        :label="`Адресов: ${partner.outlets.length}`"
-        :title="partner.shortName"
-        :to="{name: 'OutletPage', params: {id: partner.id}}"
+  .cell-list(ref="content")
+
+    mt-index-list(v-if="listHeight" :height="listHeight")
+      mt-index-section(v-for="group in index" :index="group.key" :key="group.key")
+        .partner(
+        v-for= "partner in group.partners"
+        :id="`id-${partner.id}`"
+        :key="partner.id"
         )
+          mt-cell(
+          :label="`Адресов: ${partner.outlets.length}`"
+          :title="partner.shortName"
+          :to="{name: 'OutletPage', params: {id: partner.id}}"
+          )
 
 </template>
 <script>
@@ -31,9 +33,14 @@ export default {
 
   name: 'outlet-list',
 
+  props: {
+    scrollParentClass: { default: 'tab-content' },
+  },
+
   data() {
     return {
       partners: Partner.bindAll(this, { orderBy: 'shortName' }, 'partners'),
+      listHeight: null,
     };
   },
 
@@ -44,18 +51,28 @@ export default {
     },
   },
 
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+
+  methods: {
+    handleResize() {
+      const scrollParent = document.getElementsByClassName(this.scrollParentClass)[0];
+      this.listHeight = scrollParent.clientHeight - this.$refs.content.getBoundingClientRect().top;
+    },
+  },
+
   created() {
 
     loadData()
       .then(this.$loading.show().hide);
 
-    // Outlet.bind(this);
-
   },
 
   beforeDestroy() {
     Partner.unbindAll(this);
-    // Outlet.unbindAll(this);
+    window.removeEventListener('resize', this.handleResize);
   },
 
 };
