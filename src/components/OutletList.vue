@@ -88,4 +88,9 @@ function loadData() {
 </script>
 <style scoped>
 
+.cell-list {
+  /* to match ui-mint index nav left-border */
+  border-top: solid 1px #ddd;
+}
+
 </style>
