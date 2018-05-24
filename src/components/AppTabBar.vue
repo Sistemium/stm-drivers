@@ -2,7 +2,7 @@
 
 .app-tab-bar
 
-  mt-tabbar(fixed v-model="selected")
+  mt-tabbar(v-model="selected")
 
     mt-tab-item(v-for="tab in tabs" v-bind:id="tab.name" :key="tab.name")
       img(slot="icon" v-bind:src="tab.meta.img")
@@ -53,6 +53,10 @@ export default {
   .mint-tab-item-icon {
     display: none;
   }
+}
+
+.mint-tabbar {
+  position: static;
 }
 
 </style>

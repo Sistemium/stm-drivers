@@ -22,9 +22,16 @@ export default {
 </script>
 <style scoped lang="scss">
 
+.tabs-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .tab-content {
   overflow-y: scroll;
-  margin-bottom: 55px;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
 }
 
 </style>

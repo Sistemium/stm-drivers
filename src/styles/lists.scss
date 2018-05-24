@@ -35,6 +35,11 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  margin-right: 1px;
+}
+
+.mint-indexlist-indicator {
+  z-index: 2;
 }
 
 .mint-indexlist-content {
