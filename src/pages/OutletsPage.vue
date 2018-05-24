@@ -2,10 +2,11 @@
 
 .outlets-page
 
+  h1 Торговые точки
+
   mt-tab-container(:value='$route.name')
 
     mt-tab-container-item#OutletsPage
-      h1 Торговые точки
       outlet-list
 
     mt-tab-container-item#OutletPage
