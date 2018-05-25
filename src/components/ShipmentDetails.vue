@@ -22,7 +22,7 @@
 </template>
 <script>
 
-import ShipmentPosition from '@/models/ShipmentPosition';
+// import ShipmentPosition from '@/models/ShipmentPosition';
 
 export default {
 
@@ -31,12 +31,12 @@ export default {
   methods: {
     async refresh() {
       if (this.shipment) {
-        // await this.shipment.loadRelations(['positions', 'positions.article']);
-        const { id: shipmentId } = this.shipment;
-        await ShipmentPosition.findAll({ shipmentId })
-          .then(positions => positions.map(position => position.loadRelations(['article'])))
-          .then(promises => Promise.all(promises))
-          .then(this.$loading.show().hide);
+        await this.shipment.loadRelations(['positions', 'positions.article']);
+        // const { id: shipmentId } = this.shipment;
+        // await ShipmentPosition.findAll({ shipmentId })
+        //   .then(positions => positions.map(position => position.loadRelations(['article'])))
+        //   .then(promises => Promise.all(promises))
+        //   .then(this.$loading.show().hide);
         this.$forceUpdate();
       }
     },

@@ -4,7 +4,6 @@
   .route-point(v-for='routePoint in routePoints' :key="routePoint.id")
     mt-cell(
     :to="{name: routeName, params: routeParams(routePoint)}"
-    is-link
     )
       span {{ routePoint.routePointShipments.length }}н
       div(slot="title")
@@ -67,30 +66,49 @@ export default {
 
 };
 
-async function findAll(shipmentRouteId) {
+function findAll(shipmentRouteId) {
 
   if (!shipmentRouteId) {
     return Promise.resolve();
   }
 
-  const res = await ShipmentRoutePoint.findAll({ shipmentRouteId }, {
+  return ShipmentRoutePoint.findAll({ shipmentRouteId }, {
     with: [
       'outlet',
       'outlet.partner',
       'reachedAtLocation',
-    ],
-  });
-
-  return Promise.all(res.map(routePoint =>
-    routePoint.loadRelations([
       'routePointShipments',
       'routePointShipments.shipment',
-      // 'routePointShipments.shipment.positions',
-    ])));
+    ],
+  });
+  //
+  // return Promise.all(res.map(routePoint =>
+  //   routePoint.loadRelations([
+  //     // 'routePointShipments.shipment.positions',
+  //   ])));
 
 }
 
 </script>
 <style scoped lang="scss">
+
+@import "../styles/variables";
+
+.label {
+  margin-top: 4px;
+  color: $gray;
+  font-size: 75%;
+}
+
+.ord {
+  margin-right: 7px;
+  font-size: 75%;
+  display: inline-block;
+  padding: 2px;
+  background: $gray-background;
+  border-radius: 5px;
+  position: relative;
+  top: -4px;
+}
 
 </style>
