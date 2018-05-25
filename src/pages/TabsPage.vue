@@ -32,8 +32,11 @@ export default {
 
   methods: {
     handleResize() {
-      const height = `${window.innerHeight}px`;
-      this.style = { height };
+
+      setTimeout(() => {
+        this.style = { height: `${window.innerHeight}px` };
+      }, 700);
+
     },
   },
 
