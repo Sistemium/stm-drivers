@@ -77,7 +77,7 @@ export default {
 <style scoped lang="scss">
 
 .app {
-  max-width: 666px;
+  max-width: 812px; // iPhone X
   margin: auto;
 }
 
