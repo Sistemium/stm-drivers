@@ -33,8 +33,7 @@ export default new Model({
 
     totalBoxes() {
 
-      return sumBy(this.positions, it => (it.article ? it.volume / it.article.packageRel : 0))
-        .toFixed(1);
+      return sumBy(this.positions, it => (it.article ? it.volume / it.article.packageRel : 0));
 
     },
 

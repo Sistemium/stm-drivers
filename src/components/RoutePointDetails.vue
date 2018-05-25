@@ -29,7 +29,7 @@
       mt-cell(
       :title="item.shipment.ndoc"
       :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
-      ) {{ item.shipment.totalBoxes() }}
+      ) {{ item.shipment.totalBoxes() | boxes }}
 
 </template>
 <script>

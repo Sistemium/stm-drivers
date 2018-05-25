@@ -16,3 +16,13 @@ Vue.filter('date', value => {
   return dateFormat(value);
 
 });
+
+Vue.filter('boxes', value => {
+
+  if (!value) return '';
+
+  const formatted = value > 2 ? Math.ceil(value) : value.toFixed(1);
+
+  return `${formatted}к`;
+
+});
