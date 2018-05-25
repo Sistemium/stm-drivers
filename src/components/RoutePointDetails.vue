@@ -94,10 +94,6 @@ export default {
 </script>
 <style scoped lang="scss">
 
-.buttons {
-  margin-top: 10px;
-}
-
 .el-icon-location {
   font-size: 120%;
   color: lighten(green, 10%);

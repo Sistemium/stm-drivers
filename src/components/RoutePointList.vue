@@ -3,12 +3,15 @@
 .route-point-list.cell-list
   .route-point(v-for='routePoint in routePoints' :key="routePoint.id")
     mt-cell(
-    :title="routePoint.outlet.partner.shortName"
-    :label="routePoint.outlet.address"
-    :value="routePoint.ord || '?'"
     :to="{name: routeName, params: routeParams(routePoint)}"
     is-link
     )
+      span {{ routePoint.routePointShipments.length }}н
+      div(slot="title")
+        .title
+          span.ord {{ routePoint.ord || '?' }}
+          span {{ routePoint.outlet.partner.shortName }}
+        .label {{ routePoint.outlet.address }}
 
 </template>
 <script>
