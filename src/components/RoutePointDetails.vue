@@ -4,7 +4,7 @@
 
   .cell-list
 
-    .outlet
+    .outlet(v-if="routePoint.outlet")
       mt-cell(
       :title="routePoint.outlet.partner.name"
       :label="routePoint.outlet.address"

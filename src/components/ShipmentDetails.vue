@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.shipment-details
+.shipment-details(v-if="shipment.outlet")
 
   .cell-list
 

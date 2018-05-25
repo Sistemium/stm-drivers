@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.partner-info
+.partner-info(v-if="partner")
 
   .fields
     mt-cell(title="Название" :value="partner.name")
