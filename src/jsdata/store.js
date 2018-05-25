@@ -25,24 +25,21 @@ export function authorize(token, org) {
     },
 
     // fix for https://github.com/js-data/js-data/issues/503
-    afterFindAll({ name }, query, opts, response) {
-
-      const { _activeWith: activeWith } = opts;
+    afterFindAll({ name }, query, { _activeWith: activeWith }, response) {
 
       if (response.length && activeWith) {
         // console.info('afterFindAll activeWith', name, response); // eslint-disable-line
-        setTimeout(() => store.addToCache(name, response, opts));
+        store.addToCache(name, response, {});
       }
 
       return response || [];
     },
 
-    afterFind({ name }, query, opts, response) {
+    afterFind({ name }, query, { _activeWith: activeWith }, response) {
 
-      const { _activeWith: activeWith } = opts;
       if (response && activeWith) {
         // console.info('afterFind activeWith', name, response); // eslint-disable-line
-        setTimeout(() => store.addToCache(name, response, opts));
+        store.addToCache(name, response, {});
       }
 
       return response;
