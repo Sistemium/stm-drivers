@@ -29,9 +29,9 @@ export default {
     return roles(token)
       .then(res => new Promise(resolve => setTimeout(() => resolve(res), 1000)))
       .then(res => {
-        commit(m.AUTHORIZED, res);
         localStorage.setItem(LS_KEY, token);
         authorizeJSDataStore(token, res.account.org);
+        commit(m.AUTHORIZED, res);
       })
       .catch(error => commit(m.NOT_AUTHORIZED, error));
 
