@@ -1,11 +1,24 @@
 <template lang="pug">
 
 .route-point-list.cell-list
-  .route-point(v-for='routePoint in routePoints' :key="routePoint.id")
+
+  .buttons(v-for="(value, key) in shipmentRoute.workflow().to")
+    mt-button(type="primary" @click = "saveProcessing(key)") {{ value }}
+
+  .route-point(v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.ord")
     mt-cell(
-    :to="{name: routeName, params: routeParams(routePoint)}"
+    :to="{name: reordering && 'RoutePage' || routeName, params: routeParams(routePoint)}"
     )
-      span {{ routePoint.routePointShipments.length }}н
+
+      span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
+
+      button(@click="reorder(routePoint, -1)"
+        v-if="reordering && index !== 0")
+        i.el-icon-arrow-up
+      button(@click="reorder(routePoint, 1)"
+        v-if="reordering && index !== orderedRoutePoints.length - 1")
+        i.el-icon-arrow-down
+
       div(slot="title")
         .title
           span.ord {{ routePoint.ord || '?' }}
@@ -14,19 +27,27 @@
 
 </template>
 <script>
+/* eslint-disable no-param-reassign */
+
 
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
+import ShipmentRoute from '@/models/ShipmentRoute';
+import orderBy from 'lodash/orderBy';
+import maxBy from 'lodash/maxBy';
+import fpForEach from 'lodash/fp/forEach';
 
 export default {
 
   data() {
     return {
       routePoints: this.bindRoutePoints(),
+      shipmentRoute: ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute'),
     };
   },
 
   watch: {
     shipmentRouteId() {
+      this.shipmentRoute = ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute');
       this.routePoints = this.bindRoutePoints();
       this.refresh();
     },
@@ -36,6 +57,19 @@ export default {
     shipmentRouteId: String,
     routeName: { type: String, default: 'RoutePointPage' },
     routeParamName: { type: String, default: 'routePointId' },
+  },
+
+  computed: {
+
+    orderedRoutePoints() {
+      return orderBy(this.routePoints, 'ord');
+    },
+
+    reordering() {
+      return this.shipmentRoute.processing === 'routing';
+      // return true;
+    },
+
   },
 
   methods: {
@@ -51,7 +85,56 @@ export default {
 
     refresh() {
       findAll(this.shipmentRouteId)
+        .then(fpForEach(point => {
+
+          this.reorder(point, 0);
+
+        }))
         .then(this.$loading.show().hide);
+    },
+
+    reorder(routePoint, change) {
+
+      if (!routePoint.ord) {
+
+        routePoint.ord = maxBy(this.orderedRoutePoints, 'ord').ord + 1;
+
+        routePoint.save();
+
+        return;
+
+      }
+
+      if (change === 0) {
+
+        return;
+
+      }
+
+      const point = this.orderedRoutePoints[(routePoint.ord + change) - 1];
+
+      if (!point || !point.ord) {
+
+        return;
+
+      }
+
+      point.ord = routePoint.ord;
+
+      point.save();
+
+      routePoint.ord += change;
+
+      routePoint.save();
+
+    },
+
+    saveProcessing(processing) {
+
+      this.shipmentRoute.processing = processing;
+
+      this.shipmentRoute.save();
+
     },
 
   },
@@ -109,6 +192,12 @@ function findAll(shipmentRouteId) {
   border-radius: 5px;
   position: relative;
   top: -4px;
+}
+
+.reorder {
+
+  margin-left: 8px;
+
 }
 
 </style>
