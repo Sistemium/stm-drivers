@@ -3,10 +3,12 @@ import Vuex from 'vuex';
 
 import auth from './auth';
 import driver from './driver';
+import Workflow from '../models/Workflow';
+import { AUTHORIZED } from './auth/mutations';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
 
   strict: process.env.NODE_ENV !== 'production',
 
@@ -20,3 +22,14 @@ export default new Vuex.Store({
   },
 
 });
+
+store.subscribe(action => {
+  if (action.type.endsWith(AUTHORIZED)) {
+
+    Workflow.findAll();
+
+  }
+});
+
+
+export default store;
