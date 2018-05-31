@@ -13,10 +13,10 @@
       span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
 
       button(@click="reorder(routePoint, -1)"
-        v-if="reordering && index !== 0")
+      v-if="reordering && index !== 0")
         i.el-icon-arrow-up
       button(@click="reorder(routePoint, 1)"
-        v-if="reordering && index !== orderedRoutePoints.length - 1")
+      v-if="reordering && index !== orderedRoutePoints.length - 1")
         i.el-icon-arrow-down
 
       div(slot="title")
@@ -97,7 +97,17 @@ export default {
 
       if (!routePoint.ord) {
 
-        routePoint.ord = maxBy(this.orderedRoutePoints, 'ord').ord + 1;
+        const max = maxBy(this.orderedRoutePoints, 'ord');
+
+        if (max) {
+
+          routePoint.ord = max.ord + 1;
+
+        } else {
+
+          routePoint.ord = 1;
+
+        }
 
         routePoint.save();
 
