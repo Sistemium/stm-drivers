@@ -2,6 +2,7 @@ import Model from '@/jsdata/Model';
 
 import './Driver';
 import './ShipmentRoutePoint';
+import Workflow from './Workflow';
 
 export default new Model({
 
@@ -19,6 +20,22 @@ export default new Model({
         localField: 'routePoints',
         foreignKey: 'shipmentRouteId',
       },
+    },
+  },
+
+  methods: {
+    workflow() {
+
+      const v = Workflow.filter({ code: 'shipmentRoute.v2' })[0];
+
+      if (v === undefined) {
+
+        return {};
+
+      }
+
+      const { workflow } = v;
+      return workflow[this.processing];
     },
   },
 
