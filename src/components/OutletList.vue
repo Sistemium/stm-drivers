@@ -53,13 +53,17 @@ export default {
 
   mounted() {
     window.addEventListener('resize', this.handleResize);
-    this.$nextTick(this.handleResize);
+    this.$nextTick(this.setHeight);
   },
 
   methods: {
     handleResize() {
+      setTimeout(this.setHeight, 700);
+    },
+    setHeight() {
       const scrollParent = document.getElementsByClassName(this.scrollParentClass)[0];
-      this.listHeight = scrollParent.clientHeight - this.$refs.content.getBoundingClientRect().top;
+      const { top } = this.$refs.content.getBoundingClientRect();
+      this.listHeight = scrollParent.clientHeight - top;
     },
   },
 

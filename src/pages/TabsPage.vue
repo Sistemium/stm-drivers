@@ -23,7 +23,7 @@ export default {
 
   mounted() {
     window.addEventListener('resize', this.handleResize);
-    this.handleResize();
+    this.setHeight();
   },
 
   beforeDestroy() {
@@ -31,9 +31,11 @@ export default {
   },
 
   methods: {
+    setHeight() {
+      this.style = { height: `${window.innerHeight}px` };
+    },
     handleResize() {
-      const height = `${window.innerHeight}px`;
-      this.style = { height };
+      setTimeout(this.setHeight, 700);
     },
   },
 

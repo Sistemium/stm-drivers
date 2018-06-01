@@ -8,8 +8,8 @@
 
     hello-world
 
-    p(v-if="!authorizing")
-      router-link.solo(to="/sign-in" tag="div")
+    p.buttons(v-if="!authorizing")
+      router-link(to="/sign-in" tag="div")
         mt-button(type="primary") Вход для клиентов
 
 </template>
@@ -77,7 +77,7 @@ export default {
 <style scoped lang="scss">
 
 .app {
-  max-width: 666px;
+  max-width: 812px; // iPhone X
   margin: auto;
 }
 
