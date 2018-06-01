@@ -5,18 +5,18 @@
   .buttons(v-for="(value, key) in shipmentRoute.workflow().to")
     mt-button(type="primary" @click = "saveProcessing(key)") {{ value }}
 
-  .route-point(v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.ord")
+  .route-point(v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.id")
     mt-cell(
-    :to="{name: reordering && 'RoutePage' || routeName, params: routeParams(routePoint)}"
+    :to="{name: routeName, params: routeParams(routePoint)}"
     )
 
       span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
 
-      button(@click="reorder(routePoint, -1)"
-      v-if="reordering && index !== 0")
+      button(@click.prevent.stop="reorder(routePoint, -1)"
+      v-if="reordering" :disabled = "index === 0")
         i.el-icon-arrow-up
-      button(@click="reorder(routePoint, 1)"
-      v-if="reordering && index !== orderedRoutePoints.length - 1")
+      button(@click.prevent.stop="reorder(routePoint, 1)"
+      v-if="reordering" :disabled = "index === orderedRoutePoints.length - 1")
         i.el-icon-arrow-down
 
       div(slot="title")
