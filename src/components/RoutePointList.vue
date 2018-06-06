@@ -5,25 +5,28 @@
   .buttons(v-for="(value, key) in shipmentRoute.workflow().to")
     mt-button(type="primary" @click = "saveProcessing(key)") {{ value }}
 
-  .route-point(v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.id")
-    mt-cell(
-    :to="{name: routeName, params: routeParams(routePoint)}"
-    )
+  transition-group(name="flip-list")
 
-      span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
+    .route-point(v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.id")
 
-      button(@click.prevent.stop="reorder(routePoint, -1)"
-      v-if="reordering" :disabled = "index === 0")
-        i.el-icon-arrow-up
-      button(@click.prevent.stop="reorder(routePoint, 1)"
-      v-if="reordering" :disabled = "index === orderedRoutePoints.length - 1")
-        i.el-icon-arrow-down
+      mt-cell(
+      :to="{name: routeName, params: routeParams(routePoint)}"
+      )
 
-      div(slot="title")
-        .title
-          span.ord {{ routePoint.ord || '?' }}
-          span {{ routePoint.outlet.partner.shortName }}
-        .label {{ routePoint.outlet.address }}
+        span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
+
+        button(@click.prevent.stop="reorder(routePoint, -1)"
+        v-if="reordering" :disabled = "index === 0")
+          i.el-icon-arrow-up
+        button(@click.prevent.stop="reorder(routePoint, 1)"
+        v-if="reordering" :disabled = "index === orderedRoutePoints.length - 1")
+          i.el-icon-arrow-down
+
+        div(slot="title")
+          .title
+            span.ord {{ routePoint.ord || '?' }}
+            span {{ routePoint.outlet.partner.shortName }}
+          .label {{ routePoint.outlet.address }}
 
 </template>
 <script>
@@ -93,23 +96,23 @@ export default {
         .then(this.$loading.show().hide);
     },
 
-    reorder(routePoint, change) {
+    reorder(routePoint1, change) {
 
-      if (!routePoint.ord) {
+      if (!routePoint1.ord) {
 
         const max = maxBy(this.orderedRoutePoints, 'ord');
 
         if (max) {
 
-          routePoint.ord = max.ord + 1;
+          routePoint1.ord = max.ord + 1;
 
         } else {
 
-          routePoint.ord = 1;
+          routePoint1.ord = 1;
 
         }
 
-        routePoint.save();
+        routePoint1.save();
 
         return;
 
@@ -121,21 +124,21 @@ export default {
 
       }
 
-      const point = this.orderedRoutePoints[(routePoint.ord + change) - 1];
+      const routePoint2 = this.orderedRoutePoints[(routePoint1.ord + change) - 1];
 
-      if (!point || !point.ord) {
+      if (!routePoint2 || !routePoint2.ord) {
 
         return;
 
       }
 
-      point.ord = routePoint.ord;
+      routePoint2.ord = routePoint1.ord;
 
-      point.save();
+      routePoint1.ord += change;
 
-      routePoint.ord += change;
+      routePoint2.save();
 
-      routePoint.save();
+      routePoint1.save();
 
     },
 
@@ -208,6 +211,10 @@ function findAll(shipmentRouteId) {
 
   margin-left: 8px;
 
+}
+
+.flip-list-move {
+  transition: transform 0.3s;
 }
 
 </style>
