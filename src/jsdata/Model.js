@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import Vue from 'vue';
+import { serverDateTimeFormat } from '@/config/moments';
 import store from './store';
 
 class Model {
@@ -14,6 +16,11 @@ class Model {
 
   create(params) {
 
+    if (!params.deviceCts) {
+
+      params.deviceCts = serverDateTimeFormat(Date());
+
+    }
 
     return this.store.create(this.name, params);
   }
