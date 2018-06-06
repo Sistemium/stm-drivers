@@ -1,5 +1,10 @@
 @import "responsive";
 
+button {
+  border: none;
+  background: none;
+}
+
 .mint-cell .mint-button {
   margin-right: 1px;
 }
