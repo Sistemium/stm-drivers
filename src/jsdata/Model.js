@@ -12,6 +12,12 @@ class Model {
 
   }
 
+  create(params) {
+
+
+    return this.store.create(this.name, params);
+  }
+
   get(id) {
     return this.store.get(this.name, id);
   }
