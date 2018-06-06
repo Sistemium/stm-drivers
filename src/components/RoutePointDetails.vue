@@ -35,6 +35,7 @@
 <script>
 
 import { MessageBox } from 'mint-ui';
+import getLocation from '@/services/locationHelper';
 import ShipmentRoutePointShipment from '@/models/ShipmentRoutePointShipment';
 
 export default {
@@ -52,7 +53,29 @@ export default {
         cancelButtonText: 'Нет',
       })
         .then(result => {
-          this.routePoint.isReached = result === 'confirm';
+
+          if (result === 'confirm') {
+
+            getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000).then(location => {
+
+              this.routePoint.isReached = true;
+
+              this.routePoint.reachedAtLocationId = location.id;
+
+              this.routePoint.save();
+
+            }).catch(e => {
+
+              MessageBox({
+                title: 'Error',
+                message: `${e.message}`,
+                confirmButtonText: 'ОК',
+              });
+
+            }).finally(this.$loading.show().hide);
+
+          }
+
         });
     },
 
