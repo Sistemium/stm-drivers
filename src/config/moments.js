@@ -14,3 +14,16 @@ export function dateTimeFormat(utcDate) {
   return format(date, 'dd.MM.y HH:mm');
 
 }
+
+export function serverDateFormat(date) {
+
+  return format(date, 'YYYY-MM-dd');
+
+}
+
+export function serverDateTimeFormat(date) {
+
+  format(date, 'YYYY-MM-dd HH:mm:ss.SSS');
+
+}
+
