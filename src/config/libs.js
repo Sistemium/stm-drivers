@@ -11,6 +11,17 @@ Vue.config.productionTip = false;
 // import VKHeightViewport from 'vuikit/lib/height-viewport';
 // Vue.directive('HeightViewport', VKHeightViewport);
 
+// Axios
+import http from 'axios';
+const defaultHTTPAdapter = require('axios/lib/adapters/http');
+import axiosScriptMessaging from '@/jsdata/axiosScriptMessaging';
+import {isNative} from '@/services/native';
+if (isNative()){
+
+  http.defaults.adapter = axiosScriptMessaging;
+
+}
+
 // ElementUI
 import { Breadcrumb, BreadcrumbItem, Alert } from 'element-ui';
 import ru from 'element-ui/lib/locale/lang/ru-RU';

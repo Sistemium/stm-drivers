@@ -1,13 +1,18 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars,no-param-reassign */
 
 import get from 'lodash/get';
 import assign from 'lodash/assign';
+import isArray from 'lodash/isArray';
+import first from 'lodash/first';
 
 let requestIdCounter = 0;
-
 const messages = {};
-
 const messageHandlers = get(window, 'stmAndroid') || get(window, 'webkit.messageHandlers');
+
+window.messageCallback = messageCallback;
+window.arrayMessageCallback = arrayMessageCallback;
+window.iSistemiumIOSCallback = arrayMessageCallback;
+window.iSistemiumIOSErrorCallback = arrayMessageCallback;
 
 function isNative() {
 
@@ -79,9 +84,11 @@ function message(handlerName, cfg) {
 
     const msg = assign({
       requestId,
-      callback: 'iosPhotoCallback',
-      options: { requestId },
+      callback: 'messageCallback',
+      options: { },
     }, cfg);
+
+    msg.options.requestId = requestId;
 
     messages[requestId] = { resolve, reject, msg };
 
@@ -100,4 +107,69 @@ function message(handlerName, cfg) {
 
 }
 
-export { isNative, checkIn };
+function messageCallback(res, req) {
+
+  const msg = messages[req.requestId];
+
+  if (!msg) {
+    return;
+  }
+
+  let { status } = req;
+
+  if (!status) {
+    status = isArray(res) ? 'resolve' : 'reject';
+  }
+
+  if (status === 'resolve') {
+    res = isArray(res) ? first(res) : res;
+  }
+
+  msg[status](res);
+
+  delete messages[req.requestId];
+
+}
+
+function arrayMessageCallback(res, req) {
+
+  const msg = messages[req.requestId];
+
+  if (!msg) {
+    return;
+  }
+
+  let { status } = req;
+
+  if (!status) {
+    status = isArray(res) ? 'resolve' : 'reject';
+  }
+
+  msg[status](res);
+
+  delete messages[req.requestId];
+
+}
+
+function getRoles() {
+
+  return message('roles');
+
+}
+
+function requestFromDevice(type, entity, options, where) {
+
+  const msg = {
+
+    entity,
+    options,
+    callback: 'arrayMessageCallback',
+    where,
+
+  };
+
+  return message(type, msg);
+
+}
+
+export { isNative, checkIn, getRoles, requestFromDevice };

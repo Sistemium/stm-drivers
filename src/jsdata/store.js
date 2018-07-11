@@ -1,7 +1,9 @@
+import http from 'axios';
 import { DataStore } from 'js-data';
 import { HttpAdapter } from 'js-data-http';
 
 import queryTransform from './httpAdapter';
+// import axiosScriptMessaging from '@/jsdata/axiosScriptMessaging';
 
 const store = new DataStore();
 
@@ -46,6 +48,8 @@ export function authorize(token, org) {
     },
 
   };
+
+  httpOptions.http = http;
 
   const httpAdapter = new HttpAdapter(httpOptions);
 
