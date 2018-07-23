@@ -5,32 +5,36 @@ const settle = require('axios/lib/core/settle');
 
 export default function axiosAdapter(config) {
 
+  // console.info('Request config', config);
+
   return new Promise((resolve, reject) => {
 
     const options = {};
+    const { params, op } = config;
 
     // let ids;
     let where;
 
-    if (config.params['x-order-by:']) {
+    const iosParams = {
+      entity: config.name,
+      options,
+    };
 
-      options.sortBy = config.params['x-order-by:'].substr(1);
-
+    if (params['x-order-by:']) {
+      options.sortBy = params['x-order-by:'].substr(1);
     }
 
-    if (config.params['x-page-size:']) {
-
-      options.pageSize = config.params['x-page-size:'];
-
+    if (params['x-page-size:']) {
+      options.pageSize = params['x-page-size:'];
     }
 
-    if (config.params['where:']) {
-
-      where = JSON.parse(config.params['where:'].replace('"in"', '"=="'));
-
+    if (params['where:']) {
+      where = JSON.parse(params['where:'].replace('"in"', '"=="'));
     }
 
-    const params = config.params;
+    if (op === 'find') {
+      iosParams.id = parseIdParam(config.url);
+    }
 
     delete params['where:'];
 
@@ -47,7 +51,11 @@ export default function axiosAdapter(config) {
 
     });
 
-    requestFromDevice(config.op, config.name, options, where)
+    if (where) {
+      iosParams.where = where;
+    }
+
+    requestFromDevice(op, iosParams)
       .then(res => {
 
         const response = {
@@ -69,99 +77,12 @@ export default function axiosAdapter(config) {
         settle(resolve, reject, response);
 
       })
-      .catch(e => {
-
-        reject(e);
-
-      });
-
-    // if (config.params['where:']) {
-    //
-    //   const where = JSON.parse(config.params['where:']);
-    //
-    //   key = Object.keys(where)[0];
-    //
-    //   ids = where[key].in;
-    //
-    // }
-
-    // console.log('_______________________');
-    // console.log(config.name);
-    // console.log(config.op);
-    // console.log(config.params);
-    // if (config.params['where:']) {
-    //
-    //   console.log(ids);
-    //
-    // }
-    // console.log(ids);
-    // console.log('_______________________');
-
-    // if (ids) {
-    //
-    //   const promises = [];
-    //   const res = [];
-    //
-    //   ids.forEach(i => {
-    //
-    //     const where = {};
-    //
-    //     where[key] = { '==': i };
-    //
-    //     promises.push(requestFromDevice(config.op, config.name, options, where).then(
-    //       r => {
-    //         res.push(JSON.stringify(r));
-    //         console.log(where);
-    //         console.log(r);
-    //       }));
-    //
-    //   });
-    //
-    //   Promise.all(promises).then(() => {
-    //
-    //     const response = {
-    //       data: res,
-    //       status: 200,
-    //       statusText: 'OK',
-    //       // headers: config.headers,
-    //       config,
-    //       // request: config.transport.request,
-    //     };
-    //
-    //     console.log(res);
-    //
-    //     settle(resolve, reject, response);
-    //
-    //   }).catch(e => {
-    //
-    //     reject(e);
-    //
-    //   });
-    //
-    // } else {
-    //
-    //   requestFromDevice(config.op, config.name, options)
-    //     .then(res => {
-    //
-    //       const response = {
-    //         data: JSON.stringify(res),
-    //         status: 200,
-    //         statusText: 'OK',
-    //         // headers: config.headers,
-    //         config,
-    //         // request: config.transport.request,
-    //       };
-    //
-    //       settle(resolve, reject, response);
-    //
-    //     })
-    //     .catch(e => {
-    //
-    //       reject(e);
-    //
-    //     });
-    //
-    // }
+      .catch(reject);
 
   });
+}
+
+
+function parseIdParam(url) {
+  return url.match(/[^\/]*$/)[0];
 }

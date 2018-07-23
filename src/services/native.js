@@ -157,15 +157,11 @@ function getRoles() {
 
 }
 
-function requestFromDevice(type, entity, options, where) {
+function requestFromDevice(type, params) {
 
   const msg = {
-
-    entity,
-    options,
     callback: 'arrayMessageCallback',
-    where,
-
+    ...params,
   };
 
   return message(type, msg);
