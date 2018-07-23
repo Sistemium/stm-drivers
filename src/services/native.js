@@ -168,4 +168,4 @@ function requestFromDevice(type, params) {
 
 }
 
-export { isNative, checkIn, getRoles, requestFromDevice };
+export { isNative, checkIn, getRoles, requestFromDevice, handler };

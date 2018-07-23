@@ -1,7 +1,7 @@
 import * as m from '@/store/auth/mutations';
 import { confirm, login, roles } from '@/services/auth';
 import { authorize as authorizeJSDataStore } from '@/jsdata/store';
-import { isNative, getRoles } from '@/services/native';
+import { isNative, getRoles, handler } from '@/services/native';
 
 const LS_KEY = 'std.authorization';
 
@@ -28,6 +28,7 @@ export default {
         .then(res => {
           authorizeJSDataStore(undefined, res.account.org);
           commit(m.AUTHORIZED, res);
+          handler('tabbar').postMessage({ action: 'show' });
         })
         .catch(error => commit(m.NOT_AUTHORIZED, error));
 
