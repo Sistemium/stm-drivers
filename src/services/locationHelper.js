@@ -12,11 +12,13 @@ export default function getLocation(desiredAccuracy, requiredAccuracy, ownerXid,
 
   if (isNative()) {
 
-    return checkIn(desiredAccuracy, requiredAccuracy, initData, timeout).catch(m => {
+    return checkIn(desiredAccuracy, requiredAccuracy, initData, timeout)
+      .then(location => Location.create(assign(location, initData)))
+      .catch(m => {
 
-      throw Error(m);
+        throw Error(m);
 
-    });
+      });
 
   }
 
