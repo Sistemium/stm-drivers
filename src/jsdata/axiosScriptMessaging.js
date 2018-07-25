@@ -35,6 +35,21 @@ export default function axiosAdapter(config) {
 
     if (op === 'find') {
       iosParams.id = parseIdParam(config.url);
+
+      if (!iosParams.id || iosParams.id.indexOf('-') == -1) {
+
+        const response = {
+          data: "",
+          status: 204,
+          statusText: 'No Content',
+          config,
+        };
+
+        settle(resolve, reject, response);
+
+        return;
+
+      }
     }
 
     delete params['where:'];
