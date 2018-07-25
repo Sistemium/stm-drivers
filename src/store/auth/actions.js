@@ -28,7 +28,7 @@ export default {
         .then(res => {
           authorizeJSDataStore(undefined, res.account.org);
           commit(m.AUTHORIZED, res);
-          handler('tabbar').postMessage({ action: 'show' });
+          handler('tabbar').postMessage({ action: 'hide' });
         })
         .catch(error => commit(m.NOT_AUTHORIZED, error));
 
