@@ -10,10 +10,11 @@ export default function axiosAdapter(config) {
   return new Promise((resolve, reject) => {
 
     const options = {};
-    const { params, op } = config;
-
-    // let ids;
+    const { params } = config;
+    let { op } = config;
     let where;
+
+    if (op == 'create') op = 'update';
 
     const iosParams = {
       entity: config.name,
@@ -55,6 +56,12 @@ export default function axiosAdapter(config) {
       iosParams.where = where;
     }
 
+    if (config.data) {
+
+      iosParams.data = JSON.parse(config.data);
+
+    }
+
     requestFromDevice(op, iosParams)
       .then(res => {
 
@@ -62,17 +69,8 @@ export default function axiosAdapter(config) {
           data: JSON.stringify(res),
           status: 200,
           statusText: 'OK',
-          // headers: config.headers,
           config,
-          // request: config.transport.request,
         };
-
-        console.log('_______________________');
-        console.log(config);
-        console.log(where);
-        console.log(config.name);
-        console.log(res);
-        console.log('_______________________');
 
         settle(resolve, reject, response);
 
