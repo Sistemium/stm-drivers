@@ -81,7 +81,7 @@ export default function axiosAdapter(config) {
       .then(res => {
 
         const response = {
-          data: JSON.stringify(res),
+          data: op == 'update' || op == 'find' ? JSON.stringify(res[0]) : JSON.stringify(res),
           status: 200,
           statusText: 'OK',
           config,
