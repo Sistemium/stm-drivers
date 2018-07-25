@@ -14,7 +14,7 @@ export default function axiosAdapter(config) {
     let { op } = config;
     let where;
 
-    if (op == 'create') op = 'update';
+    if (op === 'create') op = 'update';
 
     const iosParams = {
       entity: config.name,
@@ -36,10 +36,10 @@ export default function axiosAdapter(config) {
     if (op === 'find') {
       iosParams.id = parseIdParam(config.url);
 
-      if (!iosParams.id || iosParams.id.indexOf('-') == -1) {
+      if (!iosParams.id || iosParams.id.indexOf('-') === -1) {
 
         const response = {
-          data: "",
+          data: '',
           status: 204,
           statusText: 'No Content',
           config,
@@ -81,7 +81,7 @@ export default function axiosAdapter(config) {
       .then(res => {
 
         const response = {
-          data: op == 'update' || op == 'find' ? JSON.stringify(res[0]) : JSON.stringify(res),
+          data: JSON.stringify((op === 'update' || op === 'find') ? res[0] : res),
           status: 200,
           statusText: 'OK',
           config,
@@ -97,5 +97,5 @@ export default function axiosAdapter(config) {
 
 
 function parseIdParam(url) {
-  return url.match(/[^\/]*$/)[0];
+  return url.match(/[^/]*$/)[0];
 }
