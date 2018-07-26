@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars,no-param-reassign */
-
 import get from 'lodash/get';
 import assign from 'lodash/assign';
 import isArray from 'lodash/isArray';
@@ -85,7 +83,7 @@ function message(handlerName, cfg) {
     const msg = assign({
       requestId,
       callback: 'messageCallback',
-      options: { },
+      options: {},
     }, cfg);
 
     msg.options.requestId = requestId;
@@ -121,11 +119,13 @@ function messageCallback(res, req) {
     status = isArray(res) ? 'resolve' : 'reject';
   }
 
+  let result = res;
+
   if (status === 'resolve') {
-    res = isArray(res) ? first(res) : res;
+    result = isArray(res) ? first(res) : res;
   }
 
-  msg[status](res);
+  msg[status](result);
 
   delete messages[req.requestId];
 

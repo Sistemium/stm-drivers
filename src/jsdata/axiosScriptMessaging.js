@@ -3,7 +3,7 @@ import forOwn from 'lodash/forOwn';
 
 const settle = require('axios/lib/core/settle');
 
-export default function axiosAdapter(config) {
+export default function (config) {
 
   // console.info('Request config', config);
 
@@ -12,7 +12,7 @@ export default function axiosAdapter(config) {
     const options = {};
     const { params } = config;
     let { op } = config;
-    let where;
+    let where = {};
 
     if (op === 'create') op = 'update';
 
@@ -54,17 +54,8 @@ export default function axiosAdapter(config) {
 
     delete params['where:'];
 
-    forOwn(params, (v, k) => {
-
-      if (!where) {
-
-        where = {};
-
-      }
-
-      where[k] = {};
-      where[k]['=='] = v;
-
+    forOwn(params, (val, key) => {
+      where[key] = { '==': val };
     });
 
     if (where) {
@@ -72,9 +63,7 @@ export default function axiosAdapter(config) {
     }
 
     if (config.data) {
-
       iosParams.data = JSON.parse(config.data);
-
     }
 
     requestFromDevice(op, iosParams)
