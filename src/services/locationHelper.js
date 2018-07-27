@@ -1,5 +1,6 @@
 import { serverDateTimeFormat } from '@/config/moments';
-import { get, assign } from 'lodash';
+import get from 'lodash/get';
+import assign from 'lodash/assign';
 import { isNative, checkIn } from './native';
 import Location from '../models/Location';
 
@@ -13,12 +14,7 @@ export default function getLocation(desiredAccuracy, requiredAccuracy, ownerXid,
   if (isNative()) {
 
     return checkIn(desiredAccuracy, requiredAccuracy, initData, timeout)
-      .then(location => Location.create(assign(location, initData)))
-      .catch(m => {
-
-        throw Error(m);
-
-      });
+      .then(location => Location.create(assign(location, initData)));
 
   }
 
@@ -27,90 +23,90 @@ export default function getLocation(desiredAccuracy, requiredAccuracy, ownerXid,
 
 }
 
-function browserGetLocation(desiredAccuracy, requiredAccuracy, timeout) {
+function browserGetLocation(desiredAccuracy, requiredAccuracy, timeout = 3000) {
 
   const geo = window.navigator.geolocation;
-  const time = timeout || 30000;
 
   return new Promise((resolve, reject) => {
 
     const geoOptions = {
       enableHighAccuracy: true,
       maximumAge: timeout,
-      timeout: time,
+      timeout,
     };
 
+    const timeoutId = setTimeout(timeoutHandler, timeout);
     const watchID = geo.watchPosition(successWatch, failWatch, geoOptions);
 
     let savedCords;
 
-    const timeoutId = setTimeout(() => {
+    /*
+    Functions
+     */
 
-      geo.clearWatch(watchID);
+    function timeoutHandler() {
 
       if (savedCords) {
-
-        const res = {
-          horizontalAccuracy: savedCords.accuracy,
-          latitude: savedCords.latitude,
-          longitude: savedCords.longitude,
-          timestamp: serverDateTimeFormat(Date()),
-        };
-
-        resolve(res);
-
+        resolveCoords(savedCords);
       } else {
-
-        reject('Время ожидания геометки истекло');
-
+        rejectError('Время ожидания геометки истекло');
       }
 
-    }, time);
+    }
 
     function successWatch(location) {
-      if (get(location, 'coords.accuracy') <= desiredAccuracy) {
-        clearTimeout(timeoutId);
-        geo.clearWatch(watchID);
-        const coords = location.coords;
-        const res = {
-          horizontalAccuracy: coords.accuracy,
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          timestamp: serverDateTimeFormat(Date()),
-        };
 
-        resolve(res);
-      } else if (get(location, 'coords.accuracy') <= requiredAccuracy &&
-        (!savedCords || savedCords.accuracy > get(location, 'coords.accuracy'))) {
+      const accuracy = get(location, 'coords.accuracy');
 
+      const gotDesiredAccuracy = accuracy <= desiredAccuracy;
+      const meetRequirements = accuracy <= requiredAccuracy;
+      const gotBetterAccuracyThanSaved = !savedCords || savedCords.accuracy > accuracy;
+
+      if (gotDesiredAccuracy) {
+        resolveCoords(location.coords);
+      } else if (meetRequirements && gotBetterAccuracyThanSaved) {
         savedCords = location;
-
       }
+
     }
 
     function failWatch(err) {
 
-      clearTimeout(timeoutId);
-
-      geo.clearWatch(watchID);
-
-      if (savedCords) {
-
-        const res = {
-          horizontalAccuracy: savedCords.accuracy,
-          latitude: savedCords.latitude,
-          longitude: savedCords.longitude,
-          timestamp: serverDateTimeFormat(Date()),
-        };
-
-        resolve(res);
-
+      if (!savedCords) {
+        rejectError(err);
       } else {
-
-        reject(err);
-
+        resolveCoords(savedCords);
       }
 
+    }
+
+    function cleanUp() {
+      clearTimeout(timeoutId);
+      geo.clearWatch(watchID);
+    }
+
+    function resolveCoords(coords) {
+
+      cleanUp();
+
+      const {
+        accuracy: horizontalAccuracy,
+        latitude,
+        longitude,
+      } = coords;
+
+      resolve({
+        horizontalAccuracy,
+        latitude,
+        longitude,
+        timestamp: serverDateTimeFormat(),
+      });
+
+    }
+
+    function rejectError(err) {
+      cleanUp();
+      reject(err);
     }
 
   });
