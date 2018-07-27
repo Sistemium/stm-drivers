@@ -32,6 +32,8 @@
         div(slot="title")
           .title
             span.ord {{ routePoint.ord || '?' }}
+            span.done(v-if="routePoint.reachedAtLocationId")
+              i.el-icon-check
             span {{ rowTitle(routePoint) }}
           .label {{ rowLabel(routePoint) }}
 
@@ -213,6 +215,11 @@ function findAll(shipmentRouteId) {
   border-radius: 5px;
   position: relative;
   top: -4px;
+}
+
+.done {
+  margin-right: 4px;
+  color: $green;
 }
 
 .reorder {
