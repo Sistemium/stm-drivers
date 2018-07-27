@@ -21,7 +21,7 @@ export function serverDateFormat(date) {
 
 }
 
-export function serverDateTimeFormat(date) {
+export function serverDateTimeFormat(date = new Date()) {
 
   format(date, 'YYYY-MM-dd HH:mm:ss.SSS');
 
