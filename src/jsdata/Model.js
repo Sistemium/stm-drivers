@@ -18,7 +18,7 @@ class Model {
 
     if (!params.deviceCts) {
 
-      params.deviceCts = serverDateTimeFormat(Date());
+      params.deviceCts = serverDateTimeFormat();
 
     }
 

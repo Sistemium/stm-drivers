@@ -95,11 +95,13 @@ function browserGetLocation(desiredAccuracy, requiredAccuracy, timeout = 3000) {
         longitude,
       } = coords;
 
+      const timestamp = serverDateTimeFormat();
+
       resolve({
         horizontalAccuracy,
         latitude,
         longitude,
-        timestamp: serverDateTimeFormat(),
+        timestamp,
       });
 
     }
