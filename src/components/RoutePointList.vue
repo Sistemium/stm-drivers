@@ -217,6 +217,13 @@ function findAll(shipmentRouteId) {
   }
 }
 
+.route-point {
+  button {
+    flex: 1;
+    padding: 10px 7px;
+  }
+}
+
 .ord {
   margin-right: 7px;
   font-size: 75%;
