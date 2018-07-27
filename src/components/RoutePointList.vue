@@ -2,8 +2,12 @@
 
 .route-point-list.cell-list
 
-  .buttons(v-for="(value, key) in shipmentRoute.workflow().to")
-    mt-button(type="primary" @click = "saveProcessing(key)") {{ value }}
+  .buttons
+    mt-button(
+    v-for="(value, key) in shipmentRoute.workflow().to" :key="key"
+    type="primary"
+    @click = "saveProcessing(key)"
+    ) {{ value }}
 
   transition-group(name="flip-list")
 
@@ -206,6 +210,13 @@ function findAll(shipmentRouteId) {
   font-size: 75%;
 }
 
+.buttons {
+  margin-bottom: $margin-top;
+  button:first-child {
+    margin-top: 0;
+  }
+}
+
 .ord {
   margin-right: 7px;
   font-size: 75%;
@@ -218,8 +229,13 @@ function findAll(shipmentRouteId) {
 }
 
 .done {
-  margin-right: 4px;
-  color: $green;
+  margin-right: 7px;
+  color: $blue;
+  i {
+    font-size: 75%;
+    top: -4px;
+    position: relative;
+  }
 }
 
 .reorder {
