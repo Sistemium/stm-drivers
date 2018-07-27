@@ -15,28 +15,35 @@
 
         span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
 
-        button(@click.prevent.stop="reorder(routePoint, -1)"
-        v-if="reordering" :disabled = "index === 0")
+        button(
+        @click.prevent.stop="reorder(routePoint, -1)"
+        v-if="reordering"
+        :disabled = "index === 0"
+        )
           i.el-icon-arrow-up
-        button(@click.prevent.stop="reorder(routePoint, 1)"
-        v-if="reordering" :disabled = "index === orderedRoutePoints.length - 1")
+
+        button(
+        @click.prevent.stop="reorder(routePoint, 1)"
+        v-if="reordering"
+        :disabled = "index === orderedRoutePoints.length - 1"
+        )
           i.el-icon-arrow-down
 
         div(slot="title")
           .title
             span.ord {{ routePoint.ord || '?' }}
-            span {{ routePoint.outlet.partner.shortName }}
-          .label {{ routePoint.outlet.address }}
+            span {{ rowTitle(routePoint) }}
+          .label {{ rowLabel(routePoint) }}
 
 </template>
 <script>
-/* eslint-disable no-param-reassign */
 
-
+import Vue from 'vue';
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 import ShipmentRoute from '@/models/ShipmentRoute';
 import orderBy from 'lodash/orderBy';
 import maxBy from 'lodash/maxBy';
+import get from 'lodash/get';
 import fpForEach from 'lodash/fp/forEach';
 
 export default {
@@ -77,6 +84,14 @@ export default {
 
   methods: {
 
+    rowLabel(routePoint) {
+      return get(routePoint, 'outlet.address');
+    },
+
+    rowTitle(routePoint) {
+      return get(routePoint, 'outlet.partner.shortName');
+    },
+
     bindRoutePoints() {
       const { shipmentRouteId } = this;
       return ShipmentRoutePoint.bindAll(this, { shipmentRouteId, orderBy: [['ord', 'ASC']] }, 'routePoints');
@@ -103,13 +118,9 @@ export default {
         const max = maxBy(this.orderedRoutePoints, 'ord');
 
         if (max) {
-
-          routePoint1.ord = max.ord + 1;
-
+          setOrd(routePoint1, max.ord + 1);
         } else {
-
-          routePoint1.ord = 1;
-
+          setOrd(routePoint1, 1);
         }
 
         routePoint1.save();
@@ -119,25 +130,19 @@ export default {
       }
 
       if (change === 0) {
-
         return;
-
       }
 
       const routePoint2 = this.orderedRoutePoints[(routePoint1.ord + change) - 1];
 
       if (!routePoint2 || !routePoint2.ord) {
-
         return;
-
       }
 
-      routePoint2.ord = routePoint1.ord;
-
-      routePoint1.ord += change;
+      setOrd(routePoint2, routePoint1.ord);
+      setOrd(routePoint1, routePoint1.ord + change);
 
       routePoint2.save();
-
       routePoint1.save();
 
     },
@@ -145,7 +150,6 @@ export default {
     saveProcessing(processing) {
 
       this.shipmentRoute.processing = processing;
-
       this.shipmentRoute.save();
 
     },
@@ -161,6 +165,10 @@ export default {
   },
 
 };
+
+function setOrd(routePoint, ord) {
+  Vue.set(routePoint, 'ord', ord);
+}
 
 function findAll(shipmentRouteId) {
 
