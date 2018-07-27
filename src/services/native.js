@@ -3,12 +3,18 @@ import assign from 'lodash/assign';
 import isArray from 'lodash/isArray';
 import first from 'lodash/first';
 
+export { isNative, checkIn, getRoles, requestFromDevice, handler };
+
 let requestIdCounter = 0;
 const messages = {};
 const messageHandlers = get(window, 'stmAndroid') || get(window, 'webkit.messageHandlers');
 
-window.messageCallback = messageCallback;
-window.arrayMessageCallback = arrayMessageCallback;
+const ARRAY_MESSAGE_CALLBACK = 'arrayMessageCallback';
+window[ARRAY_MESSAGE_CALLBACK] = arrayMessageCallback;
+
+const MESSAGE_CALLBACK = 'messageCallback';
+window[MESSAGE_CALLBACK] = messageCallback;
+
 window.iSistemiumIOSCallback = arrayMessageCallback;
 window.iSistemiumIOSErrorCallback = arrayMessageCallback;
 
@@ -52,21 +58,8 @@ function handler(name) {
   }
 
   return {
-    postMessage: options => {
-
-      if (name === 'roles') {
-        window[options.callback]([{
-          account: {
-            name: 'Error',
-          },
-          roles: {
-            picker: true,
-          },
-        }], options);
-      } else {
-        throw new Error(`IOS handler undefined call to: "${name}"`);
-      }
-
+    postMessage: () => {
+      throw new Error(`IOS handler undefined call to: "${name}"`);
     },
   };
 
@@ -82,7 +75,7 @@ function message(handlerName, cfg) {
 
     const msg = assign({
       requestId,
-      callback: 'messageCallback',
+      callback: MESSAGE_CALLBACK,
       options: {},
     }, cfg);
 
@@ -160,12 +153,10 @@ function getRoles() {
 function requestFromDevice(type, params) {
 
   const msg = {
-    callback: 'arrayMessageCallback',
+    callback: ARRAY_MESSAGE_CALLBACK,
     ...params,
   };
 
   return message(type, msg);
 
 }
-
-export { isNative, checkIn, getRoles, requestFromDevice, handler };
