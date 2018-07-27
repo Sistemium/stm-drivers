@@ -66,9 +66,11 @@ export default {
 
             }).catch(e => {
 
+              const message = e.message || e.error || e.toString();
+
               MessageBox({
-                title: 'Error',
-                message: `${e.message}`,
+                title: 'Ошибка геолокации',
+                message,
                 confirmButtonText: 'ОК',
               });
 
