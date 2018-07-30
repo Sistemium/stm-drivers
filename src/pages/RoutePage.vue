@@ -14,6 +14,13 @@
       :title="title"
       )
 
+      .buttons
+        mt-button(
+        v-for="(value, key) in currentRoute.workflow().to" :key="key"
+        type="primary"
+        @click = "saveProcessing(key)"
+        ) {{ value }}
+
       route-point-list(v-if="currentRoute" :shipment-route-id="currentRoute.id")
 
     router-view(v-else)
@@ -116,6 +123,13 @@ export default {
       return find(this.shipmentRoutes, { date }) || this.shipmentRoutes[0];
     },
 
+    saveProcessing(processing) {
+
+      this.currentRoute.processing = processing;
+      this.currentRoute.save();
+
+    },
+
     async refresh() {
 
       const { id: driverId } = this.currentDriver || {};
@@ -164,5 +178,14 @@ export default {
 
 </script>
 <style scoped lang="scss">
+
+@import "../styles/variables";
+
+.buttons {
+  margin-bottom: $margin-top;
+  button:first-child {
+    margin-top: 0;
+  }
+}
 
 </style>

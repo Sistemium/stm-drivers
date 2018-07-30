@@ -2,13 +2,6 @@
 
 .route-point-list.cell-list
 
-  .buttons
-    mt-button(
-    v-for="(value, key) in shipmentRoute.workflow().to" :key="key"
-    type="primary"
-    @click = "saveProcessing(key)"
-    ) {{ value }}
-
   transition-group(name="flip-list")
 
     mt-cell.route-point(
@@ -152,13 +145,6 @@ export default {
 
     },
 
-    saveProcessing(processing) {
-
-      this.shipmentRoute.processing = processing;
-      this.shipmentRoute.save();
-
-    },
-
   },
 
   created() {
@@ -207,13 +193,6 @@ function findAll(shipmentRouteId) {
   margin-top: 4px;
   color: $gray;
   font-size: 75%;
-}
-
-.buttons {
-  margin-bottom: $margin-top;
-  button:first-child {
-    margin-top: 0;
-  }
 }
 
 .route-point {
