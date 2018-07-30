@@ -1,6 +1,5 @@
 @import "variables";
 
-
 .mint-cell-allow-right::after {
   right: 10px;
 }
@@ -44,4 +43,34 @@
 
 .mint-indexlist-content {
   -webkit-overflow-scrolling: touch;
+}
+
+.mint-cell-text {
+  label {
+    color: $gray;
+    margin-right: $margin-right;
+  }
+  strong {
+    font-weight: normal;
+  }
+}
+
+.mint-cell-wrapper {
+  //background-image: linear-gradient(180deg, #d9d9d9, #d9d9d9 50%, transparent 90%);
+  background: none;
+}
+
+$cell-border: solid 1px $gray-background;
+.mint-cell {
+
+  border-top: $cell-border;
+
+  &, &:last-child {
+    background: none;
+  }
+
+  &:last-child {
+    border-bottom: $cell-border;
+  }
+
 }
