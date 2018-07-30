@@ -9,15 +9,23 @@
     :label="shipment.outlet.address"
     )
 
+    mt-cell(
+    )
+      template(slot="title")
+        span.mint-cell-text
+          label Всего в накладной:
+          strong {{ shipment.positions.length }}п
+          strong {{ shipment.totalBoxes() | boxes }}
+        span.mint-cell-label {{ shipment.commentText }}
+
   .section-title Товары
 
-  .cell-list
+  .cell-list.shipment-positions
 
-    .shipment(v-for="item in shipment.positions" :key="item.id")
-
-      mt-cell(
-      :title="item.article && item.article.name"
-      ) {{ item.volume }}
+    mt-cell.shipment(
+    v-for="item in shipment.positions" :key="item.id"
+    :title="item.article && item.article.name"
+    ) {{ item.volume | boxPcs(item.article.packageRel) }}
 
 </template>
 <script>
@@ -57,8 +65,14 @@ export default {
 </script>
 <style scoped lang="scss">
 
+@import "../styles/variables";
+
 .buttons {
   margin-top: 10px;
+}
+
+.mint-cell-text strong {
+  margin-right: $margin-right;
 }
 
 </style>

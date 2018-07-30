@@ -4,18 +4,18 @@
 
   .cell-list
 
-    .outlet(v-if="routePoint.outlet")
-      mt-cell(
-      :title="routePoint.outlet.partner.name"
-      :label="routePoint.outlet.address"
-      )
+    mt-cell.outlet(
+    v-if="routePoint.outlet"
+    :title="routePoint.outlet.partner.name"
+    :label="routePoint.outlet.address"
+    )
 
-    .reached-at(v-if="routePoint.reachedAtLocation")
-      mt-cell(
-      title="Прибытие отмечено"
-      :label="routePoint.reachedAtLocation.timestamp | dateTime"
-      )
-        i.el-icon-location
+    mt-cell.reached-at(
+    v-if="routePoint.reachedAtLocation"
+    title="Прибытие отмечено"
+    :label="routePoint.reachedAtLocation.timestamp | dateTime"
+    )
+      i.el-icon-location
 
   .buttons
     mt-button(type="primary" @click="checkInClick" v-if="!routePoint.isReached") Отметить прибытие
@@ -24,12 +24,12 @@
 
   .cell-list
 
-    .shipment(v-for="item in routePoint.routePointShipments" :key="item.id")
-
-      mt-cell(
-      :title="item.shipment.ndoc"
-      :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
-      ) {{ item.shipment.totalBoxes() | boxes }}
+    mt-cell.shipment(
+    v-for="item in routePoint.routePointShipments" :key="item.id"
+    :title="item.shipment.ndoc"
+    :label="item.shipment.commentText"
+    :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
+    ) {{ item.shipment.totalBoxes() | boxes }}
 
 </template>
 <script>

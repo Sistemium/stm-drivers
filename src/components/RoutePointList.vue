@@ -11,35 +11,34 @@
 
   transition-group(name="flip-list")
 
-    .route-point(v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.id")
+    mt-cell.route-point(
+    v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.id"
+    :to="{name: routeName, params: routeParams(routePoint)}"
+    )
 
-      mt-cell(
-      :to="{name: routeName, params: routeParams(routePoint)}"
+      span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
+
+      button(
+      @click.prevent.stop="reorder(routePoint, -1)"
+      v-if="reordering"
+      :disabled = "index === 0"
       )
+        i.el-icon-arrow-up
 
-        span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
+      button(
+      @click.prevent.stop="reorder(routePoint, 1)"
+      v-if="reordering"
+      :disabled = "index === orderedRoutePoints.length - 1"
+      )
+        i.el-icon-arrow-down
 
-        button(
-        @click.prevent.stop="reorder(routePoint, -1)"
-        v-if="reordering"
-        :disabled = "index === 0"
-        )
-          i.el-icon-arrow-up
-
-        button(
-        @click.prevent.stop="reorder(routePoint, 1)"
-        v-if="reordering"
-        :disabled = "index === orderedRoutePoints.length - 1"
-        )
-          i.el-icon-arrow-down
-
-        div(slot="title")
-          .title
-            span.ord {{ routePoint.ord || '?' }}
-            span.done(v-if="routePoint.reachedAtLocationId")
-              i.el-icon-check
-            span {{ rowTitle(routePoint) }}
-          .label {{ rowLabel(routePoint) }}
+      template(slot="title")
+        .title
+          span.ord {{ routePoint.ord || '?' }}
+          span.done(v-if="routePoint.reachedAtLocationId")
+            i.el-icon-check
+          span {{ rowTitle(routePoint) }}
+        .label {{ rowLabel(routePoint) }}
 
 </template>
 <script>
@@ -228,7 +227,7 @@ function findAll(shipmentRouteId) {
   margin-right: 7px;
   font-size: 75%;
   display: inline-block;
-  padding: 2px;
+  padding: 2px 4px;
   background: $gray-background;
   border-radius: 5px;
   position: relative;
