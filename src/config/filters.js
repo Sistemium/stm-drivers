@@ -26,3 +26,23 @@ Vue.filter('boxes', value => {
   return `${formatted}к`;
 
 });
+
+Vue.filter('boxPcs', (value, packageRel = 1) => {
+
+  if (!value) return '';
+
+  const boxes = packageRel ? Math.floor(value / packageRel) : 0;
+  const pcs = value - (boxes * packageRel);
+  const res = [];
+
+  if (boxes) {
+    res.push(`${boxes}к`);
+  }
+
+  if (pcs) {
+    res.push(`${pcs}б`);
+  }
+
+  return res.join(' ');
+
+});
