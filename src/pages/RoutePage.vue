@@ -16,7 +16,7 @@
 
       .buttons
         mt-button(
-        v-for="(value, key) in currentRoute.workflow().to" :key="key"
+        v-for="(value, key) in workflowOptions" :key="key"
         type="primary"
         @click = "saveProcessing(key)"
         ) {{ value }}
@@ -69,6 +69,10 @@ export default {
         return dateFormat(this.currentRoute.date);
       }
       return this.loading ? 'Загрузка' : 'Нет заданий';
+    },
+
+    workflowOptions() {
+      return this.currentRoute && this.currentRoute.workflow().to;
     },
 
   },

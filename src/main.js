@@ -9,6 +9,7 @@ import '@/styles/index.scss';
 import App from './App';
 import router from './router';
 import store from './store';
+import './config/subscriptions';
 
 import { AUTH_INIT } from './store/auth/actions';
 
