@@ -7,26 +7,26 @@ import jsDataStore from '@/jsdata/store';
 
 const debug = require('debug')('stm:subscriptions');
 
-store.subscribe(action => {
+store.subscribe(({ type }) => type.endsWith(AUTHORIZED) && onAuthorized());
 
-  if (action.type.endsWith(AUTHORIZED)) {
-    Workflow.findAll();
-  }
+function onAuthorized() {
 
-});
+  Workflow.findAll();
 
-subscribe(['ShipmentRoutePoint', 'ShipmentRoute']);
+  subscribe(['ShipmentRoutePoint', 'ShipmentRoute']);
 
-onJsData('jsData:update', ({ entity, data }) => {
+  onJsData('jsData:update', ({ entity, data }) => {
 
-  debug('jsData', entity, data);
+    debug('jsData', entity, data);
 
-  const mapper = jsDataStore.getMapperByName(entity);
+    const mapper = jsDataStore.getMapperByName(entity);
 
-  if (!mapper) {
-    return;
-  }
+    if (!mapper) {
+      return;
+    }
 
-  jsDataStore.addToCache(entity, data, {});
+    jsDataStore.addToCache(entity, data, {});
 
-});
+  });
+
+}
