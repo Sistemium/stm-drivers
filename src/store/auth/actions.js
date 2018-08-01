@@ -1,7 +1,7 @@
 import * as m from '@/store/auth/mutations';
 import { confirm, login, roles } from '@/services/auth';
 import { authorize as authorizeJSDataStore } from '@/jsdata/store';
-import { isNative, getRoles, handler } from '@/services/native';
+import { isNative, getRoles } from '@/services/native';
 
 const LS_KEY = 'std.authorization';
 
@@ -19,22 +19,8 @@ export default {
 
   [AUTH_INIT]({ commit }, accessToken) {
 
-    if (isNative()) {
-
-      commit(m.AUTHORIZING, true);
-
-      return getRoles()
-        .then(res => new Promise(resolve => setTimeout(() => resolve(res), 1000)))
-        .then(res => {
-          authorizeJSDataStore(undefined, res.account.org);
-          commit(m.AUTHORIZED, res);
-          handler('tabbar').postMessage({ action: 'hide' });
-        })
-        .catch(error => commit(m.NOT_AUTHORIZED, error));
-
-    }
-
-    const token = accessToken || localStorage.getItem(LS_KEY);
+    const token = isNative() ? true : accessToken || localStorage.getItem(LS_KEY);
+    const rolesPromise = isNative() ? getRoles() : roles(token);
 
     commit(m.AUTHORIZING, token);
 
@@ -42,7 +28,7 @@ export default {
       return Promise.resolve();
     }
 
-    return roles(token)
+    return rolesPromise
       .then(res => new Promise(resolve => setTimeout(() => resolve(res), 1000)))
       .then(res => {
         localStorage.setItem(LS_KEY, token);
