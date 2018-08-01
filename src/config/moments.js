@@ -1,4 +1,5 @@
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
+
 // import { ru } from 'date-fns/esm/locale';
 
 
@@ -27,3 +28,7 @@ export function serverDateTimeFormat(date = new Date()) {
 
 }
 
+
+export function tomorrow(date = new Date()) {
+  return addDays(date, 1);
+}
