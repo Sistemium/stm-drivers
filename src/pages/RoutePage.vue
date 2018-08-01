@@ -18,7 +18,7 @@
       .buttons
         mt-button(
         v-for="(value, key) in workflowOptions" :key="key"
-        type="primary"
+        :type="primaryWorkflowOption === key ? 'primary' : 'default'"
         @click = "saveProcessing(key)"
         ) {{ value }}
 
@@ -74,6 +74,10 @@ export default {
 
     workflowOptions() {
       return this.currentRoute && this.currentRoute.workflow().to;
+    },
+
+    primaryWorkflowOption() {
+      return this.currentRoute && this.currentRoute.workflow().primaryOption;
     },
 
     badge() {
