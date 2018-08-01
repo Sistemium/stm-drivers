@@ -12,6 +12,7 @@
       :prev="prevRoute ? prevClick : undefined"
       :next="nextRoute ? nextClick : undefined"
       :title="title"
+      :right-badge="badge"
       )
 
       .buttons
@@ -35,7 +36,7 @@ import { SET_DATE, LAST_DATE } from '@/store/driver';
 
 import find from 'lodash/find';
 
-import { dateFormat } from '@/config/moments';
+import { dateFormat, serverDateFormat, tomorrow } from '@/config/moments';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
@@ -73,6 +74,10 @@ export default {
 
     workflowOptions() {
       return this.currentRoute && this.currentRoute.workflow().to;
+    },
+
+    badge() {
+      return this.nextRoute && this.nextRoute.date === serverDateFormat(tomorrow()) ? '1' : undefined;
     },
 
   },
