@@ -6,6 +6,8 @@ import first from 'lodash/first';
 export { isNative, checkIn, getRoles, requestFromDevice, handler };
 
 let requestIdCounter = 0;
+let tabBarShown = true;
+
 const messages = {};
 const messageHandlers = get(window, 'stmAndroid') || get(window, 'webkit.messageHandlers');
 
@@ -17,6 +19,20 @@ window[MESSAGE_CALLBACK] = messageCallback;
 
 window.iSistemiumIOSCallback = arrayMessageCallback;
 window.iSistemiumIOSErrorCallback = arrayMessageCallback;
+
+if (isNative()) {
+  toggleTabBar();
+}
+
+export function toggleTabBar() {
+  const action = tabBarShown ? 'hide' : 'show';
+  tabBarShown = !tabBarShown;
+  return handler('tabbar').postMessage({ action });
+}
+
+export function isShownTabBar() {
+  return tabBarShown;
+}
 
 function isNative() {
 
