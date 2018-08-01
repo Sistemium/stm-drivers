@@ -25,7 +25,7 @@ if (isNative()) {
 }
 
 export function toggleTabBar() {
-  const action = tabBarShown ? 'hide' : 'show';
+  const action = isShownTabBar() ? 'hide' : 'show';
   tabBarShown = !tabBarShown;
   return handler('tabbar').postMessage({ action });
 }
