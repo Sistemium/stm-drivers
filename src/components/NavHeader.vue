@@ -2,15 +2,19 @@
 
 .nav-header
 
-  mt-button.prev(:plain="true" @click="prevClick" :disabled="!prev")
-    i.el-icon-arrow-left(v-if="prev")
+  .left
+    mt-button.prev(:plain="true" @click="prevClick" :disabled="!prev")
+      i.el-icon-arrow-left(v-if="prev")
 
   .title
     slot
       strong {{ title }}
 
-  mt-button.prev(:plain="true" @click="nextClick" :disabled="!next")
-    i.el-icon-arrow-right(v-if="next")
+  .right
+    mt-button.prev(:plain="true" @click="nextClick" :disabled="!next")
+      i.el-icon-arrow-right(v-if="next")
+    .badge(v-if="rightBadge")
+      mt-badge(type="warning" size="small") {{ rightBadge }}
 
 </template>
 <script>
@@ -23,6 +27,7 @@ export default {
     title: String,
     prev: Function,
     next: Function,
+    rightBadge: String,
   },
 
   methods: {
@@ -41,5 +46,16 @@ export default {
 
 @import "../styles/variables";
 
+.right {
+
+  position: relative;
+
+  > .badge {
+    position: absolute;
+    top: -3px;
+    right: 6px;
+  }
+
+}
 
 </style>
