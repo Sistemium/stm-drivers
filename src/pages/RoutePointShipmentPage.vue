@@ -2,6 +2,7 @@
 
   .route-point-shipment-page(v-if="shipment")
     nav-header(
+    left-icon="back"
     :prev="backFromShipment"
     :title="shipment.ndoc"
     )

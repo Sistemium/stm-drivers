@@ -4,7 +4,7 @@
 
   .left
     mt-button.prev(:plain="true" @click="prevClick" :disabled="!prev")
-      i.el-icon-arrow-left(v-if="prev")
+      i(v-if="prev" :class="leftIconClass")
 
   .title
     slot
@@ -24,10 +24,20 @@ export default {
   name: 'nav-header',
 
   props: {
+    leftIcon: {
+      type: String,
+      default: 'arrow-left',
+    },
     title: String,
     prev: Function,
     next: Function,
     rightBadge: String,
+  },
+
+  computed: {
+    leftIconClass() {
+      return `el-icon-${this.leftIcon}`;
+    },
   },
 
   methods: {

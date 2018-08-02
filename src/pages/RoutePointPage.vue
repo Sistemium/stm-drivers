@@ -6,8 +6,14 @@
 
     mt-tab-container-item#RoutePointPage
 
+      <!--nav-header(-->
+      <!--left-icon="back"-->
+      <!--:prev="backFromRoutePoint"-->
+      <!--:title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"-->
+      <!--)-->
       nav-header(
-      :prev="backFromRoutePoint"
+      :prev="prevRoutePoint ? prevClick : undefined"
+      :next="nextRoutePoint ? nextClick : undefined"
       :title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"
       )
 
@@ -23,28 +29,57 @@
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 
 import RoutePointDetails from '@/components/RoutePointDetails';
-import RoutePage from './RoutePage';
+
+const name = 'RoutePointPage';
 
 export default {
 
-  name: 'RoutePointPage',
+  name,
 
   props: ['routePointId'],
 
   data() {
-    return { routePoint: null };
+    return { routePoint: null, routePoints: [] };
   },
 
   components: { RoutePointDetails },
 
-  methods: {
-    backFromRoutePoint() {
-      const { params } = this.$route;
-      this.$router.push({ name: RoutePage.name, params });
+  computed: {
+    prevRoutePoint() {
+      const { routePoints } = this;
+      const idx = this.currentIndex();
+      return idx > 0 ? routePoints[idx - 1] : undefined;
     },
+    nextRoutePoint() {
+      const { routePoints } = this;
+      const idx = this.currentIndex();
+      return idx < routePoints.length - 1 ? routePoints[idx + 1] : undefined;
+    },
+  },
+
+  methods: {
+
+    currentIndex() {
+      const { routePoints } = this;
+      return routePoints.indexOf(this.routePoint);
+    },
+
+    prevClick() {
+      const { id: routePointId } = this.routePoints[this.currentIndex() - 1];
+      this.$router.push({ name, params: { routePointId } });
+    },
+
+    nextClick() {
+      const { id: routePointId } = this.routePoints[this.currentIndex() + 1];
+      this.$router.push({ name, params: { routePointId } });
+    },
+
     rebind() {
+
       const { routePointId } = this;
+
       this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
+
       return ShipmentRoutePoint.find(routePointId, {
         with: [
           'outlet',
@@ -54,11 +89,20 @@ export default {
           'routePointShipments.shipment',
         ],
       });
+
+    },
+    onRouteChange(shipmentRouteId) {
+      if (!shipmentRouteId) {
+        return;
+      }
+      const filter = { orderBy: [['ord', 'ASC']], shipmentRouteId };
+      this.routePoints = ShipmentRoutePoint.bindAll(this, filter, 'routePoints');
     },
   },
 
   created() {
     this.$watch('routePointId', this.rebind, { immediate: true });
+    this.$watch('routePoint.shipmentRouteId', this.onRouteChange, { immediate: true });
   },
 
   beforeDestroy() {

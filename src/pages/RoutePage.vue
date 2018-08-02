@@ -6,6 +6,7 @@
 
   nav-header(
   v-else
+  left-icon="back"
   :prev="goRootClick"
   :title="currentRouteTitle"
   )
