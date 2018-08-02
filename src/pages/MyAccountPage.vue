@@ -9,12 +9,20 @@
   chosen-driver
 
   .buttons
-    mt-button.reload(@click="reloadClick") Перезапустить
+
+    mt-button.reload(
+    size="small"
+    type="default"
+    plain
+    @click="reloadClick"
+    )
+      i.el-icon-refresh
+
     mt-button.toggle-profile(
     size="small"
     v-if="showProfileToggle"
     @click="toggleProfileClick"
-    type="primary"
+    type="default"
     plain
     )
       i.el-icon-rank
@@ -54,17 +62,30 @@ export default {
 </script>
 <style lang="scss">
 
+@import "../styles/variables";
+
 .current-user .mint-cell {
   border-bottom: none;
 }
 
 .my-account-page {
+
   position: relative;
-  .toggle-profile {
+
+  .toggle-profile, .reload {
     position: absolute;
     top: 0;
+    border-color: $gray-background;
+  }
+
+  .toggle-profile {
     right: 8px;
   }
+
+  .reload {
+    left: 8px;
+  }
+
 }
 
 </style>
