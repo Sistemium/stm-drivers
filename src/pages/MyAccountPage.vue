@@ -75,7 +75,7 @@ export default {
   .toggle-profile, .reload {
     position: absolute;
     top: 0;
-    border-color: $gray-background;
+    border-color: $gray-border-color;
   }
 
   .toggle-profile {

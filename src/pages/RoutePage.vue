@@ -4,7 +4,7 @@
 
   h1(v-if="isRootState") Маршрутные задания
 
-  nav-header(
+  nav-header.root-nav(
   v-else
   left-icon="back"
   :prev="goRootClick"
@@ -219,6 +219,10 @@ export default {
   button:first-child {
     margin-top: 0;
   }
+}
+
+.root-nav {
+  background: $gray-background;
 }
 
 </style>
