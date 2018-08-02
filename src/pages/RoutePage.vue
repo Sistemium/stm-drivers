@@ -2,11 +2,17 @@
 
 .route
 
-  h1 Маршрутные задания
+  h1(v-if="isRootState") Маршрутные задания
+
+  nav-header(
+  v-else
+  :prev="goRootClick"
+  :title="currentRouteTitle"
+  )
 
   div(v-if="currentDriver")
 
-    div(v-if="$route.name === 'RoutePage'")
+    div(v-if="isRootState")
 
       nav-header(
       :prev="prevRoute ? prevClick : undefined"
@@ -84,6 +90,14 @@ export default {
       return this.nextRoute && this.nextRoute.date === serverDateFormat(tomorrow()) ? '1' : undefined;
     },
 
+    isRootState() {
+      return this.$route.name === 'RoutePage';
+    },
+
+    currentRouteTitle() {
+      return this.currentRoute && `Маршрут ${this.currentRoute.date}`;
+    },
+
   },
 
   watch: {
@@ -105,6 +119,11 @@ export default {
 
     nextClick() {
       this.setCurrentRoute(this.nextRoute);
+    },
+
+    goRootClick() {
+      const { date } = this.currentRoute;
+      this.$router.push({ name, params: { date } });
     },
 
     setCurrentRoute(route) {
