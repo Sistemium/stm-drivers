@@ -175,6 +175,8 @@ function findAll(shipmentRouteId) {
       'routePointShipments',
       'routePointShipments.shipment',
     ],
+    // TODO: move routePoint loading to RoutePage
+    force: true,
   });
   //
   // return Promise.all(res.map(routePoint =>

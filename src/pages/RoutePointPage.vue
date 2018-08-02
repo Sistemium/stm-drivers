@@ -88,7 +88,8 @@ export default {
           'routePointShipments',
           'routePointShipments.shipment',
         ],
-      });
+      })
+        .then(({ shipmentRouteId }) => ShipmentRoutePoint.findAll({ shipmentRouteId }));
 
     },
     onRouteChange(shipmentRouteId) {
