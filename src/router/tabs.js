@@ -5,6 +5,7 @@ import OutletsPage from '@/pages/OutletsPage';
 import TabsPage from '@/pages/TabsPage';
 import OutletPage from '@/pages/OutletPage';
 import RoutePointShipmentPage from '@/pages/RoutePointShipmentPage';
+import RoutePointPhotosPage from '@/pages/RoutePointPhotosPage';
 
 const tabs = [
   {
@@ -28,6 +29,11 @@ const tabs = [
           path: 'shipment/:shipmentId',
           name: RoutePointShipmentPage.name,
           component: RoutePointShipmentPage,
+          props: true,
+        }, {
+          path: 'photos',
+          name: RoutePointPhotosPage.name,
+          component: RoutePointPhotosPage,
           props: true,
         }],
       },

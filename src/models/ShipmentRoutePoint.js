@@ -4,6 +4,7 @@ import './ShipmentRoute';
 import './Outlet';
 import './Location';
 import './ShipmentRoutePointShipment';
+import './ShipmentRoutePointPhoto';
 
 export default new Model({
 
@@ -27,6 +28,10 @@ export default new Model({
     hasMany: {
       ShipmentRoutePointShipment: {
         localField: 'routePointShipments',
+        foreignKey: 'shipmentRoutePointId',
+      },
+      ShipmentRoutePointPhoto: {
+        localField: 'routePointPhotos',
         foreignKey: 'shipmentRoutePointId',
       },
     },

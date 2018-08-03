@@ -5,20 +5,46 @@
   .cell-list
 
     mt-cell.outlet(
-    v-if="routePoint.outlet"
-    :title="routePoint.outlet.partner.name"
-    :label="routePoint.outlet.address"
+    v-if="outlet()"
+    :title="outlet().partner.name"
+    :label="outlet().address"
     )
 
     mt-cell.reached-at(
-    v-if="routePoint.reachedAtLocation"
+    v-if="reachedAtLocation()"
     title="Прибытие отмечено"
-    :label="routePoint.reachedAtLocation.timestamp | dateTime"
+    :label="reachedAtLocation().timestamp | dateTime"
     )
       i.el-icon-location
 
+    mt-cell.route-point-photos(
+    is-link
+    :to="{ name: 'RoutePointPhotosPage', params: { routePointId: routePoint.id } }"
+    title="Фото-отчеты"
+    v-if="routePointPhotos.length"
+    :label="`${routePointPhotos.length} шт.`"
+    )
+      img.thumbnail(
+      v-for="img in headLinePhotos" :key="img.id"
+      :src="img.thumbnailHref"
+      )
+
   .buttons
-    mt-button(type="primary" @click="checkInClick" v-if="!routePoint.isReached") Отметить прибытие
+
+    mt-button(
+    type="primary"
+    @click="checkInClick"
+    ) Отметить прибытие
+
+    vue-core-image-upload.make-photo(
+    :crop="false"
+    @imageuploaded="imageUploaded"
+    :data="imageData"
+    :max-file-size="5242880"
+    :headers="uploadHeaders"
+    :url="imsUrl()"
+    )
+      mt-button() Сделать Фото-отчет
 
   .section-title Накладные
 
@@ -34,15 +60,57 @@
 </template>
 <script>
 
+import Vue from 'vue';
+import take from 'lodash/take';
+import { mapState } from 'vuex';
 import { MessageBox } from 'mint-ui';
 import getLocation from '@/services/locationHelper';
+import { serverDateFormat } from '@/config/moments';
+import VueCoreImageUpload from 'vue-core-image-upload';
+
 import ShipmentRoutePointShipment from '@/models/ShipmentRoutePointShipment';
+import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 
 export default {
 
+  components: { VueCoreImageUpload },
   props: ['routePoint'],
 
+  data() {
+    return { imageData: null, routePointPhotos: [] };
+  },
+
+  computed: {
+    ...mapState('auth', { token: 'id' }),
+    uploadHeaders() {
+      return { authorization: this.token };
+    },
+    headLinePhotos() {
+      return this.routePointPhotos.length && take(this.routePointPhotos, 3);
+    },
+  },
+
   methods: {
+
+    outlet() {
+      return this.routePoint.outlet;
+    },
+
+    reachedAtLocation() {
+      return this.routePoint.reachedAtLocation;
+    },
+
+    imsUrl() {
+      return `/ims?folder=ShipmentRoutePointPhoto/${serverDateFormat()}`;
+    },
+
+    imageUploaded({ pictures: picturesInfo }) {
+
+      const { id: shipmentRoutePointId } = this.routePoint;
+      ShipmentRoutePointPhoto.create({ shipmentRoutePointId, picturesInfo });
+
+    },
+
     checkInClick() {
 
       MessageBox({
@@ -52,33 +120,7 @@ export default {
         confirmButtonText: 'Да',
         cancelButtonText: 'Нет',
       })
-        .then(result => {
-
-          if (result === 'confirm') {
-
-            getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000).then(location => {
-
-              this.routePoint.isReached = true;
-
-              this.routePoint.reachedAtLocationId = location.id;
-
-              this.routePoint.save();
-
-            }).catch(e => {
-
-              const message = e.message || e.error || e.toString();
-
-              MessageBox({
-                title: 'Ошибка геолокации',
-                message,
-                confirmButtonText: 'ОК',
-              });
-
-            }).finally(this.$loading.show().hide);
-
-          }
-
-        });
+        .then(result => result === 'confirm' && this.checkInCreate());
     },
 
     routeParams(shipment) {
@@ -93,7 +135,41 @@ export default {
           'positions.article',
         ]))).then(this.$loading.show().hide);
 
+      await this.routePoint.loadRelations('routePointPhotos');
+
+      const filter = { shipmentRoutePointId: this.routePoint.id, orderBy: [['deviceCts', 'DESC']] };
+      this.routePointPhotos = ShipmentRoutePointPhoto.bindAll(this, filter, 'routePointPhotos');
+
       this.$forceUpdate();
+
+    },
+
+    checkInCreate() {
+
+      getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000)
+        .then(({ id: reachedAtLocationId }) => {
+
+          Object.assign(this.routePoint, {
+            isReached: true,
+            reachedAtLocationId,
+          });
+
+          return this.routePoint.save()
+            .then(() => Vue.set(this.routePoint, { reachedAtLocationId }));
+
+        })
+        .catch(e => {
+
+          const message = e.message || e.error || e.toString();
+
+          MessageBox({
+            title: 'Ошибка геолокации',
+            message,
+            confirmButtonText: 'ОК',
+          });
+
+        })
+        .finally(this.$loading.show().hide);
 
     },
 
@@ -119,9 +195,24 @@ export default {
 </script>
 <style scoped lang="scss">
 
+@import "../styles/variables";
+
 .el-icon-location {
   font-size: 120%;
   color: lighten(green, 10%);
+}
+
+.make-photo {
+  border: solid 1px $gray-border-color;
+  border-radius: 4px;
+}
+
+$thumbnail-size: 35px;
+
+img.thumbnail {
+  margin-left: $margin-right;
+  max-height: $thumbnail-size;
+  max-width: $thumbnail-size;
 }
 
 </style>

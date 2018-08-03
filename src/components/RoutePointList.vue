@@ -30,6 +30,8 @@
           span.ord {{ routePoint.ord || '?' }}
           span.done(v-if="routePoint.reachedAtLocationId")
             i.el-icon-check
+          span.photo(v-if="routePoint.routePointPhotos.length")
+            i.el-icon-picture-outline
           span {{ rowTitle(routePoint) }}
         .label {{ rowLabel(routePoint) }}
 
@@ -174,6 +176,7 @@ function findAll(shipmentRouteId) {
       'reachedAtLocation',
       'routePointShipments',
       'routePointShipments.shipment',
+      'routePointPhotos',
     ],
     // TODO: move routePoint loading to RoutePage
     force: true,
@@ -204,8 +207,14 @@ function findAll(shipmentRouteId) {
   }
 }
 
-.ord {
+.title > span {
   margin-right: 7px;
+  i {
+    color: $green;
+  }
+}
+
+.ord {
   font-size: 75%;
   display: inline-block;
   padding: 2px 4px;
@@ -216,8 +225,6 @@ function findAll(shipmentRouteId) {
 }
 
 .done {
-  margin-right: 7px;
-  color: $blue;
   i {
     font-size: 75%;
     top: -4px;
