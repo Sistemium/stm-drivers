@@ -16,19 +16,22 @@ export function dateTimeFormat(utcDate) {
 
 }
 
-export function serverDateFormat(date) {
+export function serverDateFormat(date = new Date()) {
 
-  return format(date, 'YYYY-MM-dd');
+  return format(utcTimeString(date), 'YYYY-MM-dd');
 
 }
 
 export function serverDateTimeFormat(date = new Date()) {
 
-  return format(date, 'YYYY-MM-dd HH:mm:ss.SSS');
+  return format(utcTimeString(date), 'YYYY-MM-dd HH:mm:ss.SSS');
 
 }
 
-
 export function tomorrow(date = new Date()) {
   return addDays(date, 1);
+}
+
+function utcTimeString(localDate = new Date()) {
+  return localDate.toUTCString().replace(' GMT', '');
 }
