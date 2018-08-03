@@ -4,7 +4,7 @@
 
   .cell-list
 
-    mt-cell.outlet(
+    mt-cell.outlet.sticky.secondary(
     v-if="outlet()"
     :title="outlet().partner.name"
     :label="outlet().address"

@@ -47,6 +47,10 @@ button {
     display: block;
   }
 
+  @include responsive-only(gt-xxs) {
+    margin-top: $margin-top;
+  }
+
   @include responsive-only(xxs) {
 
     flex-direction: column;

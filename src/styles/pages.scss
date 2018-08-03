@@ -63,3 +63,16 @@ h2 {
   font-size: 110%;
 
 }
+
+.sticky {
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  &.secondary {
+    top: 49px;
+    background: white;
+  }
+
+}

@@ -2,9 +2,9 @@
 
 .route
 
-  h1(v-if="isRootState") Маршрутные задания
+  h1.sticky(v-if="isRootState") Маршрутные задания
 
-  nav-header.root-nav(
+  nav-header.root-nav.sticky(
   v-else
   left-icon="back"
   :prev="goRootClick"

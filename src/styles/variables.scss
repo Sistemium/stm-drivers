@@ -11,3 +11,10 @@ $green: green;
 $icon-button-width: 40px;
 $margin-right: 7px;
 $margin-top: 7px;
+
+$list-cell-borders: solid 1px $gray-border-color;
+
+%list-cell-bordered {
+  border-top: $list-cell-borders;
+  border-bottom: $list-cell-borders;
+}
