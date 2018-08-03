@@ -2,26 +2,17 @@
 
 .route-point-page
 
-  mt-tab-container(v-if="routePoint" :value="$route.name")
+  #RoutePointPage(v-if="isRootState")
 
-    mt-tab-container-item#RoutePointPage
+    nav-header(
+    :prev="prevRoutePoint ? prevClick : undefined"
+    :next="nextRoutePoint ? nextClick : undefined"
+    :title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"
+    )
 
-      <!--nav-header(-->
-      <!--left-icon="back"-->
-      <!--:prev="backFromRoutePoint"-->
-      <!--:title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"-->
-      <!--)-->
-      nav-header(
-      :prev="prevRoutePoint ? prevClick : undefined"
-      :next="nextRoutePoint ? nextClick : undefined"
-      :title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"
-      )
+    route-point-details(v-if="routePoint" :route-point="routePoint")
 
-      route-point-details(v-if="routePoint" :route-point="routePoint")
-
-    mt-tab-container-item#RoutePointShipmentPage
-
-      router-view
+  router-view(v-else)
 
 </template>
 <script>
@@ -55,6 +46,9 @@ export default {
       const idx = this.currentIndex();
       return idx < routePoints.length - 1 ? routePoints[idx + 1] : undefined;
     },
+    isRootState() {
+      return this.$route.name === name;
+    },
   },
 
   methods: {
@@ -74,13 +68,11 @@ export default {
       this.$router.push({ name, params: { routePointId } });
     },
 
-    rebind() {
+    async rebind() {
 
       const { routePointId } = this;
 
-      this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
-
-      return ShipmentRoutePoint.find(routePointId, {
+      await ShipmentRoutePoint.find(routePointId, {
         with: [
           'outlet',
           'outlet.partner',
@@ -90,6 +82,8 @@ export default {
         ],
       })
         .then(({ shipmentRouteId }) => ShipmentRoutePoint.findAll({ shipmentRouteId }));
+
+      this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
 
     },
     onRouteChange(shipmentRouteId) {
