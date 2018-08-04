@@ -4,7 +4,7 @@
 
   #RoutePointPage(v-if="isRootState")
 
-    nav-header(
+    nav-header.title(
     :prev="prevRoutePoint ? prevClick : undefined"
     :next="nextRoutePoint ? nextClick : undefined"
     :title="`Точка маршрута №${routePoint && routePoint.ord || '?'}`"

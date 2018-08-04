@@ -133,6 +133,9 @@ export default {
     > * {
       display: block;
     }
+    strong {
+      font-size: 90%;
+    }
   }
 }
 

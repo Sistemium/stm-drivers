@@ -8,8 +8,8 @@
   v-else
   left-icon="back"
   :prev="goRootClick"
-  :title="currentRouteTitle"
   )
+    label {{ currentRouteTitle }}
 
   div(v-if="currentDriver")
 
