@@ -36,7 +36,10 @@
     @click="checkInClick"
     ) Отметить прибытие
 
-    take-photo-button.make-photo(:done="imageUploaded") Сделать Фото-отчет
+    take-photo-button.make-photo(
+    :done="imageDone"
+    entity-name="ShipmentRoutePointPhoto"
+    ) Сделать Фото-отчет
 
   .section-title Накладные
 
@@ -88,11 +91,9 @@ export default {
       return this.routePoint.reachedAtLocation;
     },
 
-    imageUploaded({ pictures: picturesInfo }) {
-
+    imageDone(data) {
       const { id: shipmentRoutePointId } = this.routePoint;
-      ShipmentRoutePointPhoto.create({ shipmentRoutePointId, picturesInfo });
-
+      ShipmentRoutePointPhoto.create({ ...data, shipmentRoutePointId });
     },
 
     checkInClick() {

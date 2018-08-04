@@ -3,11 +3,12 @@
 .take-photo-button
 
   .native(v-if="isNative")
+    mt-button.trigger(@click="nativeTriggerClick") Сделать Фото-отчет
 
   vue-core-image-upload.browser(
   v-else
   :crop="false"
-  @imageuploaded="done"
+  @imageuploaded="imageUploaded"
   :data="imageData"
   :max-file-size="5242880"
   :headers="uploadHeaders"
@@ -21,14 +22,14 @@
 import { mapState } from 'vuex';
 import VueCoreImageUpload from 'vue-core-image-upload';
 
-import { isNative } from '@/services/native';
+import { isNative, takePhoto } from '@/services/native';
 import { serverDateFormat } from '@/config/moments';
 
 export default {
 
   name: 'TakePhotoButton',
 
-  props: { done: Function },
+  props: { done: Function, entityName: String },
 
   components: { VueCoreImageUpload },
 
@@ -47,7 +48,16 @@ export default {
   methods: {
 
     imsUrl() {
-      return `/ims?folder=ShipmentRoutePointPhoto/${serverDateFormat()}`;
+      return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
+    },
+
+    nativeTriggerClick() {
+      takePhoto(this.entityName, {})
+        .then(this.done);
+    },
+
+    imageUploaded({ pictures: picturesInfo }) {
+      this.done({ picturesInfo });
     },
 
   },

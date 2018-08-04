@@ -13,7 +13,7 @@ function onAuthorized() {
 
   Workflow.findAll();
 
-  subscribe(['ShipmentRoutePoint', 'ShipmentRoute']);
+  subscribe(['ShipmentRoutePoint', 'ShipmentRoute', 'ShipmentRoutePointPhoto', 'ShipmentRoutePointShipment']);
 
   onJsData('jsData:update', ({ entity, data }) => {
 
