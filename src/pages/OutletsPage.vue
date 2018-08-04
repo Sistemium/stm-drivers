@@ -7,7 +7,7 @@
   outlet-list(v-if="$route.name === 'OutletsPage'")
 
   .outlet-page(v-else)
-    nav-header(title="Клиент" :prev="backClick")
+    nav-header(title="Клиент" :prev="backClick" left-icon="back")
     router-view
 
 </template>
