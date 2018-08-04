@@ -7,7 +7,7 @@
   :prev="backFromShipment"
   )
 
-    label {{ shipment.ndoc }}
+    b {{ shipment.ndoc }}
 
     small.totals
       span {{ shipment.positions.length }}п
@@ -56,7 +56,12 @@ export default {
 };
 
 </script>
-<style scoped>
+<style scoped lang="scss">
 
+@import "../styles/variables";
+
+.totals > * {
+  color: $black;
+}
 
 </style>
