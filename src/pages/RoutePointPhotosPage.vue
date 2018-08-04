@@ -7,25 +7,25 @@
   :prev="backClick"
   :title="`Фото в точке №${routePoint && routePoint.ord || '?'}`"
   )
-    .outlet(
-    v-if="outlet()"
-    )
+    .outlet(v-if="outlet()")
       strong {{ outlet().partner.name }}
       small {{ outlet().address }}
 
-  //.cell-list
-
   .photos
     .photo(v-for="photo in photos" :key="photo.id")
-      img(:src="photo.href")
       .header
         .remove
+
           span(v-if="confirmDeleting(photo)") Точно удалить?
+
           a.btn-link(
           @click="removeClick(photo)"
           :class="{confirm: confirmDeleting(photo), warn: !confirmDeleting(photo)}"
-          ) {{ confirmDeleting(photo) ? 'Да' : 'Удалить' }}
+          )
+            | {{ confirmDeleting(photo) ? 'Да' : 'Удалить' }}
+
         .timestamp {{ photo.deviceCts | dateTime }}
+      img(:src="photo.srcFull()")
 
 </template>
 <script>

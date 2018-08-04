@@ -1,6 +1,8 @@
 import Model from '@/jsdata/Model';
+import { pictureModelMethods } from '@/services/pictureHelper';
 
 import './ShipmentRoutePoint';
+
 
 export default new Model({
 
@@ -14,5 +16,7 @@ export default new Model({
       },
     },
   },
+
+  methods: pictureModelMethods(),
 
 });

@@ -77,6 +77,7 @@ export default {
           'outlet',
           'outlet.partner',
           'reachedAtLocation',
+          'routePointPhotos',
           'routePointShipments',
           'routePointShipments.shipment',
         ],

@@ -85,7 +85,7 @@ function message(handlerName, cfg) {
 
   return new Promise((resolve, reject) => {
 
-    requestIdCounter += 2;
+    requestIdCounter += 1;
 
     const requestId = requestIdCounter;
 
@@ -175,4 +175,20 @@ function requestFromDevice(type, params) {
 
   return message(type, msg);
 
+}
+
+/*
+Pictures
+ */
+
+export function takePhoto(entityName, data) {
+  return message('takePhoto', { entityName, data });
+}
+
+export function supportsPictures() {
+  return !!window.webkit;
+}
+
+export function loadImage({ id }) {
+  return message('loadImage', { imageID: id });
 }
