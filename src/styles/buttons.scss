@@ -71,3 +71,10 @@ button {
   }
 
 }
+
+a.confirm.btn-link {
+  color: $red;
+  &:hover {
+    color: darken($red, 10%);
+  }
+}
