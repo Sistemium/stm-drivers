@@ -17,8 +17,15 @@
 
   .photos
     .photo(v-for="photo in photos" :key="photo.id")
-      .timestamp {{ photo.deviceCts | dateTime }}
       img(:src="photo.href")
+      .header
+        .remove
+          span(v-if="confirmDeleting(photo)") Точно удалить?
+          a.btn-link(
+          @click="removeClick(photo)"
+          :class="{confirm: confirmDeleting(photo), warn: !confirmDeleting(photo)}"
+          ) {{ confirmDeleting(photo) ? 'Да' : 'Удалить' }}
+        .timestamp {{ photo.deviceCts | dateTime }}
 
 </template>
 <script>
@@ -36,10 +43,33 @@ export default {
     return {
       routePoint: null,
       photos: [],
+      deleting: false,
+      deletingTimeout: false,
     };
   },
 
   methods: {
+    confirmDeleting({ id }) {
+      return this.deleting === id;
+    },
+    removeClick(photo) {
+
+      const cleanup = () => {
+        this.deleting = false;
+        clearTimeout(this.deletingTimeout);
+      };
+
+      if (this.deleting !== photo.id) {
+        this.deleting = photo.id;
+        if (this.deletingTimeout) clearTimeout(this.deletingTimeout);
+        this.deletingTimeout = setTimeout(cleanup, 5000);
+        return;
+      }
+
+      ShipmentRoutePointPhoto.destroy(photo)
+        .finally(this.$loading.show().hide);
+
+    },
     backClick() {
       const { routePointId } = this;
       // TODO: refactor backClick without specifying route name with string literal private constant
@@ -78,10 +108,14 @@ export default {
   border: solid 1px $gray-border-color;
   padding: $margin-right;
 
-  .timestamp {
-    text-align: right;
+  .header {
+    display: flex;
+    justify-content: space-between;
     font-size: 80%;
     color: $gray;
+    .remove > * {
+      margin-right: $margin-right / 2;
+    }
   }
 
   img {
