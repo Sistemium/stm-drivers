@@ -26,7 +26,7 @@
     )
       img.thumbnail(
       v-for="img in headLinePhotos" :key="img.id"
-      :src="img.thumbnailHref"
+      :src="img.srcThumbnail()"
       )
 
   .buttons
@@ -36,15 +36,7 @@
     @click="checkInClick"
     ) Отметить прибытие
 
-    vue-core-image-upload.make-photo(
-    :crop="false"
-    @imageuploaded="imageUploaded"
-    :data="imageData"
-    :max-file-size="5242880"
-    :headers="uploadHeaders"
-    :url="imsUrl()"
-    )
-      mt-button() Сделать Фото-отчет
+    take-photo-button.make-photo(:done="imageUploaded") Сделать Фото-отчет
 
   .section-title Накладные
 
@@ -62,31 +54,27 @@
 
 import Vue from 'vue';
 import take from 'lodash/take';
-import { mapState } from 'vuex';
-import { MessageBox } from 'mint-ui';
-import getLocation from '@/services/locationHelper';
-import { serverDateFormat } from '@/config/moments';
-import VueCoreImageUpload from 'vue-core-image-upload';
 
+import { MessageBox } from 'mint-ui';
+
+import getLocation from '@/services/locationHelper';
 import ShipmentRoutePointShipment from '@/models/ShipmentRoutePointShipment';
 import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 
+import TakePhotoButton from './TakePhotoButton';
+
 export default {
 
-  components: { VueCoreImageUpload },
+  components: { TakePhotoButton },
   props: ['routePoint'],
 
   data() {
-    return { imageData: null, routePointPhotos: [] };
+    return { routePointPhotos: [] };
   },
 
   computed: {
-    ...mapState('auth', { token: 'id' }),
-    uploadHeaders() {
-      return { authorization: this.token };
-    },
     headLinePhotos() {
-      return this.routePointPhotos.length && take(this.routePointPhotos, 3);
+      return this.routePointPhotos.length && take(this.routePointPhotos, 4);
     },
   },
 
@@ -98,10 +86,6 @@ export default {
 
     reachedAtLocation() {
       return this.routePoint.reachedAtLocation;
-    },
-
-    imsUrl() {
-      return `/ims?folder=ShipmentRoutePointPhoto/${serverDateFormat()}`;
     },
 
     imageUploaded({ pictures: picturesInfo }) {
@@ -202,11 +186,6 @@ export default {
   color: lighten(green, 10%);
 }
 
-.make-photo {
-  border: solid 1px $gray-border-color;
-  border-radius: 4px;
-}
-
 $thumbnail-size: 35px;
 
 img.thumbnail {
@@ -214,5 +193,6 @@ img.thumbnail {
   max-height: $thumbnail-size;
   max-width: $thumbnail-size;
 }
+
 
 </style>
