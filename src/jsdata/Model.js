@@ -25,6 +25,10 @@ class Model {
     return this.store.create(this.name, params);
   }
 
+  destroy({ id }) {
+    return this.store.destroy(this.name, id);
+  }
+
   get(id) {
     return this.store.get(this.name, id);
   }
