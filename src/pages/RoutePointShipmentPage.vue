@@ -1,13 +1,19 @@
 <template lang="pug">
 
-  .route-point-shipment-page(v-if="shipment")
-    nav-header(
-    left-icon="back"
-    :prev="backFromShipment"
-    :title="shipment.ndoc"
-    )
+.route-point-shipment-page(v-if="shipment")
 
-    shipment-details(:shipment="shipment")
+  nav-header.sticky.secondary(
+  left-icon="back"
+  :prev="backFromShipment"
+  )
+
+    label {{ shipment.ndoc }}
+
+    small.totals
+      span {{ shipment.positions.length }}п
+      span {{ shipment.totalBoxes() | boxes }}
+
+  shipment-details(:shipment="shipment")
 
 </template>
 <script>
@@ -51,5 +57,6 @@ export default {
 
 </script>
 <style scoped>
+
 
 </style>

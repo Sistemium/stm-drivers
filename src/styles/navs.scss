@@ -25,12 +25,20 @@
       font-weight: 700;
     }
 
+    > * {
+      display: block;
+    }
+
   }
 
   .prev, .next {
     min-width: 45px;
     font-size: 130%;
     border: none;
+  }
+
+  .totals > * + * {
+    margin-left: $margin-right;
   }
 
 }

@@ -4,19 +4,10 @@
 
   .cell-list
 
-    mt-cell(
+    mt-cell#outlet(
     :title="shipment.outlet.partner.name"
     :label="shipment.outlet.address"
     )
-
-    mt-cell(
-    )
-      template(slot="title")
-        span.mint-cell-text
-          label Всего в накладной:
-          strong {{ shipment.positions.length }}п
-          strong {{ shipment.totalBoxes() | boxes }}
-        span.mint-cell-label {{ shipment.commentText }}
 
   .section-title Товары
 
@@ -73,6 +64,10 @@ export default {
 
 .mint-cell-text strong {
   margin-right: $margin-right;
+}
+
+#outlet {
+  border-top: none;
 }
 
 </style>

@@ -99,13 +99,6 @@ export default {
     > * {
       display: block;
     }
-    strong {
-      color: $dark-gray;
-    }
-    small {
-      color: $gray;
-      font-size: 75%;
-    }
   }
 }
 

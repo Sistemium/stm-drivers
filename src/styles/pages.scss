@@ -73,6 +73,17 @@ h2 {
   &.secondary {
     top: 49px;
     background: white;
+    @extend %list-cell-bordered;
+  }
+
+  .title {
+    strong {
+      color: $dark-gray;
+    }
+    small {
+      color: $gray;
+      font-size: 75%;
+    }
   }
 
 }
