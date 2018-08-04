@@ -37,6 +37,10 @@
     border: none;
   }
 
+  i.el-icon-back {
+    color: $primary-color;
+  }
+
   .totals > * + * {
     margin-left: $margin-right;
   }
