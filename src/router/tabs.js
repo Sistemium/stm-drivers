@@ -12,13 +12,13 @@ const tabs = [
     path: 'profile',
     name: 'profile',
     component: MyAccountPage,
-    meta: { title: 'Профиль', img: '/static/images/icons8-home.png' },
+    meta: { title: 'Профиль', img: 'static/images/icons8-home.png' },
   },
   {
     path: 'route/:date?',
     name: RoutePage.name,
     component: RoutePage,
-    meta: { title: 'Маршруты', img: '/static/images/icons8-to_do.png' },
+    meta: { title: 'Маршруты', img: 'static/images/icons8-to_do.png' },
     children: [
       {
         path: 'routePoint/:routePointId',
@@ -45,7 +45,7 @@ const tabs = [
     component: OutletsPage,
     meta: {
       title: 'Клиенты',
-      img: '/static/images/icons8-shop.png',
+      img: 'static/images/icons8-shop.png',
     },
     children: [
       {

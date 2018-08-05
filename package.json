@@ -38,6 +38,7 @@
     "vuikit": "^0.8.4"
   },
   "devDependencies": {
+    "appcache-webpack-plugin": "^1.4.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -66,10 +67,12 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "growl": "^1.10.5",
+    "html-replace-webpack-plugin": "^2.5.2",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^22.0.4",
     "jest-serializer-vue": "^0.3.0",
     "mocha": "^5.1.1",
+    "node-dir": "^0.1.17",
     "node-notifier": "^5.1.2",
     "node-sass": "^4.9.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
