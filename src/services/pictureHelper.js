@@ -43,7 +43,7 @@ export function loadImage(img) {
   return new Promise((resolve, reject) => {
 
     const src = imageSrc(img, 'smallImage');
-    const notDownloadedYet = src.startsWith('http');
+    const notDownloadedYet = src.startsWith('http') && !window.location.protocol.startsWith('http');
 
     let q = Promise.resolve();
 
@@ -52,7 +52,7 @@ export function loadImage(img) {
       debug('loadImage:', 'native');
 
       q = nativeLoadImage(img)
-        .then(img.refreshData);
+        .then(() => img.refreshData());
 
     }
 
