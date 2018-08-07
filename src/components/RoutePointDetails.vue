@@ -11,10 +11,11 @@
     )
 
     mt-cell.reached-at(
-    v-if="reachedAtLocation()"
+    v-if="isReached"
     title="Прибытие отмечено"
     :label="reachedAtLocation().timestamp | dateTime"
     )
+      mt-button.checking-again(size="small" v-if="isReached" @click="checkInClick") Уточнить
       i.el-icon-location
 
     mt-cell.route-point-photos(
@@ -32,6 +33,7 @@
   .buttons
 
     mt-button(
+    v-if="!isReached"
     type="primary"
     @click="checkInClick"
     ) Отметить прибытие
@@ -76,6 +78,9 @@ export default {
   },
 
   computed: {
+    isReached() {
+      return !!this.routePoint.reachedAtLocationId;
+    },
     headLinePhotos() {
       return this.routePointPhotos.length && take(this.routePointPhotos, 4);
     },
@@ -195,5 +200,10 @@ img.thumbnail {
   max-width: $thumbnail-size;
 }
 
+.checking-again {
+  padding: 2px 6px;
+  height: auto;
+  margin-right: $margin-right;
+}
 
 </style>
