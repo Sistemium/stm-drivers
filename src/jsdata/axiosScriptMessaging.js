@@ -33,7 +33,7 @@ export default function (config) {
       where = JSON.parse(params['where:'].replace('"in"', '"=="'));
     }
 
-    if (op === 'find') {
+    if (op === 'find' || op === 'destroy') {
       iosParams.id = parseIdParam(config.url);
 
       if (!iosParams.id || iosParams.id.indexOf('-') === -1) {
