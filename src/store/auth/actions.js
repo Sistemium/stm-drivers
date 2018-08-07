@@ -29,7 +29,6 @@ export default {
     }
 
     return rolesPromise
-      .then(res => new Promise(resolve => setTimeout(() => resolve(res), 1000)))
       .then(res => {
         localStorage.setItem(LS_KEY, token);
         authorizeJSDataStore(token, res.account.org);
