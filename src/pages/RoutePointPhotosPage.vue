@@ -25,7 +25,8 @@
             | {{ confirmDeleting(photo) ? 'Да' : 'Удалить' }}
 
         .timestamp {{ photo.deviceCts | dateTime }}
-      img(:src="photo.srcFull()")
+
+      image-preload.img(:picture="photo")
 
 </template>
 <script>
@@ -33,11 +34,15 @@
 import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 
+import ImagePreload from '@/components/ImagePreload';
+
 export default {
 
   name: 'RoutePointPhotosPage',
 
   props: ['routePointId'],
+
+  components: { ImagePreload },
 
   data() {
     return {
@@ -118,16 +123,13 @@ export default {
     }
   }
 
-  img {
+  .img {
     margin-top: $margin-right;
-    max-width: 100%;
   }
 
 }
 
 .sticky {
-
-  @extend %list-cell-bordered;
 
   .outlet {
     > * {
@@ -137,6 +139,7 @@ export default {
       font-size: 90%;
     }
   }
+
 }
 
 </style>

@@ -1,6 +1,5 @@
 import { supportsPictures, loadImage as nativeLoadImage } from '@/services/native';
 
-
 export function imageSrc(picture, size) {
 
   const srcName = size === 'thumbnail' ? 'thumbnailSrc' : 'smallSrc';
@@ -41,10 +40,20 @@ export function loadImage(img) {
 
   return new Promise((resolve, reject) => {
 
-    if (supportsPictures()) {
+    const src = imageSrc(img, 'smallImage');
+    const notDownloadedYet = src.startsWith('http');
+
+    if (supportsPictures() && notDownloadedYet) {
+
+      /* eslint-disable no-console */
+      console.info('nativeSupport', src);
 
       nativeLoadImage(img)
-        .then(image => img.find(image))
+        .then(() =>
+          img.refreshData()
+            .then(() => {
+              console.info('ImageRefreshed', img.id, imageSrc(img, 'smallImage'));
+            }))
         .then(() => preLoad(img, resolve, reject));
 
     } else {
@@ -57,6 +66,10 @@ export function loadImage(img) {
 
 function preLoad(img, resolve, reject) {
 
+  const src = imageSrc(img, 'smallImage');
+
+  console.info('pre-loading image:', src, img);
+
   const image = Object.assign(new Image(), {
 
     onload() {
@@ -68,7 +81,7 @@ function preLoad(img, resolve, reject) {
     },
 
     onerror: reject,
-    src: img.srcFull(),
+    src,
 
   });
 
