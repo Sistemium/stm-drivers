@@ -27,14 +27,14 @@ function onAuthorized() {
 
     debug('jsData', entity, data);
 
+    if (entity === 'RecordStatus') {
+      return onRecordStatus(data);
+    }
+
     const mapper = jsDataStore.getMapperByName(entity);
 
     if (!mapper) {
       return false;
-    }
-
-    if (entity === 'RecordStatus') {
-      return onRecordStatus(entity, data);
     }
 
     return jsDataStore.addToCache(entity, data, {});
@@ -43,6 +43,7 @@ function onAuthorized() {
 
 }
 
-function onRecordStatus(entity, { id }) {
-  jsDataStore.remove(entity, id);
+function onRecordStatus({ name, objectXid }) {
+  debug('onRecordStatus', name, objectXid);
+  jsDataStore.remove(name, objectXid);
 }
