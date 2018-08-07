@@ -1,5 +1,7 @@
 import { supportsPictures, loadImage as nativeLoadImage } from '@/services/native';
 
+const debug = require('debug')('stm:pictureHelper');
+
 export function imageSrc(picture, size) {
 
   const srcName = size === 'thumbnail' ? 'thumbnailSrc' : 'smallSrc';
@@ -43,22 +45,18 @@ export function loadImage(img) {
     const src = imageSrc(img, 'smallImage');
     const notDownloadedYet = src.startsWith('http');
 
+    let q = Promise.resolve();
+
     if (supportsPictures() && notDownloadedYet) {
 
-      /* eslint-disable no-console */
-      console.info('nativeSupport', src);
+      debug('loadImage:', 'native');
 
-      nativeLoadImage(img)
-        .then(() =>
-          img.refreshData()
-            .then(() => {
-              console.info('ImageRefreshed', img.id, imageSrc(img, 'smallImage'));
-            }))
-        .then(() => preLoad(img, resolve, reject));
+      q = nativeLoadImage(img)
+        .then(img.refreshData);
 
-    } else {
-      preLoad(img, resolve, reject);
     }
+
+    q.then(() => preLoad(img, resolve, reject));
 
   });
 
@@ -68,7 +66,7 @@ function preLoad(img, resolve, reject) {
 
   const src = imageSrc(img, 'smallImage');
 
-  console.info('pre-loading image:', src, img);
+  debug('preLoad:', src, img);
 
   const image = Object.assign(new Image(), {
 

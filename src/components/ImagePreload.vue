@@ -10,7 +10,7 @@
 
 import { loadImage } from '@/services/pictureHelper';
 
-/* eslint-disable no-console */
+const debug = require('debug')('stm:ImagePreload');
 
 export default {
 
@@ -32,15 +32,12 @@ export default {
 
   created() {
 
-    console.info(this.id, this.isLoading, this.picture.srcFull());
-
     loadImage(this.picture)
       // .then(res => new Promise(resolve => setTimeout(() => resolve(res), 2000)))
       .then(() => {
         this.isLoading = false;
-        console.info('loadImage done', this.picture.id, this.picture.srcFull());
       })
-      .catch(e => console.error(e));
+      .catch(e => debug('Error:', e));
   },
 
 };
