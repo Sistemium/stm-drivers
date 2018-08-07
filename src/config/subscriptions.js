@@ -13,7 +13,15 @@ function onAuthorized() {
 
   Workflow.findAll();
 
-  subscribe(['ShipmentRoutePoint', 'ShipmentRoute', 'ShipmentRoutePointPhoto', 'ShipmentRoutePointShipment']);
+  subscribe([
+    'ShipmentRoutePoint',
+    'ShipmentRoute',
+    'ShipmentRoutePointPhoto',
+    'ShipmentRoutePointShipment',
+    'Shipment',
+    'ShipmentPosition',
+    'RecordStatus',
+  ]);
 
   onJsData('jsData:update', ({ entity, data }) => {
 
@@ -22,11 +30,19 @@ function onAuthorized() {
     const mapper = jsDataStore.getMapperByName(entity);
 
     if (!mapper) {
-      return;
+      return false;
     }
 
-    jsDataStore.addToCache(entity, data, {});
+    if (entity === 'RecordStatus') {
+      return onRecordStatus(entity, data);
+    }
+
+    return jsDataStore.addToCache(entity, data, {});
 
   });
 
+}
+
+function onRecordStatus(entity, { id }) {
+  jsDataStore.remove(entity, id);
 }
