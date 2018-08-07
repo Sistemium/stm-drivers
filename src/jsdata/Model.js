@@ -7,10 +7,22 @@ class Model {
 
   constructor(config) {
 
-    this.name = config.name;
-    this.store = store;
-    this.mapper = store.defineMapper(this.name, { notify: false, ...config });
-    this.offs = {};
+    const { name, methods = {} } = config;
+
+    config.methods = methods;
+
+    methods.refreshData = refreshData;
+
+    Object.assign(this, {
+      name,
+      store,
+      mapper: store.defineMapper(name, { notify: false, ...config }),
+      offs: {},
+    });
+
+    function refreshData() {
+      return this.id ? store.find(name, this.id, { force: true }) : Promise.reject('No id attribute');
+    }
 
   }
 
