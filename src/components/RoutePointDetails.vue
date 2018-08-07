@@ -210,4 +210,8 @@ img.thumbnail {
   margin-right: $margin-right;
 }
 
+.reached-at {
+  border-top: none;
+}
+
 </style>
