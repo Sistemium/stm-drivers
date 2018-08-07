@@ -119,13 +119,17 @@ export default {
 
     async refresh() {
 
+      const loading = this.$loading.show();
+
       await Promise.all(this.routePoint.routePointShipments.map(routePointShipment =>
         routePointShipment.shipment.loadRelations([
           'positions',
           'positions.article',
-        ]))).then(this.$loading.show().hide);
+        ])));
 
       await this.routePoint.loadRelations('routePointPhotos');
+
+      loading.hide();
 
       const filter = { shipmentRoutePointId: this.routePoint.id, orderBy: [['deviceCts', 'DESC']] };
       this.routePointPhotos = ShipmentRoutePointPhoto.bindAll(this, filter, 'routePointPhotos');

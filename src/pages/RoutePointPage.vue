@@ -72,6 +72,8 @@ export default {
 
       const { routePointId } = this;
 
+      this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
+
       await ShipmentRoutePoint.find(routePointId, {
         with: [
           'outlet',
@@ -82,9 +84,8 @@ export default {
           'routePointShipments.shipment',
         ],
       })
-        .then(({ shipmentRouteId }) => ShipmentRoutePoint.findAll({ shipmentRouteId }));
-
-      this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
+        .then(({ shipmentRouteId }) => ShipmentRoutePoint.findAll({ shipmentRouteId }))
+        .then(this.$loading.show().hide);
 
     },
     onRouteChange(shipmentRouteId) {
