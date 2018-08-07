@@ -12,7 +12,7 @@ module.exports.AppCachePlugin =
     output: 'appcache.manifest'
   });
 
-module.exports.replaceHeadMadifest =
+module.exports.replaceHeadManifest =
   new HtmlReplaceWebpackPlugin([
     {
       pattern: 'data-manifest',

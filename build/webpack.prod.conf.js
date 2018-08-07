@@ -11,7 +11,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-const { AppCachePlugin, replaceHeadMadifest } = require('./appcache');
+const { AppCachePlugin, replaceHeadManifest } = require('./appcache');
 
 const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -81,7 +81,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    replaceHeadMadifest,
+    replaceHeadManifest,
     // keep module.id stable when vendor modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
