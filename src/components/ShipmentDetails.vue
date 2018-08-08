@@ -14,30 +14,39 @@
   .cell-list.shipment-positions
 
     mt-cell.shipment(
-    v-for="item in shipment.positions" :key="item.id"
+    v-for="item in positions" :key="item.id"
     :title="item.article && item.article.name"
     ) {{ item.volume | boxPcs(item.article.packageRel) }}
 
 </template>
 <script>
 
-// import ShipmentPosition from '@/models/ShipmentPosition';
+import ShipmentPosition from '@/models/ShipmentPosition';
 
 export default {
 
   props: { shipment: Object },
 
+  data() {
+    return { positions: [] };
+  },
+
   methods: {
     async refresh() {
-      if (this.shipment) {
-        await this.shipment.loadRelations(['positions', 'positions.article']);
-        // const { id: shipmentId } = this.shipment;
-        // await ShipmentPosition.findAll({ shipmentId })
-        //   .then(positions => positions.map(position => position.loadRelations(['article'])))
-        //   .then(promises => Promise.all(promises))
-        //   .then(this.$loading.show().hide);
-        this.$forceUpdate();
+
+      const { shipment } = this;
+
+      if (!shipment) {
+        return;
       }
+
+      const filter = { shipmentId: shipment.id, orderBy: [['article.name', 'ASC']] };
+
+      await this.shipment.loadRelations(['positions', 'positions.article']);
+      this.positions = ShipmentPosition.bindAll(this, filter, 'positions');
+
+      this.$forceUpdate();
+
     },
   },
 
