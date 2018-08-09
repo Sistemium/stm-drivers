@@ -60,6 +60,10 @@ export default {
     this.refresh();
   },
 
+  beforeDestroy() {
+    ShipmentPosition.unbindAll(this);
+  },
+
 };
 
 </script>

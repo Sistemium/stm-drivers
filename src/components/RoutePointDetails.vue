@@ -203,6 +203,7 @@ export default {
   },
 
   beforeDestroy() {
+    ShipmentRoutePointPhoto.unbindAll(this);
     ShipmentRoutePointShipment.unbindAll(this);
   },
 

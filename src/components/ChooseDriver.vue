@@ -41,6 +41,10 @@ export default {
       .then(this.$loading.show().hide);
   },
 
+  beforeDestroy() {
+    Driver.unbindAll(this);
+  },
+
 };
 
 </script>

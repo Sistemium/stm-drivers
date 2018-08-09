@@ -92,6 +92,10 @@ export default {
     this.photos = ShipmentRoutePointPhoto.bindAll(this, filter, 'photos');
   },
 
+  beforeDestroy() {
+    ShipmentRoutePointPhoto.unbindAll(this);
+  },
+
 };
 
 </script>
