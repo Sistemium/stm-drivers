@@ -14,8 +14,8 @@ module.exports.AppCachePlugin =
 
 module.exports.replaceHeadManifest =
   new HtmlReplaceWebpackPlugin([
-    {
-      pattern: 'data-manifest',
-      replacement: 'manifest'
-    }
+    // {
+    //   pattern: 'data-manifest',
+    //   replacement: 'manifest'
+    // }
   ]);
