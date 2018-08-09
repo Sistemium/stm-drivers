@@ -2,6 +2,7 @@ import { requestFromDevice } from '@/services/native';
 import forOwn from 'lodash/forOwn';
 
 const settle = require('axios/lib/core/settle');
+const debug = require('debug')('stm:axiosScriptMessage');
 
 export default function (config) {
 
@@ -79,7 +80,13 @@ export default function (config) {
         settle(resolve, reject, response);
 
       })
-      .catch(reject);
+      .catch(err => {
+
+        debug(op, 'error:', err);
+
+        reject(err);
+
+      });
 
   });
 }
