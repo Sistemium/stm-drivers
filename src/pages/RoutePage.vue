@@ -173,7 +173,7 @@ export default {
         this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
 
         await ShipmentRoute.findAll({ limit: 50, ...filter })
-          .then(this.$loading.show().hide);
+          .finally(this.$loading.show().hide);
 
       } else {
 

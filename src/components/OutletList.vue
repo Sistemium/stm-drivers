@@ -70,7 +70,7 @@ export default {
   created() {
 
     loadData()
-      .then(this.$loading.show().hide);
+      .finally(this.$loading.show().hide);
 
   },
 
