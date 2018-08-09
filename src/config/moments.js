@@ -12,7 +12,7 @@ export function dateFormat(date) {
 export function dateTimeFormat(utcDate) {
 
   const date = utcDate instanceof Date ? utcDate : `${utcDate}Z`;
-  return format(date, 'dd.MM.y HH:mm');
+  return format(date, 'dd.MM.y в HH:mm');
 
 }
 
