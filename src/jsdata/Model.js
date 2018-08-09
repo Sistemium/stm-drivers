@@ -94,7 +94,9 @@ class Model {
     const cid = componentId(component);
 
     const onDataChange = () => {
-      Vue.set(component, property, this.filter(query));
+      const res = this.filter(query);
+      Vue.set(component, property, res);
+      return res;
       // setTimeout(() => component.$forceUpdate());
     };
 
@@ -110,7 +112,7 @@ class Model {
       this.mon('remove', onDataChange),
     ];
 
-    return this.filter(query);
+    return onDataChange();
 
   }
 

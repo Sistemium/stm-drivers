@@ -21,6 +21,8 @@ import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 
 import RoutePointDetails from '@/components/RoutePointDetails';
 
+const debug = require('debug')('stm:RoutePointPage');
+
 const name = 'RoutePointPage';
 
 export default {
@@ -74,6 +76,8 @@ export default {
 
       this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
 
+      const { hide: hideLoading } = this.$loading.show();
+
       await ShipmentRoutePoint.find(routePointId, {
         with: [
           'outlet',
@@ -85,7 +89,11 @@ export default {
         ],
       })
         .then(({ shipmentRouteId }) => ShipmentRoutePoint.findAll({ shipmentRouteId }))
-        .then(this.$loading.show().hide);
+        .catch(err => {
+          debug('rebind', err);
+        });
+
+      hideLoading();
 
     },
     onRouteChange(shipmentRouteId) {
@@ -93,7 +101,7 @@ export default {
         return;
       }
       const filter = { orderBy: [['ord', 'ASC']], shipmentRouteId };
-      this.routePoints = ShipmentRoutePoint.bindAll(this, filter, 'routePoints');
+      ShipmentRoutePoint.bindAll(this, filter, 'routePoints');
     },
   },
 

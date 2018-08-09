@@ -9,9 +9,7 @@
 
     b {{ shipment.ndoc }}
 
-    small.totals
-      span {{ shipment.positions.length }}п
-      span {{ shipment.totalBoxes() | boxes }}
+    small.totals {{ totalsLabel }}
 
   shipment-details(:shipment="shipment")
 
@@ -31,6 +29,16 @@ export default {
 
   data() {
     return { shipment: null };
+  },
+
+  computed: {
+    totalsLabel() {
+      const { shipment, $options: { filters } } = this;
+      if (!shipment) {
+        return 'Загрузка ...';
+      }
+      return `${shipment.positions.length}п ${filters.boxes(shipment.totalBoxes())}`;
+    },
   },
 
   components: { ShipmentDetails },
@@ -60,7 +68,7 @@ export default {
 
 @import "../styles/variables";
 
-.totals > * {
+.totals {
   color: $black;
 }
 

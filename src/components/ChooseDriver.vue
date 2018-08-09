@@ -19,7 +19,7 @@ import { SET_CURRENT } from '@/store/driver';
 export default {
 
   data() {
-    return { drivers: Driver.bindAll(this, { orderBy: 'name' }, 'drivers') };
+    return { drivers: [] };
   },
 
   computed: mapState('driver', ['current']),
@@ -37,8 +37,9 @@ export default {
   },
 
   created() {
+    Driver.bindAll(this, { orderBy: 'name' }, 'drivers');
     Driver.findAll()
-      .then(this.$loading.show().hide);
+      .finally(this.$loading.show().hide);
   },
 
   beforeDestroy() {

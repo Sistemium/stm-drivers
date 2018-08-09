@@ -49,7 +49,7 @@
   .cell-list
 
     mt-cell.shipment(
-    v-for="item in routePoint.routePointShipments" :key="item.id"
+    v-for="item in routePointShipments" :key="item.id"
     :title="item.shipment.ndoc"
     :label="item.shipment.commentText"
     :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
@@ -70,7 +70,7 @@ import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 
 import TakePhotoButton from './TakePhotoButton';
 
-const debug = require('debug')('PoutePointDetails');
+const debug = require('debug')('stm:RoutePointDetails');
 
 export default {
 
@@ -78,7 +78,7 @@ export default {
   props: ['routePoint'],
 
   data() {
-    return { routePointPhotos: [] };
+    return { routePointPhotos: [], routePointShipments: [] };
   },
 
   computed: {
@@ -150,7 +150,8 @@ export default {
     async refresh() {
 
       const filter = { shipmentRoutePointId: this.routePoint.id, orderBy: [['deviceCts', 'DESC']] };
-      this.routePointPhotos = ShipmentRoutePointPhoto.bindAll(this, filter, 'routePointPhotos');
+
+      ShipmentRoutePointPhoto.bindAll(this, filter, 'routePointPhotos');
 
       const loading = this.$loading.show();
 
@@ -161,11 +162,14 @@ export default {
             'positions.article',
           ])));
         await this.routePoint.loadRelations('routePointPhotos');
+        this.$forceUpdate();
       } catch (e) {
         debug('refresh', e);
       }
 
       loading.hide();
+
+      ShipmentRoutePointShipment.bindAll(this, filter, 'routePointShipments');
 
       this.$forceUpdate();
 

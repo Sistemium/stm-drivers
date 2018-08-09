@@ -50,7 +50,7 @@ export default {
 
   data() {
     return {
-      routePoints: this.bindRoutePoints(),
+      routePoints: [],
       shipmentRoute: ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute'),
     };
   },
@@ -58,7 +58,7 @@ export default {
   watch: {
     shipmentRouteId() {
       this.shipmentRoute = ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute');
-      this.routePoints = this.bindRoutePoints();
+      this.bindRoutePoints();
       this.refresh();
     },
   },
@@ -94,7 +94,7 @@ export default {
 
     bindRoutePoints() {
       const { shipmentRouteId } = this;
-      return ShipmentRoutePoint.bindAll(this, { shipmentRouteId, orderBy: [['ord', 'ASC']] }, 'routePoints');
+      ShipmentRoutePoint.bindAll(this, { shipmentRouteId, orderBy: [['ord', 'ASC']] }, 'routePoints');
     },
 
     routeParams(routePoint) {
@@ -108,7 +108,7 @@ export default {
           this.reorder(point, 0);
 
         }))
-        .then(this.$loading.show().hide);
+        .finally(this.$loading.show().hide);
     },
 
     reorder(routePoint1, change) {
@@ -150,6 +150,7 @@ export default {
   },
 
   created() {
+    this.bindRoutePoints();
     this.refresh();
   },
 
