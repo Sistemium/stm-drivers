@@ -13,10 +13,11 @@
     mt-cell.reached-at(
     v-if="isReached"
     title="Прибытие отмечено"
-    :label="reachedAtLocation().timestamp | dateTime"
+    :label="checkInLabel()"
     )
-      mt-button.checking-again(size="small" v-if="isReached" @click="checkInClick") Уточнить
-      i.el-icon-location
+      small {{ accuracyLabel() }}
+      mt-button.checking-again(size="small" v-if="isReached" @click="checkInClick")
+        span Уточнить
 
     mt-cell.route-point-photos(
     is-link
@@ -59,6 +60,7 @@
 
 import Vue from 'vue';
 import take from 'lodash/take';
+import round from 'lodash/round';
 
 import { MessageBox } from 'mint-ui';
 
@@ -88,6 +90,30 @@ export default {
 
   methods: {
 
+    accuracyLabel() {
+      const { horizontalAccuracy } = this.reachedAtLocation() || {};
+      if (!horizontalAccuracy) return '';
+      let res = `${horizontalAccuracy} м.`;
+      if (horizontalAccuracy > 900) {
+        res = `${round(horizontalAccuracy / 1000, 1)} км.`;
+      } else if (horizontalAccuracy > 200) {
+        res = `${Math.floor(horizontalAccuracy / 100) * 100} м.`;
+      }
+      return `± ${res}`;
+    },
+
+    checkInLabel() {
+
+      const location = this.reachedAtLocation();
+
+      if (!location) return '';
+
+      const { timestamp } = location;
+
+      return `${this.$options.filters.dateTime(timestamp)}`;
+
+    },
+
     outlet() {
       return this.routePoint.outlet;
     },
@@ -103,9 +129,11 @@ export default {
 
     checkInClick() {
 
+      const message = `${this.isReached ? 'Заново о' : 'О'}тметить прибытие в точку?`;
+
       MessageBox({
         title: 'Вопрос',
-        message: 'Отметить прибытие в точку?',
+        message,
         showCancelButton: true,
         confirmButtonText: 'Да',
         cancelButtonText: 'Нет',
@@ -207,7 +235,7 @@ img.thumbnail {
 .checking-again {
   padding: 2px 6px;
   height: auto;
-  margin-right: $margin-right;
+  margin-left: $margin-right;
 }
 
 .reached-at {
