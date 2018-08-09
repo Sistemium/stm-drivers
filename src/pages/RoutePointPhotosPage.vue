@@ -71,8 +71,10 @@ export default {
         return;
       }
 
+      const loading = this.$loading.show();
+
       ShipmentRoutePointPhoto.destroy(photo)
-        .finally(this.$loading.show().hide);
+        .then(loading.hide, loading.hide);
 
     },
     backClick() {

@@ -70,6 +70,8 @@ import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 
 import TakePhotoButton from './TakePhotoButton';
 
+const debug = require('debug')('PoutePointDetails');
+
 export default {
 
   components: { TakePhotoButton },
@@ -147,20 +149,23 @@ export default {
 
     async refresh() {
 
-      const loading = this.$loading.show();
-
-      await Promise.all(this.routePoint.routePointShipments.map(routePointShipment =>
-        routePointShipment.shipment.loadRelations([
-          'positions',
-          'positions.article',
-        ])));
-
-      await this.routePoint.loadRelations('routePointPhotos');
-
-      loading.hide();
-
       const filter = { shipmentRoutePointId: this.routePoint.id, orderBy: [['deviceCts', 'DESC']] };
       this.routePointPhotos = ShipmentRoutePointPhoto.bindAll(this, filter, 'routePointPhotos');
+
+      const loading = this.$loading.show();
+
+      try {
+        await Promise.all(this.routePoint.routePointShipments.map(routePointShipment =>
+          routePointShipment.shipment.loadRelations([
+            'positions',
+            'positions.article',
+          ])));
+        await this.routePoint.loadRelations('routePointPhotos');
+      } catch (e) {
+        debug('refresh', e);
+      }
+
+      loading.hide();
 
       this.$forceUpdate();
 
