@@ -86,6 +86,10 @@ export default {
     left: 8px;
   }
 
+  .buttons > * {
+    margin-top: $margin-top;
+  }
+
 }
 
 </style>
