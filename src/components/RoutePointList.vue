@@ -67,17 +67,13 @@ export default {
     shipmentRouteId: String,
     routeName: { type: String, default: 'RoutePointPage' },
     routeParamName: { type: String, default: 'routePointId' },
+    reordering: Boolean,
   },
 
   computed: {
 
     orderedRoutePoints() {
       return orderBy(this.routePoints, 'ord');
-    },
-
-    reordering() {
-      return this.shipmentRoute.processing === 'routing';
-      // return true;
     },
 
   },

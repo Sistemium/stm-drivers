@@ -23,13 +23,23 @@
       )
 
       .buttons
+
         mt-button(
         v-for="(value, key) in workflowOptions" :key="key"
         :type="primaryWorkflowOption === key ? 'primary' : 'default'"
         @click = "saveProcessing(key)"
         ) {{ value }}
 
-      route-point-list(v-if="currentRoute" :shipment-route-id="currentRoute.id")
+        route-form(
+        v-if="editable"
+        :shipment-route="currentRoute"
+        )
+
+      route-point-list(
+      :reordering="editable"
+      v-if="currentRoute"
+      :shipment-route-id="currentRoute.id"
+      )
 
     router-view(v-else)
 
@@ -47,6 +57,7 @@ import { dateFormat, serverDateFormat, tomorrow } from '@/config/moments';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
+import RouteForm from '@/components/RouteForm';
 
 import ShipmentRoute from '@/models/ShipmentRoute';
 
@@ -62,10 +73,11 @@ export default {
       currentRoute: undefined,
       nextRoute: undefined,
       prevRoute: undefined,
+      popupVisible: false,
     };
   },
 
-  components: { RoutePointList, ChooseDriver },
+  components: { RoutePointList, ChooseDriver, RouteForm },
 
   computed: {
 
@@ -81,6 +93,10 @@ export default {
 
     workflowOptions() {
       return this.currentRoute && this.currentRoute.workflow().to;
+    },
+
+    editable() {
+      return this.currentRoute && this.currentRoute.workflow().editable;
     },
 
     primaryWorkflowOption() {
