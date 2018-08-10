@@ -50,7 +50,7 @@
 
     mt-cell.shipment(
     v-for="item in routePointShipments" :key="item.id"
-    :title="item.shipment.ndoc"
+    :title="item.shipment.ndoc | ndoc"
     :label="item.shipment.commentText"
     :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
     ) {{ item.shipment.totalBoxes() | boxes }}

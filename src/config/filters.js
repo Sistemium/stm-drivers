@@ -46,3 +46,5 @@ Vue.filter('boxPcs', (value, packageRel = 1) => {
   return res.join(' ');
 
 });
+
+Vue.filter('ndoc', value => value || 'РНК');
