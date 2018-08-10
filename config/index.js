@@ -2,7 +2,7 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   dev: {
@@ -14,8 +14,7 @@ module.exports = {
 
       // proxy all requests starting with /api to jsonplaceholder
       '/api': {
-        target: 'https://api.sistemium.com/v4d',
-        // target: 'http://localhost:9090/api',
+        target: process.env.API_URL || 'https://api.sistemium.com/v4d',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
