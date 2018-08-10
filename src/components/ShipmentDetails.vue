@@ -32,7 +32,7 @@ export default {
   },
 
   methods: {
-    async refresh() {
+    refresh() {
 
       const { shipment } = this;
 
@@ -42,7 +42,11 @@ export default {
 
       const filter = { shipmentId: shipment.id, orderBy: [['article.name', 'ASC']] };
 
-      await this.shipment.loadRelations(['positions', 'positions.article']);
+      const { hide } = this.$loading.show();
+
+      this.shipment.loadRelations(['positions', 'positions.article'])
+        .finally(hide);
+
       this.positions = ShipmentPosition.bindAll(this, filter, 'positions');
 
       this.$forceUpdate();
