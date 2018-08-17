@@ -4,7 +4,7 @@
 
   mt-button(
   @click="addCommentClick"
-  ) Добавить комментарий
+  ) {{ shipmentRoute.commentText ? 'Изменить комментарий' : 'Добавить комментарий' }}
 
   mt-popup.popup(
   v-model="popupVisible"
