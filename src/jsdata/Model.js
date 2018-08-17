@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue';
 import { serverDateTimeFormat } from '@/config/moments';
+import debug from '@/services/debug';
 import store from './store';
+
 
 class Model {
 
@@ -46,11 +48,27 @@ class Model {
   }
 
   find(id, options) {
-    return this.store.find(this.name, id, options);
+    return this.store.find(this.name, id, options)
+      .then(res => {
+        debug('find success')(id);
+        return res;
+      })
+      .catch(err => {
+        debug('find error')(id, err.message || err);
+        return Promise.reject(err);
+      });
   }
 
   findAll(query, options) {
-    return this.store.findAll(this.name, query, options);
+    return this.store.findAll(this.name, query, options)
+      .then(res => {
+        debug('findAll success')(res.length, query);
+        return res;
+      })
+      .catch(err => {
+        debug('findAll error')(query, err.message || err);
+        return Promise.reject(err);
+      });
   }
 
   filter(query) {

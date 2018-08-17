@@ -62,7 +62,7 @@ import RouteForm from '@/components/RouteForm';
 import ShipmentRoute from '@/models/ShipmentRoute';
 
 const name = 'RoutePage';
-const debug = require('debug')('stm:route-page');
+const debug = require('@/services/debug').default('route-page');
 
 export default {
 

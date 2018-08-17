@@ -45,7 +45,7 @@ import orderBy from 'lodash/orderBy';
 import maxBy from 'lodash/maxBy';
 import get from 'lodash/get';
 
-const debug = require('debug')('stm:route-point-list');
+const debug = require('@/services/debug').default('route-point-list');
 
 export default {
 

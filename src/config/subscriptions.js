@@ -5,7 +5,7 @@ import { subscribe, onJsData } from '@/jsdata/scriptMessageSubscribing';
 import jsDataStore from '@/jsdata/store';
 
 
-const debug = require('debug')('stm:subscriptions');
+const debug = require('@/services/debug').default('subscriptions');
 
 store.subscribe(({ type }) => type.endsWith(AUTHORIZED) && onAuthorized());
 

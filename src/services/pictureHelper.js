@@ -1,6 +1,6 @@
 import { supportsPictures, loadImage as nativeLoadImage } from '@/services/native';
 
-const debug = require('debug')('stm:pictureHelper');
+const debug = require('@/services/debug').default('pictureHelper');
 
 export function imageSrc(picture, size) {
 

@@ -21,7 +21,7 @@ import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
 
 import RoutePointDetails from '@/components/RoutePointDetails';
 
-const debug = require('debug')('stm:RoutePointPage');
+const debug = require('@/services/debug').default('RoutePointPage');
 
 const name = 'RoutePointPage';
 

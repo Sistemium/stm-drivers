@@ -1,6 +1,6 @@
 import LogMessage from '@/models/LogMessage';
 
-const debug = require('debug')('stm:errors');
+const debug = require('@/services/debug').default('errors');
 
 window.onerror = errorCatcherFn;
 

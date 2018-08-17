@@ -10,7 +10,7 @@
 
 import { loadImage } from '@/services/pictureHelper';
 
-const debug = require('debug')('stm:ImagePreload');
+const debug = require('@/services/debug').default('ImagePreload');
 
 export default {
 

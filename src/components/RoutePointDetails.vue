@@ -70,7 +70,7 @@ import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 
 import TakePhotoButton from './TakePhotoButton';
 
-const debug = require('debug')('stm:RoutePointDetails');
+const debug = require('@/services/debug').default('RoutePointDetails');
 
 export default {
 

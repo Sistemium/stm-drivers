@@ -7,7 +7,7 @@ import difference from 'lodash/difference';
 
 import { handler, isNative } from '@/services/native';
 
-// const debug = require('debug')('stm:scriptMessageSubscribing');
+// const debug = require('@/services/debug').default('scriptMessageSubscribing');
 
 const SUBSCRIBE = 'subscribe';
 const CALLBACK = 'iosSocketsJsDataSubscribe';

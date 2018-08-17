@@ -2,7 +2,7 @@ import { requestFromDevice } from '@/services/native';
 import forOwn from 'lodash/forOwn';
 
 const settle = require('axios/lib/core/settle');
-const debug = require('debug')('stm:axiosScriptMessage');
+const debug = require('@/services/debug').default('axiosScriptMessage');
 
 export default function (config) {
 
