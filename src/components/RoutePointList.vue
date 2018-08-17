@@ -44,7 +44,8 @@ import ShipmentRoute from '@/models/ShipmentRoute';
 import orderBy from 'lodash/orderBy';
 import maxBy from 'lodash/maxBy';
 import get from 'lodash/get';
-import fpForEach from 'lodash/fp/forEach';
+
+const debug = require('debug')('stm:route-point-list');
 
 export default {
 
@@ -97,14 +98,21 @@ export default {
       return { ...this.$route.params, [this.routeParamName]: routePoint.id };
     },
 
-    refresh() {
-      findAll(this.shipmentRouteId)
-        .then(fpForEach(point => {
+    async refresh() {
 
-          this.reorder(point, 0);
+      const { hide } = this.$loading.show();
 
-        }))
-        .finally(this.$loading.show().hide);
+      try {
+        const routePoints = await findAll(this.shipmentRouteId);
+        // eslint-disable-next-line
+        const reordering = routePoints.map(point => this.reorder(point, 0));
+        await Promise.all(reordering);
+      } catch (e) {
+        debug(e.name, e.message);
+      }
+
+      hide();
+
     },
 
     reorder(routePoint1, change) {
@@ -119,27 +127,26 @@ export default {
           setOrd(routePoint1, 1);
         }
 
-        routePoint1.save();
-
-        return;
-
+        return routePoint1.save();
       }
 
       if (change === 0) {
-        return;
+        return Promise.resolve();
       }
 
       const routePoint2 = this.orderedRoutePoints[(routePoint1.ord + change) - 1];
 
       if (!routePoint2 || !routePoint2.ord) {
-        return;
+        return Promise.resolve();
       }
 
       setOrd(routePoint2, routePoint1.ord);
       setOrd(routePoint1, routePoint1.ord + change);
 
-      routePoint2.save();
-      routePoint1.save();
+      return Promise.all([
+        routePoint2.save(),
+        routePoint1.save(),
+      ]);
 
     },
 

@@ -62,6 +62,7 @@ import RouteForm from '@/components/RouteForm';
 import ShipmentRoute from '@/models/ShipmentRoute';
 
 const name = 'RoutePage';
+const debug = require('debug')('stm:route-page');
 
 export default {
 
@@ -183,27 +184,35 @@ export default {
 
       const { id: driverId } = this.currentDriver || {};
 
-      if (driverId) {
-
-        const filter = { driverId, orderBy: [['date', 'DESC']] };
-        this.shipmentRoutes = ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
-
-        await ShipmentRoute.findAll({ limit: 50, ...filter })
-          .finally(this.$loading.show().hide);
-
-      } else {
+      if (!driverId) {
 
         ShipmentRoute.unbindAll(this);
         this.shipmentRoutes = [];
 
+        return;
+
       }
+
+      const filter = { driverId, orderBy: [['date', 'DESC']] };
+
+      ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
+
+      const { hide } = this.$loading.show();
+
+      try {
+        await ShipmentRoute.findAll({ limit: 50, ...filter });
+      } catch (e) {
+        debug(e.name, e.message);
+      }
+
+      hide();
 
     },
 
   },
 
   created() {
-    this.refresh();
+    return this.refresh();
   },
 
   beforeDestroy() {
