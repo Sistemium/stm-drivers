@@ -10,6 +10,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 import './config/subscriptions';
+import './config/errors';
 
 import { AUTH_INIT } from './store/auth/actions';
 
@@ -24,5 +25,3 @@ new Vue({
     return store.dispatch(`auth/${AUTH_INIT}`);
   },
 });
-
-// require('./models');
