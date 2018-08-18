@@ -54,6 +54,7 @@ import { SET_DATE, LAST_DATE } from '@/store/driver';
 import find from 'lodash/find';
 
 import { dateFormat, serverDateFormat, tomorrow } from '@/config/moments';
+import nsDebug from '@/services/debug';
 
 import ChooseDriver from '@/components/ChooseDriver';
 import RoutePointList from '@/components/RoutePointList';
@@ -62,7 +63,7 @@ import RouteForm from '@/components/RouteForm';
 import ShipmentRoute from '@/models/ShipmentRoute';
 
 const name = 'RoutePage';
-const debug = require('@/services/debug').default('route-page');
+const debug = nsDebug('route-page');
 
 export default {
 
@@ -165,7 +166,12 @@ export default {
 
         this.setLastDate(this.currentRoute.date);
 
+        debug('setCurrentRoute', this.currentRoute.date);
+
+      } else {
+        debug('setCurrentRoute', '!route');
       }
+
 
     },
 
@@ -206,6 +212,8 @@ export default {
       }
 
       hide();
+
+      debug('refresh end');
 
     },
 

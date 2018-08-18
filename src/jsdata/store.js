@@ -3,7 +3,6 @@ import { DataStore } from 'js-data';
 import { HttpAdapter } from 'js-data-http';
 
 import queryTransform from './httpAdapter';
-// import axiosScriptMessaging from '@/jsdata/axiosScriptMessaging';
 
 const store = new DataStore();
 

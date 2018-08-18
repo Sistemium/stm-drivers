@@ -44,8 +44,9 @@ import ShipmentRoute from '@/models/ShipmentRoute';
 import orderBy from 'lodash/orderBy';
 import maxBy from 'lodash/maxBy';
 import get from 'lodash/get';
+import nsDebug from '@/services/debug';
 
-const debug = require('@/services/debug').default('route-point-list');
+const debug = nsDebug('route-point-list');
 
 export default {
 
@@ -106,12 +107,15 @@ export default {
         const routePoints = await findAll(this.shipmentRouteId);
         // eslint-disable-next-line
         const reordering = routePoints.map(point => this.reorder(point, 0));
+        debug('refresh reordering', `(${reordering.length})`);
         await Promise.all(reordering);
       } catch (e) {
         debug(e.name, e.message);
       }
 
       hide();
+
+      debug('refresh end');
 
     },
 

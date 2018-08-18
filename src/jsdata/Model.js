@@ -48,25 +48,27 @@ class Model {
   }
 
   find(id, options) {
-    return this.store.find(this.name, id, options)
+    const { name } = this;
+    return this.store.find(name, id, options)
       .then(res => {
-        debug('find success')(id);
+        debug('find success')(name, id);
         return res;
       })
       .catch(err => {
-        debug('find error')(id, err.message || err);
+        debug('find error')(name, id, err.message || err);
         return Promise.reject(err);
       });
   }
 
   findAll(query, options) {
-    return this.store.findAll(this.name, query, options)
+    const { name } = this;
+    return this.store.findAll(name, query, options)
       .then(res => {
-        debug('findAll success')(res.length, query);
+        debug('findAll:success')(name, `(${res.length})`, query);
         return res;
       })
       .catch(err => {
-        debug('findAll error')(query, err.message || err);
+        debug('findAll:error')(name, query, err.message || err);
         return Promise.reject(err);
       });
   }

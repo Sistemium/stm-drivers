@@ -3,13 +3,16 @@ import Workflow from '@/models/Workflow';
 import store from '@/store';
 import { subscribe, onJsData } from '@/jsdata/scriptMessageSubscribing';
 import jsDataStore from '@/jsdata/store';
+import nsDebug from '@/services/debug';
+import router from '@/router';
 
-
-const debug = require('@/services/debug').default('subscriptions');
+const debug = nsDebug('subscriptions');
 
 store.subscribe(({ type }) => type.endsWith(AUTHORIZED) && onAuthorized());
 
 function onAuthorized() {
+
+  debug('authorized');
 
   Workflow.findAll();
 
@@ -39,6 +42,11 @@ function onAuthorized() {
 
     return jsDataStore.addToCache(entity, data, {});
 
+  });
+
+  router.beforeEach(({ fullPath }, { fullPath: fromPath }, next) => {
+    debug(fullPath, fromPath);
+    next();
   });
 
 }
