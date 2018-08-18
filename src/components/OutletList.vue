@@ -6,16 +6,14 @@
 
     mt-index-list(v-if="listHeight" :height="listHeight")
       mt-index-section(v-for="group in index" :index="group.key" :key="group.key")
-        .partner(
+        mt-cell.partner(
         v-for= "partner in group.partners"
         :id="`id-${partner.id}`"
         :key="partner.id"
+        :label="`Адресов: ${partner.outlets.length}`"
+        :title="partner.shortName"
+        :to="{name: 'OutletPage', params: {id: partner.id}}"
         )
-          mt-cell(
-          :label="`Адресов: ${partner.outlets.length}`"
-          :title="partner.shortName"
-          :to="{name: 'OutletPage', params: {id: partner.id}}"
-          )
 
 </template>
 <script>
@@ -39,7 +37,7 @@ export default {
 
   data() {
     return {
-      partners: Partner.bindAll(this, { orderBy: 'shortName' }, 'partners'),
+      partners: [],
       listHeight: null,
     };
   },
@@ -69,7 +67,10 @@ export default {
 
   created() {
 
+    Partner.bindAll(this, { orderBy: 'shortName' }, 'partners');
+
     const loading = this.$loading.show();
+
     loadData()
       .finally(() => loading.hide());
 
