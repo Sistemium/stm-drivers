@@ -177,6 +177,8 @@ export default {
 
     checkInCreate() {
 
+      const loading = this.$loading.show();
+
       getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000)
         .then(({ id: reachedAtLocationId }) => {
 
@@ -200,7 +202,7 @@ export default {
           });
 
         })
-        .finally(this.$loading.show().hide);
+        .finally(() => loading.hide());
 
     },
 

@@ -54,9 +54,10 @@ export default {
     },
 
     doneCommentClick() {
+      const loading = this.$loading.show();
       this.popupVisible = false;
       this.shipmentRoute.save()
-        .finally(this.$loading.show().hide);
+        .finally(() => loading.hide());
     },
 
     cancelCommentClick() {

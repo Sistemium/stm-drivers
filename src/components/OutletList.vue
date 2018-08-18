@@ -69,8 +69,9 @@ export default {
 
   created() {
 
+    const loading = this.$loading.show();
     loadData()
-      .finally(this.$loading.show().hide);
+      .finally(() => loading.hide());
 
   },
 

@@ -76,7 +76,7 @@ export default {
 
       this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
 
-      const { hide: hideLoading } = this.$loading.show();
+      const loading = this.$loading.show();
 
       await ShipmentRoutePoint.find(routePointId, {
         with: [
@@ -93,7 +93,7 @@ export default {
           debug('rebind', err);
         });
 
-      hideLoading();
+      loading.hide();
 
     },
     onRouteChange(shipmentRouteId) {

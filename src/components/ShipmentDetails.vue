@@ -42,10 +42,10 @@ export default {
 
       const filter = { shipmentId: shipment.id, orderBy: [['article.name', 'ASC']] };
 
-      const { hide } = this.$loading.show();
+      const loading = this.$loading.show();
 
       this.shipment.loadRelations(['positions', 'positions.article'])
-        .finally(hide);
+        .finally(() => loading.hide());
 
       this.positions = ShipmentPosition.bindAll(this, filter, 'positions');
 
