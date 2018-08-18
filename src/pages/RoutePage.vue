@@ -38,7 +38,7 @@
       route-point-list(
       :reordering="editable"
       v-if="currentRoute"
-      :shipment-route-id="currentRoute.id"
+      :shipment-route-id="currentRouteId"
       )
 
     router-view(v-else)
@@ -115,6 +115,10 @@ export default {
 
     currentRouteTitle() {
       return this.currentRoute && `Маршрут ${this.currentRoute.date}`;
+    },
+
+    currentRouteId() {
+      return this.currentRoute && this.currentRoute.id;
     },
 
   },
