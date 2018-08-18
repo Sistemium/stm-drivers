@@ -6,7 +6,7 @@ import filter from 'lodash/filter';
 
 import LogMessage from '@/models/LogMessage';
 
-const sesionId = v4();
+const sessionId = v4();
 const NS = 'stm:drv';
 const LOG = true;
 
@@ -31,7 +31,7 @@ export default function (domain) {
       type: 'important',
       text,
       source,
-      target: sesionId,
+      target: sessionId,
     })
       .catch(({ name, message }) => {
         nsDebug(name, message);
