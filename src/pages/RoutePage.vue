@@ -207,7 +207,7 @@ export default {
 
       ShipmentRoute.bindAll(this, filter, 'shipmentRoutes');
 
-      const { hide } = this.$loading.show();
+      const loading = this.$loading.show();
 
       try {
         await ShipmentRoute.findAll({ limit: 50, ...filter });
@@ -215,7 +215,7 @@ export default {
         debug(e.name, e.message);
       }
 
-      hide();
+      loading.hide();
 
       debug('refresh end');
 

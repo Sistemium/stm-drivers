@@ -15,6 +15,9 @@
 import { mapState, mapActions } from 'vuex';
 import Driver from '@/models/Driver';
 import { SET_CURRENT } from '@/store/driver';
+import nsDebug from '@/services/debug';
+
+const debug = nsDebug('choose-driver');
 
 export default {
 
@@ -36,10 +39,21 @@ export default {
     },
   },
 
-  created() {
+  async created() {
+
+    const loading = this.$loading.show();
+
     Driver.bindAll(this, { orderBy: 'name' }, 'drivers');
-    Driver.findAll()
-      .finally(this.$loading.show().hide);
+
+    try {
+      await Driver.findAll();
+    } catch (e) {
+      debug(e.name, e.message);
+    }
+
+    debug('created');
+    loading.hide();
+
   },
 
   beforeDestroy() {

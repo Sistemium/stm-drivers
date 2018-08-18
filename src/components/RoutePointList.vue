@@ -101,11 +101,10 @@ export default {
 
     async refresh() {
 
-      const { hide } = this.$loading.show();
+      const loading = this.$loading.show();
 
       try {
         const routePoints = await findAll(this.shipmentRouteId);
-        // eslint-disable-next-line
         const reordering = routePoints.map(point => this.reorder(point, 0));
         debug('refresh reordering', `(${reordering.length})`);
         await Promise.all(reordering);
@@ -113,7 +112,7 @@ export default {
         debug(e.name, e.message);
       }
 
-      hide();
+      loading.hide();
 
       debug('refresh end');
 
