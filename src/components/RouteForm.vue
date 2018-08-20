@@ -35,6 +35,10 @@
 </template>
 <script>
 
+import nsDebug from '@/services/debug';
+
+const debug = nsDebug('route-form');
+
 export default {
 
   name: 'RouteForm',
@@ -53,11 +57,19 @@ export default {
       this.popupVisible = true;
     },
 
-    doneCommentClick() {
+    async doneCommentClick() {
+
       const loading = this.$loading.show();
+
+      try {
+        await this.shipmentRoute.save();
+      } catch (e) {
+        debug(e.name, e.message);
+      }
+
+      loading.hide();
       this.popupVisible = false;
-      this.shipmentRoute.save()
-        .finally(() => loading.hide());
+
     },
 
     cancelCommentClick() {
