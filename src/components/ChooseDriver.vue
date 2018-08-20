@@ -14,7 +14,7 @@
 
 import { mapState, mapActions } from 'vuex';
 import Driver from '@/models/Driver';
-import { SET_CURRENT } from '@/store/driver';
+import { SET_CURRENT, SET_OPTIONS } from '@/store/driver';
 import nsDebug from '@/services/debug';
 
 const debug = nsDebug('choose-driver');
@@ -28,7 +28,7 @@ export default {
   computed: mapState('driver', ['current']),
 
   methods: {
-    ...mapActions('driver', { chooseDriver: SET_CURRENT }),
+    ...mapActions('driver', { chooseDriver: SET_CURRENT, setOptions: SET_OPTIONS }),
   },
 
   watch: {
@@ -46,7 +46,8 @@ export default {
     Driver.bindAll(this, { orderBy: 'name' }, 'drivers');
 
     try {
-      await Driver.findAll();
+      const options = await Driver.findAll();
+      this.setOptions(options);
     } catch (e) {
       debug(e.name, e.message);
     }
