@@ -3,7 +3,11 @@
 .current-user
 
   mt-cell(v-if="account" :title="account.name" label="Пользователь")
-    mt-button(size="small" @click="confirm ? cancelClick() : logoffClick()")
+    mt-button(
+    v-if="!isNative"
+    size="small"
+    @click="confirm ? cancelClick() : logoffClick()"
+    )
       | {{ confirm ? 'Отменить' : 'Выход' }}
 
   el-alert(
@@ -23,13 +27,14 @@
 
 import { mapState, mapActions } from 'vuex';
 import { LOGOFF } from '@/store/auth/actions';
+import { isNative } from '@/services/native';
 
 export default {
 
   name: 'CurrentUser',
 
   data() {
-    return { confirm: false };
+    return { confirm: false, isNative: isNative() };
   },
 
   computed: mapState('auth', ['account']),
