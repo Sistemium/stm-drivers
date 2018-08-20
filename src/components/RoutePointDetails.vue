@@ -15,7 +15,7 @@
     title="Прибытие отмечено"
     :label="checkInLabel()"
     )
-      small {{ accuracyLabel() }}
+      small {{ accuracyLabel }}
       mt-button.checking-again(size="small" v-if="isReached" @click="checkInClick")
         span Уточнить
 
@@ -88,12 +88,14 @@ export default {
     headLinePhotos() {
       return this.routePointPhotos.length && take(this.routePointPhotos, 4);
     },
-  },
-
-  methods: {
-
+    reachedAtLocation() {
+      return this.isReached ? this.routePoint.reachedAtLocation : null;
+    },
     accuracyLabel() {
-      const { horizontalAccuracy } = this.reachedAtLocation() || {};
+      if (!this.isReached) {
+        return '';
+      }
+      const { horizontalAccuracy } = this.reachedAtLocation || {};
       if (!horizontalAccuracy) return '';
       let res = `${horizontalAccuracy} м.`;
       if (horizontalAccuracy > 900) {
@@ -103,10 +105,13 @@ export default {
       }
       return `± ${res}`;
     },
+  },
+
+  methods: {
 
     checkInLabel() {
 
-      const location = this.reachedAtLocation();
+      const location = this.reachedAtLocation;
 
       if (!location) return '';
 
@@ -118,10 +123,6 @@ export default {
 
     outlet() {
       return this.routePoint.outlet;
-    },
-
-    reachedAtLocation() {
-      return this.routePoint.reachedAtLocation;
     },
 
     imageDone(data) {
