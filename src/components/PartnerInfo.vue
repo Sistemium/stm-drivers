@@ -25,11 +25,12 @@ export default {
 
   data() {
     return {
-      partner: Partner.bindOne(this, this.partnerId, 'partner'),
+      partner: null,
     };
   },
 
   created() {
+    Partner.bindOne(this, this.partnerId, 'partner');
     Partner.find(this.partnerId, { with: ['outlets'] });
   },
 
