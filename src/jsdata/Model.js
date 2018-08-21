@@ -150,15 +150,26 @@ class Model {
 
   }
 
-  bindAll(component, query, property) {
+  /**
+   * Binds a components's property to the store record set by the specified filter
+   * @param {Object} component
+   * @param {Object} query
+   * @param {string} property
+   * @param {Function} [onChange]
+   * @returns {*}
+   */
+  bindAll(component, query, property, onChange) {
 
     const cid = componentId(component);
 
     const onDataChange = () => {
       const res = this.filter(query);
       Vue.set(component, property, res);
-      return res;
+      if (onChange) {
+        onChange(res);
+      }
       // setTimeout(() => component.$forceUpdate());
+      return res;
     };
 
     this.offs[cid] = this.offs[cid] || {};
