@@ -72,6 +72,47 @@ class Model {
       });
   }
 
+  /**
+   * Does non-cached request with groupBy option
+   * @param {Object} query
+   * @param {Array} fields
+   * @returns {*}
+   */
+  groupBy(query, fields) {
+
+    const { name } = this;
+
+    return new Promise((resolve, reject) => {
+
+      const options = {
+        bypassCache: true,
+        cacheResponse: false,
+        groupBy: fields,
+        afterFindAll: (o, data) => {
+          resolve(data);
+          debug('afterFindAll', data);
+          return [];
+        },
+      };
+
+      // fix for js-data bug
+      const groupByParams = { _: true, ...query };
+
+      this.store.findAll(name, groupByParams, options)
+        .then(res => {
+          debug('groupBy:success')(name, `(${res.length})`, query);
+          resolve(res);
+          this.store.emit('groupBy', name, query);
+        })
+        .catch(err => {
+          debug('groupBy:error')(name, query, err.message || err);
+          reject(err);
+        });
+
+    });
+
+  }
+
   filter(query) {
     return Object.seal(this.store.filter(this.name, query));
   }
@@ -102,6 +143,7 @@ class Model {
     }
 
     offs[undefined] = [
+      this.mon('groupBy', onDataChange),
       this.mon('add', onDataChange),
       this.mon('remove', onDataChange),
     ];
