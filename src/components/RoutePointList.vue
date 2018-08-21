@@ -9,38 +9,44 @@
     :to="{name: routeName, params: routeParams(routePoint)}"
     )
 
-      span(v-if="!reordering") {{ routePoint.routePointShipments.length }}н
-
-      button(
-      @click.prevent.stop="reorder(routePoint, -1)"
-      v-if="reordering"
-      :disabled = "index === 0"
-      )
-        i.el-icon-arrow-up
-
-      button(
-      @click.prevent.stop="reorder(routePoint, 1)"
-      v-if="reordering"
-      :disabled = "index === orderedRoutePoints.length - 1"
-      )
-        i.el-icon-arrow-down
+      small {{ routePoint.shipmentStats() | routePointStats }}
 
       template(slot="title")
         .title
+
           span.ord {{ routePoint.ord || '?' }}
-          span.done(v-if="routePoint.reachedAtLocationId")
-            i.el-icon-check
-          span.photo(v-if="routePoint.routePointPhotos.length")
-            i.el-icon-picture-outline
+
+          span.statuses(v-if="!reordering")
+            span.done(v-if="routePoint.reachedAtLocationId")
+              i.el-icon-check
+            span.photo(v-if="routePoint.routePointPhotos.length")
+              i.el-icon-picture-outline
+
+          span.orders(v-else)
+            button(
+            @click.prevent.stop="reorder(routePoint, -1)"
+            :disabled = "index === 0"
+            )
+              i.el-icon-arrow-up
+
+            button(
+            @click.prevent.stop="reorder(routePoint, 1)"
+            :disabled = "index === orderedRoutePoints.length - 1"
+            )
+              i.el-icon-arrow-down
+
           span {{ rowTitle(routePoint) }}
+          //span.stats(v-if="reordering")
+            | {{ routePoint.shipmentStats() | routePointStats }}
         .label {{ rowLabel(routePoint) }}
 
 </template>
 <script>
 
 import Vue from 'vue';
-import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
+import ShipmentRoutePoint, { loadShipmentStats } from '@/models/ShipmentRoutePoint';
 import ShipmentRoute from '@/models/ShipmentRoute';
+
 import orderBy from 'lodash/orderBy';
 import maxBy from 'lodash/maxBy';
 import get from 'lodash/get';
@@ -53,13 +59,13 @@ export default {
   data() {
     return {
       routePoints: [],
-      shipmentRoute: ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute'),
+      shipmentRoute: null,
     };
   },
 
   watch: {
     shipmentRouteId() {
-      this.shipmentRoute = ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute');
+      ShipmentRoute.bindOne(this, this.shipmentRouteId, 'shipmentRoute');
       this.bindRoutePoints();
       this.refresh();
     },
@@ -104,10 +110,17 @@ export default {
       const loading = this.$loading.show();
 
       try {
+
         const routePoints = await findAll(this.shipmentRouteId);
+
         const reordering = routePoints.map(point => this.reorder(point, 0));
         debug('refresh reordering', `(${reordering.length})`);
         await Promise.all(reordering);
+
+        await loadShipmentStats(routePoints);
+
+        this.$forceUpdate();
+
       } catch (e) {
         debug(e.name, e.message);
       }
@@ -156,6 +169,7 @@ export default {
   },
 
   created() {
+
     this.bindRoutePoints();
     this.refresh();
   },
@@ -209,15 +223,20 @@ function findAll(shipmentRouteId) {
 
 .route-point {
   button {
+    color: $blue;
     flex: 1;
-    padding: 10px 7px;
+    padding: 5px 7px;
   }
 }
 
-.title > span {
-  margin-right: 7px;
-  i {
-    color: $green;
+.title {
+  display: flex;
+  align-items: center;
+  span {
+    margin-right: 7px;
+    > i {
+      color: $green;
+    }
   }
 }
 
@@ -229,6 +248,15 @@ function findAll(shipmentRouteId) {
   border-radius: 5px;
   position: relative;
   top: -4px;
+}
+
+.route-point-info {
+
+  .stats {
+    flex: 1;
+    text-align: right;
+    font-size: 85%;
+  }
 }
 
 .done {

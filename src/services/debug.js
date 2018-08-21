@@ -8,7 +8,7 @@ import LogMessage from '@/models/LogMessage';
 
 const sessionId = v4();
 const NS = 'stm:drv';
-const LOG = true;
+const LOG = false;
 
 export default function (domain) {
 

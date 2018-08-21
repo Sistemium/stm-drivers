@@ -9,6 +9,7 @@
     :title="outlet().partner.name"
     :label="outlet().address"
     )
+      .stats {{ routePoint.shipmentStats() | routePointStats }}
 
     mt-cell.reached-at(
     v-if="isReached"
@@ -53,7 +54,8 @@
     :title="item.shipment.ndoc | ndoc"
     :label="item.shipment.commentText"
     :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
-    ) {{ item.shipment.totalBoxes() | boxes }}
+    )
+      .stats {{ item.shipment.stats() | routePointStats }}
 
 </template>
 <script>
@@ -67,6 +69,7 @@ import { MessageBox } from 'mint-ui';
 import nsDebug from '@/services/debug';
 import getLocation from '@/services/locationHelper';
 
+import ShipmentPosition from '@/models/ShipmentPosition';
 import ShipmentRoutePointShipment from '@/models/ShipmentRoutePointShipment';
 import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 import Location from '@/models/Location';
@@ -167,7 +170,6 @@ export default {
             'positions.article',
           ])));
         await this.routePoint.loadRelations('routePointPhotos');
-        this.$forceUpdate();
       } catch (e) {
         debug('refresh', e);
       }
@@ -219,11 +221,13 @@ export default {
   },
 
   created() {
+    ShipmentPosition.bind(this);
     ShipmentRoutePointShipment.bind(this);
     this.refresh();
   },
 
   beforeDestroy() {
+    ShipmentPosition.unbindAll(this);
     ShipmentRoutePointPhoto.unbindAll(this);
     ShipmentRoutePointShipment.unbindAll(this);
     Location.unbindAll(this);
@@ -263,6 +267,24 @@ img.thumbnail {
 
 .reached-at {
   border-top: none;
+}
+
+.title {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.stats {
+  font-size: small;
+}
+
+.label {
+  margin-top: 4px;
+  color: $gray;
+  font-size: 75%;
 }
 
 </style>

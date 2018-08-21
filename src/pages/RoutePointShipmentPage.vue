@@ -16,10 +16,13 @@
 </template>
 <script>
 
+import Vue from 'vue';
 import ShipmentDetails from '@/components/ShipmentDetails';
 import Shipment from '@/models/Shipment';
 
 import RoutePointPage from './RoutePointPage';
+
+const routePointStats = Vue.filter('routePointStats');
 
 export default {
 
@@ -37,7 +40,7 @@ export default {
       if (!shipment) {
         return 'Загрузка ...';
       }
-      return `${shipment.positions.length}п ${filters.boxes(shipment.totalBoxes())}`;
+      return `${routePointStats(shipment.stats())} ${filters.boxes(shipment.totalBoxes())}`;
     },
   },
 

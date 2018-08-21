@@ -16,7 +16,7 @@
     mt-cell.shipment(
     v-for="item in positions" :key="item.id"
     :title="item.article && item.article.name"
-    ) {{ item.volume | boxPcs(item.article.packageRel) }}
+    ) {{ item.volume | boxPcs(item.article) }}
 
 </template>
 <script>

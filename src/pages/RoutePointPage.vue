@@ -17,7 +17,7 @@
 </template>
 <script>
 
-import ShipmentRoutePoint from '@/models/ShipmentRoutePoint';
+import ShipmentRoutePoint, { loadShipmentStats } from '@/models/ShipmentRoutePoint';
 
 import RoutePointDetails from '@/components/RoutePointDetails';
 
@@ -92,6 +92,9 @@ export default {
         .catch(err => {
           debug('rebind', err);
         });
+
+      await loadShipmentStats([this.routePoint]);
+      this.$forceUpdate();
 
       loading.hide();
 
