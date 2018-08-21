@@ -37,6 +37,16 @@ export default new Model({
 
     },
 
+    stats() {
+
+      return {
+        totalBoxes: this.totalBoxes(),
+        volume: sumBy(this.positions, 'volume'),
+        positions: this.positions.length,
+      };
+
+    },
+
   },
 
 });
