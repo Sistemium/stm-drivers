@@ -27,7 +27,7 @@ Vue.filter('boxes', value => {
 
 });
 
-Vue.filter('boxPcs', (value, packageRel = 1) => {
+Vue.filter('boxPcs', (value, { packageRel = 1 } = {}) => {
 
   if (!value) return '';
 
@@ -48,3 +48,11 @@ Vue.filter('boxPcs', (value, packageRel = 1) => {
 });
 
 Vue.filter('ndoc', value => value || 'РНК');
+
+Vue.filter('routePointStats', stats => {
+
+  if (!stats) return '';
+  // ${stats.count}н
+  return `${stats.positions}п ${stats.volume}б`;
+
+});
