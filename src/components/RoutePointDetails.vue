@@ -64,21 +64,28 @@ import round from 'lodash/round';
 
 import { MessageBox } from 'mint-ui';
 
+import nsDebug from '@/services/debug';
 import getLocation from '@/services/locationHelper';
+
 import ShipmentRoutePointShipment from '@/models/ShipmentRoutePointShipment';
 import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
+import Location from '@/models/Location';
 
 import TakePhotoButton from './TakePhotoButton';
 
-const debug = require('@/services/debug').default('RoutePointDetails');
+const debug = nsDebug('RoutePointDetails');
 
 export default {
 
   components: { TakePhotoButton },
-  props: ['routePoint'],
+  props: { routePoint: Object },
 
   data() {
-    return { routePointPhotos: [], routePointShipments: [] };
+    return {
+      routePointPhotos: [],
+      routePointShipments: [],
+      reachedAtLocation: null,
+    };
   },
 
   computed: {
@@ -87,9 +94,6 @@ export default {
     },
     headLinePhotos() {
       return this.routePointPhotos.length && take(this.routePointPhotos, 4);
-    },
-    reachedAtLocation() {
-      return this.isReached ? this.routePoint.reachedAtLocation : null;
     },
     accuracyLabel() {
       if (!this.isReached) {
@@ -171,30 +175,34 @@ export default {
       loading.hide();
 
       ShipmentRoutePointShipment.bindAll(this, filter, 'routePointShipments');
+      const filterLocation = () => this.routePoint.reachedAtLocationId;
+      Location.bindOne(this, filterLocation, 'reachedAtLocation');
 
       this.$forceUpdate();
 
     },
 
-    checkInCreate() {
+    async checkInCreate() {
 
       const loading = this.$loading.show();
 
-      getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000)
-        .then(({ id: reachedAtLocationId }) => {
+      await getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000)
+        .then(location => {
 
-          Object.assign(this.routePoint, {
-            isReached: true,
-            reachedAtLocationId,
-          });
+          const { id: reachedAtLocationId } = location;
 
-          return this.routePoint.save()
-            .then(() => Vue.set(this.routePoint, { reachedAtLocationId }));
+          Vue.set(this.routePoint, 'isReached', true);
+          Vue.set(this.routePoint, 'reachedAtLocationId', reachedAtLocationId);
+          Vue.set(this, 'reachedAtLocation', location);
+
+          return this.routePoint.save();
 
         })
         .catch(e => {
 
           const message = e.message || e.error || e.toString();
+
+          debug('checkInCreate', message);
 
           MessageBox({
             title: 'Ошибка геолокации',
@@ -202,8 +210,9 @@ export default {
             confirmButtonText: 'ОК',
           });
 
-        })
-        .finally(() => loading.hide());
+        });
+
+      loading.hide();
 
     },
 
@@ -217,6 +226,7 @@ export default {
   beforeDestroy() {
     ShipmentRoutePointPhoto.unbindAll(this);
     ShipmentRoutePointShipment.unbindAll(this);
+    Location.unbindAll(this);
   },
 
   watch: {
