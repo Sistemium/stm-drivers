@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import Vue from 'vue';
+import isFunction from 'lodash/isFunction';
 import { serverDateTimeFormat } from '@/config/moments';
 import debug from '@/services/debug';
 import store from './store';
@@ -15,12 +16,10 @@ class Model {
 
     methods.refreshData = refreshData;
 
-    Object.assign(this, {
-      name,
-      store,
-      mapper: store.defineMapper(name, { notify: false, ...config }),
-      offs: {},
-    });
+    this.name = name;
+    this.store = store;
+    this.mapper = store.defineMapper(name, { notify: false, ...config });
+    this.offs = {};
 
     function refreshData() {
       return this.id ? store.find(name, this.id, { force: true }) : Promise.reject('No id attribute');
@@ -136,14 +135,36 @@ class Model {
 
   }
 
-  bindOne(component, id, property) {
+  /**
+   * Binds a components's property to the store record
+   * @param {Object} component
+   * @param {(string|Function)} idOrFunction
+   * @param {string} property
+   * @param {Function} [onChange]
+   * @returns {*}
+   */
+  bindOne(component, idOrFunction, property, onChange) {
 
+    const fn = isFunction(idOrFunction) && idOrFunction;
+    const id = !fn && idOrFunction;
     const cid = componentId(component);
 
-    const getDataById = () => this.store.get(this.name, id);
+    const getDataById = () => {
+      const itemId = id || fn();
+      // eslint-disable-next-line
+      // console.info('getDataById', this.name, itemId);
+      return itemId ? this.store.get(this.name, itemId) : null;
+    };
 
     const onDataChange = () => {
-      Vue.set(component, property, getDataById());
+      const data = getDataById();
+      // eslint-disable-next-line
+      // console.info('onDataChange', this.name, property, data);
+      Vue.set(component, property, data);
+      if (onChange) {
+        onChange(data);
+      }
+      return data;
     };
 
     this.offs[cid] = this.offs[cid] || {};
@@ -158,7 +179,7 @@ class Model {
       this.mon('remove', onDataChange),
     ];
 
-    return getDataById();
+    return onDataChange();
 
   }
 
