@@ -5,6 +5,7 @@ import { HttpAdapter } from 'js-data-http';
 import queryTransform from './httpAdapter';
 
 const store = new DataStore();
+// const debug = require('debug')('stm:drv:store');
 
 export default store;
 
@@ -26,14 +27,21 @@ export function authorize(token, org) {
     },
 
     // fix for https://github.com/js-data/js-data/issues/503
-    afterFindAll({ name }, query, { _activeWith: activeWith }, response) {
+    afterFindAll({ name }, query, options, response) {
 
-      if (response.length && activeWith) {
-        // console.info('afterFindAll activeWith', name, response); // eslint-disable-line
+      const { _activeWith: activeWith, afterFindAllFn } = options;
+
+      if (afterFindAllFn) {
+        return afterFindAllFn(options, response);
+      } else if (response.length && activeWith) {
         store.addToCache(name, response, {});
+        // debug('afterFindAll:activeWith', name, activeWith);
+        // } else {
+        // debug('afterFindAll:default', name);
       }
 
       return response || [];
+
     },
 
     afterFind({ name }, query, { _activeWith: activeWith }, response) {
