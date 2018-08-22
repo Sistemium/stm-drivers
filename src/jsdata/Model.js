@@ -2,9 +2,10 @@
 import Vue from 'vue';
 import isFunction from 'lodash/isFunction';
 import { serverDateTimeFormat } from '@/config/moments';
-import debug from '@/services/debug';
+import nsDebug from '@/services/debug';
 import store from './store';
 
+const debug = nsDebug('model');
 
 class Model {
 
@@ -18,7 +19,13 @@ class Model {
 
     this.name = name;
     this.store = store;
-    this.mapper = store.defineMapper(name, { notify: false, ...config });
+    this.mapper = store.defineMapper(name, {
+      notify: false,
+      ...config,
+      afterLoadRelations(query, options, response) {
+        debug('afterLoadRelations', query, options, response);
+      },
+    });
     this.offs = {};
 
     function refreshData() {
@@ -50,11 +57,11 @@ class Model {
     const { name } = this;
     return this.store.find(name, id, options)
       .then(res => {
-        debug('find success')(name, id);
+        debug('find:success', name, id);
         return res;
       })
       .catch(err => {
-        debug('find error')(name, id, err.message || err);
+        debug('find:error', name, id, err.message || err);
         return Promise.reject(err);
       });
   }
@@ -63,11 +70,11 @@ class Model {
     const { name } = this;
     return this.store.findAll(name, query, options)
       .then(res => {
-        debug('findAll:success')(name, `(${res.length})`, query);
+        debug('findAll:success', name, `(${res.length})`, query);
         return res;
       })
       .catch(err => {
-        debug('findAll:error')(name, query, err.message || err);
+        debug('findAll:error', name, query, err.message || err);
         return Promise.reject(err);
       });
   }
@@ -85,12 +92,13 @@ class Model {
     return new Promise((resolve, reject) => {
 
       const options = {
-        bypassCache: true,
-        cacheResponse: false,
+        force: true,
         groupBy: fields,
-        afterFindAll: (o, data) => {
-          resolve(data);
-          debug('afterFindAll', data);
+        usePendingFindAll: false,
+        afterFindAllFn: (o, res) => {
+          debug('groupBy:success', name, `(${res.length})`, query);
+          resolve(res);
+          this.store.emit('groupBy', name, query);
           return [];
         },
       };
@@ -99,13 +107,8 @@ class Model {
       const groupByParams = { _: true, ...query };
 
       this.store.findAll(name, groupByParams, options)
-        .then(res => {
-          debug('groupBy:success')(name, `(${res.length})`, query);
-          resolve(res);
-          this.store.emit('groupBy', name, query);
-        })
         .catch(err => {
-          debug('groupBy:error')(name, query, err.message || err);
+          debug('groupBy:error', name, query, err.message || err);
           reject(err);
         });
 
@@ -132,6 +135,7 @@ class Model {
     const cid = componentId(component);
 
     const onDataChange = () => {
+      // debug('bind:onDataChange', this.name, component.$vnode.tag);
       setTimeout(() => component.$forceUpdate());
     };
 
@@ -142,7 +146,7 @@ class Model {
       this.unbind(component, undefined);
     }
 
-    offs[undefined] = [
+    offs.$$$ = [
       this.mon('groupBy', onDataChange),
       this.mon('add', onDataChange),
       this.mon('remove', onDataChange),
@@ -168,7 +172,8 @@ class Model {
       if (onChange) {
         onChange(res);
       }
-      // setTimeout(() => component.$forceUpdate());
+      // debug('bind:onDataChange', this.name, component.$vnode.tag);
+      setTimeout(() => component.$forceUpdate());
       return res;
     };
 
@@ -243,6 +248,11 @@ class Model {
     delete offs[property];
   }
 
+  /**
+   * Removes all components's model bindings
+   * @param {Object} component
+   * @returns {*}
+   */
   unbindAll(component) {
 
     const cid = componentId(component);
