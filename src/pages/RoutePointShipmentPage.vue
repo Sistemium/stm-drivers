@@ -8,21 +8,21 @@
   )
 
     b {{ shipment.ndoc }}
-
-    small.totals {{ totalsLabel }}
+    shipment-stats(:shipment="shipment")
 
   shipment-details(:shipment="shipment")
 
 </template>
 <script>
 
-import Vue from 'vue';
+// import Vue from 'vue';
 import ShipmentDetails from '@/components/ShipmentDetails';
+import ShipmentStats from '@/components/ShipmentStats';
 import Shipment from '@/models/Shipment';
 
 import RoutePointPage from './RoutePointPage';
 
-const routePointStats = Vue.filter('routePointStats');
+// const routePointStats = Vue.filter('routePointStats');
 
 export default {
 
@@ -34,17 +34,7 @@ export default {
     return { shipment: null };
   },
 
-  computed: {
-    totalsLabel() {
-      const { shipment, $options: { filters } } = this;
-      if (!shipment) {
-        return 'Загрузка ...';
-      }
-      return `${routePointStats(shipment.stats())} ${filters.boxes(shipment.totalBoxes())}`;
-    },
-  },
-
-  components: { ShipmentDetails },
+  components: { ShipmentDetails, ShipmentStats },
 
   methods: {
     backFromShipment() {

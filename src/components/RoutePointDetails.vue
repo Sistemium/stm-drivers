@@ -55,7 +55,7 @@
     :label="item.shipment.commentText"
     :to="{name: 'RoutePointShipmentPage', params: routeParams(item.shipment)}"
     )
-      .stats {{ item.shipment.stats() | routePointStats }}
+      shipment-stats(:shipment="item.shipment")
 
 </template>
 <script>
@@ -75,12 +75,13 @@ import ShipmentRoutePointPhoto from '@/models/ShipmentRoutePointPhoto';
 import Location from '@/models/Location';
 
 import TakePhotoButton from './TakePhotoButton';
+import ShipmentStats from './ShipmentStats';
 
 const debug = nsDebug('RoutePointDetails');
 
 export default {
 
-  components: { TakePhotoButton },
+  components: { TakePhotoButton, ShipmentStats },
   props: { routePoint: Object },
 
   data() {
@@ -164,14 +165,16 @@ export default {
       const loading = this.$loading.show();
 
       try {
-        await Promise.all(this.routePoint.routePointShipments.map(routePointShipment =>
-          routePointShipment.shipment.loadRelations([
+        const { routePointShipments } = this.routePoint;
+        const promises = routePointShipments.map(({ shipment }) =>
+          shipment.loadRelations([
             'positions',
             'positions.article',
-          ])));
+          ]));
+        await Promise.all(promises);
         await this.routePoint.loadRelations('routePointPhotos');
       } catch (e) {
-        debug('refresh', e);
+        debug('refresh:error', e);
       }
 
       loading.hide();

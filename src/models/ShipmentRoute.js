@@ -1,4 +1,5 @@
 import Model from '@/jsdata/Model';
+import sumBy from 'lodash/sumBy';
 
 import './Driver';
 import './ShipmentRoutePoint';
@@ -37,6 +38,16 @@ export default new Model({
       const { workflow } = v;
       return workflow[this.processing];
     },
+
+    shipmentStats() {
+      const stats = this.routePoints.map(rp => rp.shipmentStats());
+      return {
+        positions: sumBy(stats, 'positions'),
+        volume: sumBy(stats, 'volume'),
+        count: sumBy(stats, 'count'),
+      };
+    },
+
   },
 
 });

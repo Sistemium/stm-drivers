@@ -18,9 +18,10 @@
       nav-header(
       :prev="prevRoute ? prevClick : undefined"
       :next="nextRoute ? nextClick : undefined"
-      :title="title"
       :right-badge="badge"
       )
+        b {{ title }}
+        small(v-if="currentRoute") {{ currentRoute.shipmentStats() | routePointStats }}
 
       .buttons
 
@@ -61,6 +62,7 @@ import RoutePointList from '@/components/RoutePointList';
 import RouteForm from '@/components/RouteForm';
 
 import ShipmentRoute from '@/models/ShipmentRoute';
+import ShipmentPosition from '@/models/ShipmentPosition';
 
 const name = 'RoutePage';
 const debug = nsDebug('route-page');
@@ -224,10 +226,12 @@ export default {
   },
 
   created() {
+    ShipmentPosition.bind(this);
     return this.refresh();
   },
 
   beforeDestroy() {
+    ShipmentPosition.unbindAll(this);
     ShipmentRoute.unbindAll(this);
   },
 
@@ -260,6 +264,16 @@ export default {
 
 .root-nav {
   background: $gray-background;
+}
+
+.nav-header {
+  b {
+    font-size: 85%;
+  }
+  small {
+    color: $gray;
+    font-size: 70%;
+  }
 }
 
 </style>

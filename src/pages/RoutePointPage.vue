@@ -20,9 +20,9 @@
 import ShipmentRoutePoint, { loadShipmentStats } from '@/models/ShipmentRoutePoint';
 
 import RoutePointDetails from '@/components/RoutePointDetails';
+import nsDebug from '@/services/debug';
 
-const debug = require('@/services/debug').default('RoutePointPage');
-
+const debug = nsDebug('RoutePointPage');
 const name = 'RoutePointPage';
 
 export default {
@@ -74,27 +74,31 @@ export default {
 
       const { routePointId } = this;
 
-      this.routePoint = ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
-
       const loading = this.$loading.show();
 
-      await ShipmentRoutePoint.find(routePointId, {
-        with: [
-          'outlet',
-          'outlet.partner',
-          'reachedAtLocation',
-          'routePointPhotos',
-          'routePointShipments',
-          'routePointShipments.shipment',
-        ],
-      })
-        .then(({ shipmentRouteId }) => ShipmentRoutePoint.findAll({ shipmentRouteId }))
-        .catch(err => {
-          debug('rebind', err);
+      try {
+        const routePoint = await ShipmentRoutePoint.find(routePointId, {
+          with: [
+            'outlet',
+            'outlet.partner',
+            'reachedAtLocation',
+            'routePointPhotos',
+            'routePointShipments',
+            'routePointShipments.shipment',
+          ],
         });
 
-      await loadShipmentStats([this.routePoint]);
-      this.$forceUpdate();
+        const { shipmentRouteId } = routePoint;
+        await ShipmentRoutePoint.findAll({ shipmentRouteId });
+
+        await loadShipmentStats([routePoint]);
+
+        ShipmentRoutePoint.bindOne(this, routePointId, 'routePoint');
+      } catch (e) {
+        debug(e.name, e.message);
+      }
+
+      // this.$forceUpdate();
 
       loading.hide();
 

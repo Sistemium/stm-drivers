@@ -1,10 +1,13 @@
 import Model from '@/jsdata/Model';
 
 import sumBy from 'lodash/sumBy';
+// import nsDebug from '@/services/debug';
 
 import './ShipmentPosition';
 import './ShipmentRoutePointShipment';
 import './Outlet';
+
+// const debug = nsDebug('shipment');
 
 export default new Model({
 
@@ -37,14 +40,19 @@ export default new Model({
 
     },
 
-    stats() {
+    /**
+     * Returns an object with positions totals
+     * @returns {{totalBoxes: *, volume: number, positions: *}}
+     */
 
-      return {
+    stats() {
+      const res = {
         totalBoxes: this.totalBoxes(),
         volume: sumBy(this.positions, 'volume'),
         positions: this.positions.length,
       };
-
+      // debug('stats', this.id, res);
+      return res;
     },
 
   },
