@@ -4,7 +4,8 @@ import isString from 'lodash/isString';
 import trim from 'lodash/trim';
 import filter from 'lodash/filter';
 
-import LogMessage from '@/models/LogMessage';
+// import LogMessage from '@/models/LogMessage';
+import store from '@/jsdata/store';
 
 const sessionId = v4();
 const NS = 'stm:drv';
@@ -27,7 +28,7 @@ export default function (domain) {
     const text = filter(args.map(a => (isString(a) ? trim(a) : JSON.stringify(a, ' ', null))))
       .join(' ');
 
-    return LogMessage.create({
+    return store.create('LogMessage', {
       type: 'important',
       text,
       source,
