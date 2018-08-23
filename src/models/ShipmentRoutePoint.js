@@ -73,12 +73,13 @@ export async function loadShipmentStats(routePoints) {
     const { routePointShipments } = point;
     return map(routePointShipments, 'shipmentId');
   }));
-  const positionsFilter = {
-    where: {
-      shipmentId: { '==': shipmentIds },
-    },
-  };
-  const res = await ShipmentPosition.groupBy(positionsFilter, ['shipmentId']);
+
+  if (!shipmentIds.length) {
+    return;
+  }
+
+  const where = { shipmentId: { '==': shipmentIds } };
+  const res = await ShipmentPosition.groupBy({ where }, ['shipmentId']);
 
   res.forEach(stat => {
     positionsData[stat.shipmentId] = stat;
