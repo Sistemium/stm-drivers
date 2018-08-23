@@ -5,7 +5,7 @@
   transition-group(name="flip-list")
 
     mt-cell.route-point(
-    v-for='(routePoint, index) in orderedRoutePoints' :key="routePoint.id"
+    v-for='(routePoint, index) in orderedRoutePoints()' :key="routePoint.id"
     :to="{name: routeName, params: routeParams(routePoint)}"
     )
 
@@ -14,7 +14,7 @@
       template(slot="title")
         .title
 
-          span.ord {{ routePoint.ord || '?' }}
+          span.ord {{ routePoint.ord }}
 
           span.statuses(v-if="!reordering")
             span.done(v-if="routePoint.reachedAtLocationId")
@@ -31,7 +31,7 @@
 
             button(
             @click.prevent.stop="reorder(routePoint, 1)"
-            :disabled = "index === orderedRoutePoints.length - 1"
+            :disabled = "index === orderedRoutePoints().length - 1"
             )
               i.el-icon-arrow-down
 
@@ -60,6 +60,7 @@ export default {
     return {
       routePoints: [],
       shipmentRoute: null,
+      savingIds: {},
     };
   },
 
@@ -78,15 +79,13 @@ export default {
     reordering: Boolean,
   },
 
-  computed: {
-
-    orderedRoutePoints() {
-      return orderBy(this.routePoints, 'ord');
-    },
-
-  },
+  computed: {},
 
   methods: {
+
+    orderedRoutePoints() {
+      return orderBy(this.routePoints || [], 'ord');
+    },
 
     rowLabel(routePoint) {
       return get(routePoint, 'outlet.address');
@@ -113,7 +112,7 @@ export default {
 
         const routePoints = await findAll(this.shipmentRouteId);
 
-        const reordering = routePoints.map(point => this.reorder(point, 0));
+        const reordering = routePoints.map(point => this.reorder(point, 0, true));
         debug('refresh reordering', `(${reordering.length})`);
         await Promise.all(reordering);
 
@@ -131,11 +130,11 @@ export default {
 
     },
 
-    reorder(routePoint1, change) {
+    reorder(routePoint1, change, immediate = false) {
 
       if (!routePoint1.ord) {
 
-        const max = maxBy(this.orderedRoutePoints, 'ord');
+        const max = maxBy(this.orderedRoutePoints(), 'ord');
 
         if (max) {
           setOrd(routePoint1, max.ord + 1);
@@ -143,14 +142,14 @@ export default {
           setOrd(routePoint1, 1);
         }
 
-        return routePoint1.save();
+        return this.saveRoutePoint(routePoint1, immediate);
       }
 
       if (change === 0) {
         return Promise.resolve();
       }
 
-      const routePoint2 = this.orderedRoutePoints[(routePoint1.ord + change) - 1];
+      const routePoint2 = this.orderedRoutePoints()[(routePoint1.ord + change) - 1];
 
       if (!routePoint2 || !routePoint2.ord) {
         return Promise.resolve();
@@ -159,10 +158,35 @@ export default {
       setOrd(routePoint2, routePoint1.ord);
       setOrd(routePoint1, routePoint1.ord + change);
 
+      if (!immediate) {
+        this.$forceUpdate();
+      }
+
       return Promise.all([
-        routePoint2.save(),
-        routePoint1.save(),
+        this.saveRoutePoint(routePoint2, immediate),
+        this.saveRoutePoint(routePoint1, immediate),
       ]);
+
+    },
+
+    async saveRoutePoint(routePoint, immediate = false) {
+
+      try {
+        if (!immediate) {
+          await new Promise((resolve, reject) => {
+            const { id } = routePoint;
+            const saving = this.savingIds[id];
+            if (saving) {
+              saving.reject('canceled');
+              clearTimeout(saving.timeout);
+            }
+            this.savingIds[id] = { timeout: setTimeout(resolve, 1000), reject };
+          });
+        }
+        await routePoint.save();
+      } catch (e) {
+        debug('saveRoutePoint', e);
+      }
 
     },
 
