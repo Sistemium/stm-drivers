@@ -240,6 +240,10 @@ function findAll(shipmentRouteId) {
   }
 }
 
+.orders {
+  white-space: nowrap;
+}
+
 .ord {
   font-size: 75%;
   display: inline-block;
