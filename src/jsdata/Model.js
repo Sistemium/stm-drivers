@@ -25,9 +25,11 @@ class Model {
     this.mapper = store.defineMapper(name, {
       notify: false,
       ...config,
-      afterLoadRelations(query, options, response) {
-        debug('afterLoadRelations', query, options, response);
-      },
+      safeInject: data => this.safeInject(data),
+      // TODO: find out how to get this working
+      // afterLoadRelations(query, options, response) {
+      //   debug('afterLoadRelations', query, options, response);
+      // },
     });
     this.offs = {};
 
@@ -71,7 +73,23 @@ class Model {
       delete this.savingIds[id];
       await record.save();
     } catch (e) {
-      debug('saveRoutePoint', e);
+      debug('safeSave:ignore', e);
+    }
+
+  }
+
+  /**
+   * Puts the data into the store if there's no safeSave() pending saves for the matching record
+   * @param data
+   */
+  safeInject(data) {
+
+    const saving = this.savingIds[data.id];
+
+    if (!saving) {
+      this.store.addToCache(this.name, data, {});
+    } else {
+      debug('safeInject:ignore', this.name, data.id);
     }
 
   }

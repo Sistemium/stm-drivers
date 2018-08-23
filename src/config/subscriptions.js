@@ -40,7 +40,7 @@ function onAuthorized() {
       return false;
     }
 
-    return jsDataStore.addToCache(entity, data, {});
+    return mapper.safeInject(data);
 
   });
 
