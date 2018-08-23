@@ -13,10 +13,13 @@ class Model {
 
     const { name, methods = {} } = config;
 
-    config.methods = methods;
+    config.methods = {
+      ...methods,
+    };
 
     methods.refreshData = refreshData;
 
+    this.savingIds = {};
     this.name = name;
     this.store = store;
     this.mapper = store.defineMapper(name, {
@@ -43,6 +46,34 @@ class Model {
     }
 
     return this.store.create(this.name, params);
+  }
+
+  /**
+   * Does pending save that helps subscription manager to resolve conflicts with server data
+   * @param {Record} record
+   * @param {Boolean} [immediate=false]
+   * @returns {Promise<void>}
+   */
+  async safeSave(record, immediate = false) {
+
+    try {
+      const { id } = record;
+      if (!immediate) {
+        await new Promise((resolve, reject) => {
+          const saving = this.savingIds[id];
+          if (saving) {
+            saving.reject('canceled');
+            clearTimeout(saving.timeout);
+          }
+          this.savingIds[id] = { timeout: setTimeout(resolve, 700), reject };
+        });
+      }
+      delete this.savingIds[id];
+      await record.save();
+    } catch (e) {
+      debug('saveRoutePoint', e);
+    }
+
   }
 
   destroy({ id }) {
