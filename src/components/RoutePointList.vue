@@ -60,7 +60,6 @@ export default {
     return {
       routePoints: [],
       shipmentRoute: null,
-      savingIds: {},
     };
   },
 
@@ -169,24 +168,9 @@ export default {
 
     },
 
-    async saveRoutePoint(routePoint, immediate = false) {
+    saveRoutePoint(routePoint, immediate = false) {
 
-      try {
-        if (!immediate) {
-          await new Promise((resolve, reject) => {
-            const { id } = routePoint;
-            const saving = this.savingIds[id];
-            if (saving) {
-              saving.reject('canceled');
-              clearTimeout(saving.timeout);
-            }
-            this.savingIds[id] = { timeout: setTimeout(resolve, 1000), reject };
-          });
-        }
-        await routePoint.save();
-      } catch (e) {
-        debug('saveRoutePoint', e);
-      }
+      return ShipmentRoutePoint.safeSave(routePoint, immediate);
 
     },
 
