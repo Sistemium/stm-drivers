@@ -272,6 +272,12 @@ class Model {
 
   }
 
+  /**
+   * Cleanup property bindings for the component
+   * @param {Object} component
+   * @param {String} property
+   */
+
   unbind(component, property) {
     const cid = componentId(component);
     const offs = this.offs[cid];
