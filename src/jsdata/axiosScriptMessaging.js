@@ -6,7 +6,8 @@ const debug = require('@/services/debug').default('axiosScriptMessage');
 
 export default function (config) {
 
-  // console.info('Request config', config);
+  /* eslint-disable */
+  console.info('Request config', config);
 
   return new Promise((resolve, reject) => {
 
@@ -21,6 +22,13 @@ export default function (config) {
       entity: config.name,
       options,
     };
+
+    const groupBy = params['groupBy:'];
+
+    if (groupBy) {
+      options.groupBy = groupBy.split(',');
+      delete params['groupBy:'];
+    }
 
     if (params['x-order-by:']) {
       options.sortBy = params['x-order-by:'].substr(1);
