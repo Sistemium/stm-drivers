@@ -24,10 +24,14 @@ import VueCoreImageUpload from 'vue-core-image-upload';
 
 import { isNative, takePhoto } from '@/services/native';
 import { serverDateFormat } from '@/config/moments';
+import nsDebug from '@/services/debug';
+
+const NAME = 'TakePhotoButton';
+const debug = nsDebug(NAME);
 
 export default {
 
-  name: 'TakePhotoButton',
+  name: NAME,
 
   props: { done: Function, entityName: String },
 
@@ -48,7 +52,7 @@ export default {
   methods: {
 
     imsUrl() {
-      return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
+      return `/ims1?folder=${this.entityName}/${serverDateFormat()}`;
     },
 
     nativeTriggerClick() {
@@ -56,7 +60,12 @@ export default {
         .then(this.done);
     },
 
-    imageUploaded({ pictures: picturesInfo }) {
+    imageUploaded(res) {
+      debug('imageUploaded', res);
+      const { pictures: picturesInfo } = res;
+      if (!picturesInfo) {
+        return;
+      }
       this.done({ picturesInfo });
     },
 
