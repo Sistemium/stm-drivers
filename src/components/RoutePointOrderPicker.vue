@@ -2,17 +2,27 @@
 
 .route-point-order-picker
 
+  nav-header.root-nav(
+  left-icon="back"
+  :prev="cancelClick"
+  ) Раскладка
+
   mt-cell.outlet(
   v-if="outlet()"
   :title="outlet().partner.name"
   :label="outlet().address"
   )
 
+  .section-title
+    small Укажите порядновый номер точки в маршруте
+
   mt-picker(
   :slots="slots" @change="onValuesChange"
+  :visible-item-count="7"
   )
 
   .buttons
+
     mt-button(
     type="primary"
     @click="doneClick"
@@ -68,6 +78,9 @@ export default {
     },
     doneClick() {
       this.onDone(this.order);
+    },
+    cancelClick() {
+      this.onDone(false);
     },
   },
 

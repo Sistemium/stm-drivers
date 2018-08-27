@@ -103,6 +103,10 @@ export default {
 
       this.orderPopupVisible = false;
 
+      if (!order) {
+        return;
+      }
+
       const ordAfter = parseInt(order, 0);
       const { ord: ordBefore } = this.orderingRoutePoint;
 
