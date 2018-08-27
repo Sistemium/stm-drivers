@@ -52,7 +52,7 @@ export default {
   methods: {
 
     imsUrl() {
-      return `/ims1?folder=${this.entityName}/${serverDateFormat()}`;
+      return `/ims?folder=${this.entityName}/${serverDateFormat()}`;
     },
 
     nativeTriggerClick() {
