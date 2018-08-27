@@ -133,9 +133,10 @@ export default {
       return this.routePoint.outlet;
     },
 
-    imageDone(data) {
+    async imageDone(data) {
       const { id: shipmentRoutePointId } = this.routePoint;
-      ShipmentRoutePointPhoto.create({ ...data, shipmentRoutePointId });
+      await ShipmentRoutePointPhoto.create({ ...data, shipmentRoutePointId });
+      this.$forceUpdate();
     },
 
     checkInClick() {
