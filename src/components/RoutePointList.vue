@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.route-point-list.cell-list
+.route-point-list.cell-list(:class="reordering && 'reordering'")
 
   transition-group(name="flip-list")
 
@@ -14,7 +14,9 @@
       template(slot="title")
         .title
 
-          span.ord {{ routePoint.ord }}
+          span.ord(
+          @click.prevent.stop="orderClick(routePoint)"
+          ) {{ routePoint.ord }}
 
           span.statuses(v-if="!reordering")
             span.done(v-if="routePoint.reachedAtLocationId")
@@ -40,12 +42,23 @@
             | {{ routePoint.shipmentStats() | routePointStats }}
         .label {{ rowLabel(routePoint) }}
 
+  mt-popup.popup(
+  v-model="orderPopupVisible" position="right" v-if="routePoints.length"
+  )
+    route-point-order-picker(
+    v-if="orderingRoutePoint"
+    :route-point="orderingRoutePoint"
+    :count="routePoints.length"
+    :on-done="setRoutePointOrder"
+    )
+
 </template>
 <script>
-
+import filter from 'lodash/filter';
 import Vue from 'vue';
 import ShipmentRoutePoint, { loadShipmentStats } from '@/models/ShipmentRoutePoint';
 import ShipmentRoute from '@/models/ShipmentRoute';
+import RoutePointOrderPicker from '@/components/RoutePointOrderPicker';
 
 import orderBy from 'lodash/orderBy';
 import maxBy from 'lodash/maxBy';
@@ -56,10 +69,14 @@ const debug = nsDebug('route-point-list');
 
 export default {
 
+  components: { RoutePointOrderPicker },
+
   data() {
     return {
       routePoints: [],
       shipmentRoute: null,
+      orderPopupVisible: false,
+      orderingRoutePoint: null,
     };
   },
 
@@ -81,6 +98,59 @@ export default {
   computed: {},
 
   methods: {
+
+    async setRoutePointOrder(order) {
+
+      this.orderPopupVisible = false;
+
+      const ordAfter = parseInt(order, 0);
+      const { ord: ordBefore } = this.orderingRoutePoint;
+
+      if (ordAfter === ordBefore) return;
+
+      const dir = ordAfter > ordBefore ? 1 : -1;
+
+      const { routePoints } = this;
+
+      const oldRPSameOrd = filter(routePoints, ({ ord }) => {
+        if (dir > 0) {
+          return ord <= ordAfter && ord > ordBefore;
+        }
+        return ord >= ordAfter && ord < ordBefore;
+      });
+
+      oldRPSameOrd.forEach(rp => {
+        Vue.set(rp, 'ord', rp.ord - dir);
+      });
+
+      this.orderingRoutePoint.ord = ordAfter;
+
+      this.normalizeOrders();
+
+      const loading = this.$loading.show();
+
+      try {
+        const toSave = this.orderedRoutePoints()
+          .map(rp => rp.hasChanges() && this.saveRoutePoint(rp, true));
+        await Promise.all(filter(toSave));
+      } catch (e) {
+        debug(e.name, e.message);
+      }
+
+      loading.hide();
+
+    },
+
+    normalizeOrders() {
+      this.orderedRoutePoints().forEach((rp, idx) => {
+        Vue.set(rp, 'ord', idx + 1);
+      });
+    },
+
+    orderClick(routePoint) {
+      this.orderingRoutePoint = routePoint;
+      this.orderPopupVisible = true;
+    },
 
     orderedRoutePoints() {
       return orderBy(this.routePoints || [], 'ord');
@@ -255,11 +325,18 @@ function findAll(shipmentRouteId) {
 .ord {
   font-size: 75%;
   display: inline-block;
-  padding: 2px 4px;
+  padding: 3px 5px;
   background: $gray-background;
-  border-radius: 5px;
+  border-radius: 7px;
   position: relative;
   top: -4px;
+}
+
+.reordering {
+  .ord {
+    background: $primary-color;
+    color: white;
+  }
 }
 
 .route-point-info {
@@ -287,6 +364,12 @@ function findAll(shipmentRouteId) {
 
 .flip-list-move {
   transition: transform 0.3s;
+}
+
+.popup {
+  left: 0;
+  top: 50%;
+  bottom: -50%;
 }
 
 </style>
