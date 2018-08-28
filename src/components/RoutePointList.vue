@@ -129,7 +129,7 @@ export default {
 
       this.orderingRoutePoint.ord = ordAfter;
 
-      const loading = this.$loading.show();
+      // const loading = this.$loading.show();
 
       try {
         await this.normalizeOrders();
@@ -137,18 +137,18 @@ export default {
         debug(e.name, e.message);
       }
 
-      loading.hide();
+      // loading.hide();
 
     },
 
-    normalizeOrders() {
+    normalizeOrders(immediate = false) {
 
       this.orderedRoutePoints().forEach((rp, idx) => {
         Vue.set(rp, 'ord', idx + 1);
       });
 
       const toSave = this.orderedRoutePoints()
-        .map(rp => rp.hasChanges() && this.saveRoutePoint(rp, true));
+        .map(rp => rp.hasChanges() && this.saveRoutePoint(rp, immediate));
 
       return Promise.all(filter(toSave));
 
@@ -188,7 +188,7 @@ export default {
 
         const routePoints = await findAll(this.shipmentRouteId);
 
-        await this.normalizeOrders();
+        await this.normalizeOrders(true);
         await loadShipmentStats(routePoints);
 
         this.$forceUpdate();
