@@ -9,10 +9,12 @@
     :to="{name: routeName, params: routeParams(routePoint)}"
     )
 
-      small {{ routePoint.shipmentStats() | routePointStats }}
+      small.stats {{ routePoint.shipmentStats() | routePointStats }}
 
-      template(slot="title")
-        .title
+      template(
+      slot="title"
+      )
+        .title(@click="titleClick")
 
           span.ord(
           @click.prevent.stop="orderClick(routePoint)"
@@ -38,9 +40,8 @@
               i.el-icon-arrow-down
 
           span {{ rowTitle(routePoint) }}
-          //span.stats(v-if="reordering")
-            | {{ routePoint.shipmentStats() | routePointStats }}
-        .label {{ rowLabel(routePoint) }}
+
+        .label(@click="titleClick") {{ rowLabel(routePoint) }}
 
   mt-popup.popup(
   v-model="orderPopupVisible" position="right" v-if="routePoints.length"
@@ -98,6 +99,15 @@ export default {
   computed: {},
 
   methods: {
+
+    titleClick(event) {
+      if (!this.reordering) {
+        return;
+      }
+      event.stopPropagation();
+      event.preventDefault();
+      debug('titleClick', event);
+    },
 
     async setRoutePointOrder(order) {
 
@@ -308,6 +318,9 @@ function findAll(shipmentRouteId) {
     color: $blue;
     flex: 1;
     padding: 5px 7px;
+    &[disabled] {
+      color: $gray-border-color;
+    }
   }
 }
 
@@ -337,6 +350,9 @@ function findAll(shipmentRouteId) {
 }
 
 .reordering {
+  .stats {
+    color: $primary-color;
+  }
   .ord {
     background: $primary-color;
     color: white;
