@@ -13,11 +13,11 @@ class Model {
 
     const { name, methods = {} } = config;
 
+    methods.refreshData = refreshData;
+
     config.methods = {
       ...methods,
     };
-
-    methods.refreshData = refreshData;
 
     this.savingIds = {};
     this.name = name;
