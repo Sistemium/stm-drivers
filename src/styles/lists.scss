@@ -45,6 +45,10 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.mint-cell-label, .mint-cell-value {
+  color: $gray;
+}
+
 .mint-cell-text {
   label {
     color: $gray;
