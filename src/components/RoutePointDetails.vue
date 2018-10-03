@@ -225,8 +225,12 @@ export default {
   },
 
   created() {
+    const setReactive = () => {
+      Vue.util.defineReactive(this.routePoint, 'reachedAtLocationId', this.routePoint.reachedAtLocationId);
+    };
     ShipmentPosition.bind(this);
     ShipmentRoutePointShipment.bind(this);
+    this.$watch('routePoint', setReactive, { immediate: true });
     this.refresh();
   },
 
