@@ -192,14 +192,14 @@ export default {
 
       const loading = this.$loading.show();
 
-      await getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 10000)
+      await getLocation(150, 1000, this.routePoint.id, 'RoutePoint', 30000)
         .then(location => {
 
           const { id: reachedAtLocationId } = location;
 
-          Vue.set(this.routePoint, 'isReached', true);
-          Vue.set(this.routePoint, 'reachedAtLocationId', reachedAtLocationId);
-          Vue.set(this, 'reachedAtLocation', location);
+          this.routePoint.isReached = true;
+          this.routePoint.reachedAtLocationId = reachedAtLocationId;
+          this.reachedAtLocation = location;
 
           return this.routePoint.save();
 
@@ -226,7 +226,7 @@ export default {
 
   created() {
     const setReactive = () => {
-      Vue.util.defineReactive(this.routePoint, 'reachedAtLocationId', this.routePoint.reachedAtLocationId);
+      Vue.util.defineReactive(this.routePoint, 'reachedAtLocationId');
     };
     ShipmentPosition.bind(this);
     ShipmentRoutePointShipment.bind(this);
