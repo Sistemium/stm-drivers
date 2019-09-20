@@ -22,6 +22,9 @@
 <script>
 
 import ShipmentPosition from '@/models/ShipmentPosition';
+import log from '@/services/debug';
+
+const { error } = log('ShipmentDetails');
 
 export default {
 
@@ -33,25 +36,32 @@ export default {
 
   methods: {
     refresh() {
+      this.loadData().catch(error);
+    },
 
+    async loadData() {
       const { shipment } = this;
 
       if (!shipment) {
         return;
       }
 
-      const filter = { shipmentId: shipment.id, orderBy: [['article.name', 'ASC']] };
-
       const loading = this.$loading.show();
 
-      this.shipment.loadRelations(['positions', 'positions.article'])
-        .finally(() => loading.hide());
+      try {
+        await shipment.loadRelations(['positions', 'positions.article']);
+      } catch (e) {
+        error('loadRelations', e.message);
+      }
 
+      loading.hide();
+
+      const filter = { shipmentId: shipment.id, orderBy: [['article.name', 'ASC']] };
       this.positions = ShipmentPosition.bindAll(this, filter, 'positions');
 
       this.$forceUpdate();
-
     },
+
   },
 
   watch: {
