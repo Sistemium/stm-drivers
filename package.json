@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@vuex-orm/core": "^0.25.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.3.7",
     "es6-promise": "^4.2.4",
     "inputmask": "^3.3.11",
