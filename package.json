@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@vuex-orm/core": "^0.25.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "date-fns": "^2.0.0-alpha.8",
     "debug": "^3.1.0",
     "element-ui": "^2.3.7",
